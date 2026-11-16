@@ -57,10 +57,9 @@ export default function PuttIntro() {
               <h1 className="sr-only">R&amp;O Golf Range · Los Acantilados</h1>
               <div className="logo-badge"><img className="logo" src="img/logo.jpg" alt="R&O Golf Range · Los Acantilados" width={640} height={641} /></div>
               <div className="hero-text">
-                <div className="label">Driving range · Los Acantilados</div>
-                <h2 className="display-xl">Vení a<br /><span className="gold-text">practicar</span></h2>
+                <h2 className="display-xl">El nuevo<br />driving de<br /><span className="gold-text">Mar del Plata</span></h2>
                 <div className="rule" />
-                <p className="body-l">Un espacio para entrenar tu swing con vista a los acantilados.</p>
+                <p className="body-l">Tu espacio de golf, relajación y entrenamiento.</p>
                 <div className="pill label"><span className="dot" />Abierto a todo público</div>
                 <p className="caption no-member">No hace falta ser socio del club.</p>
                 <div className="hint label" id="hint">Deslizá para patear <span className="arrow">→</span></div>
