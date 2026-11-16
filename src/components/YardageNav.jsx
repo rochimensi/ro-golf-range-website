@@ -23,9 +23,9 @@ export default function YardageNav() {
     const ball = el.querySelector('.yd-ball');
     const centerOf = (a) => a.offsetTop + a.offsetHeight / 2 - 4;
 
-    // show the rail once the vertical part of the page begins
+    // show the rail as soon as the putt section unpins and vertical scrolling begins
     ScrollTrigger.create({
-      trigger: document.getElementById('v'), start: 'top 60%', end: 'bottom top',
+      trigger: document.getElementById('v'), start: 'top bottom', end: 'bottom top',
       onToggle: (st) => el.classList.toggle('on', st.isActive),
       onRefresh: (st) => el.classList.toggle('on', st.isActive),
     });
