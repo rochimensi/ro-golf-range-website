@@ -3,7 +3,8 @@
 export function createPuttScene(els) {
 
   const { canvas: cvs, stage, track, chip, hint, cta, ruler, swingVH = { back: .2, hit: .3, follow: .42 }, scrollScreens = 5 } = els;
-  const ctx = cvs.getContext('2d');
+  const mainCtx = cvs.getContext('2d');
+  let ctx = mainCtx;   // drawing helpers draw on `ctx`; it is pointed at an offscreen canvas while sprites are baked
   // build ruler ticks: 20 yards to the pin, a tick per yard, labels every 5
   const rFill = ruler.querySelector('.r-fill'), rBall = ruler.querySelector('.r-ball'), rFlag = ruler.querySelector('.r-flag');
   {
@@ -184,19 +185,40 @@ export function createPuttScene(els) {
     ctx.fillRect(-hw * .38, L - R * .045, hw * .76, R * .09);
   }
 
-  function drawPutter(pivotX, pivotY, theta, R, L) {
-    ctx.save();
-    ctx.translate(pivotX + R * .55, pivotY + R * .6);
-    ctx.rotate(-theta);
-    ctx.globalAlpha = .26;
-    if ('filter' in ctx) ctx.filter = `blur(${Math.max(2, R * .18)}px)`;
+  // The putter and its soft (blurred) shadow are baked once into an offscreen sprite, then only
+  // rotated each frame. Blurring on every frame was what made the first yards after impact stutter.
+  let putterSprite = null, putterKey = '';
+  function getPutterSprite(R, L) {
+    const key = `${R}|${L}|${dpr}`;
+    if (key === putterKey) return putterSprite;
+    const pad = R * 3;
+    const x0 = -R * 2.4 - pad, x1 = R * 2.4 + pad, y0 = -pad, y1 = L + R * 3.5 + pad;
+    const c = document.createElement('canvas');
+    c.width = Math.ceil((x1 - x0) * dpr); c.height = Math.ceil((y1 - y0) * dpr);
+    const g = c.getContext('2d');
+    const prev = ctx; ctx = g;
+    g.setTransform(dpr, 0, 0, dpr, -x0 * dpr, -y0 * dpr);
+    g.save();
+    g.translate(R * .55, R * .6);
+    g.globalAlpha = .26;
+    if ('filter' in g) g.filter = `blur(${Math.max(2, R * .18)}px)`;
     putterShapes(R, L, true);
-    ctx.restore();
+    g.restore();
+    g.save();
+    putterShapes(R, L, false);
+    g.restore();
+    ctx = prev;
+    putterSprite = { c, x0, y0, w: x1 - x0, h: y1 - y0 };
+    putterKey = key;
+    return putterSprite;
+  }
 
+  function drawPutter(pivotX, pivotY, theta, R, L) {
+    const sp = getPutterSprite(R, L);
     ctx.save();
     ctx.translate(pivotX, pivotY);
     ctx.rotate(-theta);
-    putterShapes(R, L, false);
+    ctx.drawImage(sp.c, sp.x0, sp.y0, sp.w, sp.h);
     ctx.restore();
   }
 
@@ -305,7 +327,10 @@ export function createPuttScene(els) {
     // breaking line: up, down, then settles back onto the cup's line
     const breakAmp = H * .075;
     const ballYNow = ballY - breakAmp * Math.sin(3 * Math.PI * g) * (1 - .45 * g);
-    const camX = clamp(ballX - x0, 0, worldW - W);
+    // camera eases into the pan instead of jumping to full speed at impact: it starts still and
+    // accelerates smoothly until it matches the ball, which settles a little ahead of where it started
+    const travel = ballX - x0, lag = W * .15;
+    const camX = clamp(travel - lag * (1 - Math.exp(-travel / lag)), 0, worldW - W);
 
     // sink state (time-based one-shot once the ball arrives)
     if (g >= 1 && sunkAt === null) sunkAt = now;
