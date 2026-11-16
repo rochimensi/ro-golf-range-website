@@ -61,7 +61,6 @@ export default function PuttIntro() {
                 <div className="rule" />
                 <p className="body-l">Tu espacio de golf, relajación y entrenamiento.</p>
                 <div className="pill label"><span className="dot" />Abierto a todo público</div>
-                <p className="caption no-member">No hace falta ser socio del club.</p>
                 <div className="hint label" id="hint">Deslizá para patear <span className="arrow">→</span></div>
               </div>
             </div>
