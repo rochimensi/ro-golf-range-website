@@ -1,0 +1,65 @@
+import { useRef } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useGSAP } from '@gsap/react';
+import PuttIntro from './components/PuttIntro.jsx';
+import YardageNav from './components/YardageNav.jsx';
+import Canastos from './sections/Canastos.jsx';
+import Clases from './sections/Clases.jsx';
+import Academia from './sections/Academia.jsx';
+import Ensenanza from './sections/Ensenanza.jsx';
+import Omar from './sections/Omar.jsx';
+import Empresas from './sections/Empresas.jsx';
+import Galeria from './sections/Galeria.jsx';
+import Instagram from './sections/Instagram.jsx';
+import Nosotros from './sections/Nosotros.jsx';
+import Transformacion from './sections/Transformacion.jsx';
+import Contacto from './sections/Contacto.jsx';
+import Footer from './sections/Footer.jsx';
+
+gsap.registerPlugin(ScrollTrigger, useGSAP);
+if (import.meta.env.DEV || location.search.includes('debug')) window.ScrollTrigger = ScrollTrigger;
+
+export default function App() {
+  const root = useRef(null);
+
+  useGSAP(() => {
+    // Reveal content as it scrolls into view (CSS handles the motion, GSAP decides when).
+    ScrollTrigger.batch('[data-reveal], .ph', {
+      start: 'top 88%',
+      once: true,
+      onEnter: (els) => els.forEach((el, i) => setTimeout(() => el.classList.add('in'), i * 70)),
+    });
+
+    // Photos not supplied yet (e.g. the Figma images) show a labelled placeholder instead.
+    const markMissing = (img) => img.parentElement.classList.add('missing');
+    root.current.querySelectorAll('img[data-fallback]').forEach((img) => {
+      if (img.complete && img.naturalWidth === 0) markMissing(img);
+      else img.addEventListener('error', () => markMissing(img), { once: true });
+    });
+
+    // Images change section heights as they load: recompute trigger positions.
+    window.addEventListener('load', () => ScrollTrigger.refresh());
+  }, { scope: root });
+
+  return (
+    <div ref={root}>
+      <PuttIntro />
+      <YardageNav />
+      <main id="v">
+        <Canastos />
+        <Clases />
+        <Academia />
+        <Ensenanza />
+        <Omar />
+        <Empresas />
+        <Galeria />
+        <Instagram />
+        <Nosotros />
+        <Transformacion />
+        <Contacto />
+        <Footer />
+      </main>
+    </div>
+  );
+}
