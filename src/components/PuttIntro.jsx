@@ -49,6 +49,9 @@ export default function PuttIntro() {
       const avail = title.parentElement.clientWidth;
       const size = Math.min((avail / widest) * 100, window.innerHeight * 0.17);
       title.style.fontSize = `${Math.max(32, Math.floor(size))}px`;
+      // the rule, tagline and scroll prompt line up with the right edge of the longest line
+      const w = Math.max(...[...title.querySelectorAll('.hl > span')].map((n) => n.getBoundingClientRect().width));
+      el.querySelector('.hero-sub').style.width = `${Math.ceil(w)}px`;
     };
     fitTitle();
     if (document.fonts) document.fonts.ready.then(fitTitle);
@@ -82,9 +85,11 @@ export default function PuttIntro() {
                   <span className="hl" aria-hidden="true"><span>driving de</span></span>
                   <span className="hl" aria-hidden="true"><span className="gold-text">Mar del Plata</span></span>
                 </h2>
-                <div className="rule hero-after" />
-                <p className="body-l hero-after">Tu espacio de golf, relajación y entrenamiento.</p>
-                <div className="hint label hero-after" id="hint">Deslizá para embocar el putt <span className="arrow">→</span></div>
+                <div className="hero-sub">
+                  <div className="rule hero-after" />
+                  <p className="body-l hero-after">Tu espacio de golf, relajación y entrenamiento.</p>
+                  <div className="hint label hero-after" id="hint">Deslizá para embocar el putt <span className="arrow">→</span></div>
+                </div>
               </div>
             </div>
           </section>
