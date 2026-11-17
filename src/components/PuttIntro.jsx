@@ -63,9 +63,13 @@ export default function PuttIntro() {
       const lines = title.querySelectorAll('.hl > span');
       gsap.set(lines, { yPercent: 110 });
       const IN = 0.16, OUT = 0.11, FINAL = 0.34;
-      const tl = gsap.timeline({ delay: 0.2 });
+      // logo turns and fades in first; the headline starts once the logo is 50% rendered
+      // (power2.out reaches half its change at 1 - √½ ≈ 29% of the duration)
+      const LOGO = 1.4, START = LOGO * (1 - Math.SQRT1_2);
+      const tl = gsap.timeline({ delay: 0.1 });
+      tl.from(el.querySelector('.logo-badge'), { autoAlpha: 0, scale: 0.9, rotation: -8, duration: LOGO, ease: 'power2.out' }, 0);
       lines.forEach((line, i) => {
-        const t = i * (IN + OUT);
+        const t = START + i * (IN + OUT);
         tl.to(line, { yPercent: 0, duration: IN, ease: 'power3.out' }, t)
           .to(line, { yPercent: -110, duration: OUT, ease: 'power2.in' }, t + IN)
           .set(line, { yPercent: 110 }, t + IN + OUT)
