@@ -2,7 +2,7 @@ import { useRef } from 'react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 
-// Text whose words brighten one after another as you scroll: each word starts at 60% opacity
+// Text whose words brighten one after another as you scroll: each word starts at 40% opacity
 // and reaches 100% as the passage moves up the screen. Reduced motion shows it at full opacity.
 export default function ScrollHighlight({ as: Tag = 'p', text, className = '' }) {
   const ref = useRef(null);
@@ -10,7 +10,7 @@ export default function ScrollHighlight({ as: Tag = 'p', text, className = '' })
   useGSAP(() => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const words = ref.current.querySelectorAll('.hw');
-    gsap.fromTo(words, { opacity: 0.6 }, {
+    gsap.fromTo(words, { opacity: 0.4 }, {
       opacity: 1,
       ease: 'none',
       stagger: 0.1,
