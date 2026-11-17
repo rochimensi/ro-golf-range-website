@@ -383,7 +383,7 @@ export function createPuttScene(els) {
     let txt;
     if (sunkAt !== null) txt = '¡Embocada!';
     else if (p <= P_HIT) txt = `Putt de ${PUTT_YD} yardas`;
-    else { const yd = Math.max(1, Math.round(PUTT_YD * (1 - g))); txt = yd === 1 ? 'Falta 1 yarda al hoyo' : `Faltan ${yd} yardas al hoyo`; }
+    else { const yd = Math.max(1, Math.round(PUTT_YD * (1 - g))); txt = yd === 1 ? '1 yarda al hoyo' : `${yd} yardas al hoyo`; }
     if (txt !== lastChip) { chip.textContent = txt; lastChip = txt; }
     const pct = (g * 100).toFixed(2) + '%';
     rFill.style.width = pct; rBall.style.left = pct;
