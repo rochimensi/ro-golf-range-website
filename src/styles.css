@@ -220,9 +220,9 @@
   @media (prefers-reduced-motion: reduce) { [data-reveal] { opacity:1; transform:none; transition:none; } }
 
   /* ---------- Yardage indicator ---------- */
-  #yardage { position:fixed; left:28px; top:50%; transform:translate(-140%, -50%); z-index:30; display:flex; flex-direction:column; gap:22px;
+  #yardage { position:fixed; left:28px; top:6vh; bottom:6vh; transform:translateX(-140%); z-index:30; display:flex; flex-direction:column; justify-content:space-between;
              transition:transform .6s cubic-bezier(.2,.8,.2,1); }
-  #yardage.on { transform:translate(0, -50%); }
+  #yardage.on { transform:none; }
   #yardage .yd-track { position:absolute; left:28px; top:12px; bottom:12px; width:0; border-left:1px dashed rgba(201,170,96,.55); }
   #yardage .yd-ball { position:absolute; left:-5px; top:0; width:9px; height:9px; border-radius:50%; background:#fff; box-shadow:0 0 0 2px var(--brand-green), 0 0 0 3px var(--gold-deep); transition:top .25s linear; }
   #yardage a { position:relative; display:flex; align-items:center; gap:var(--space-3); text-decoration:none; color:var(--brand-cream); }
@@ -236,7 +236,7 @@
   #yardage a.active b { background:var(--gradient-gold); color:var(--brand-green); border-color:transparent; transform:scale(1.18); }
   #yardage a.passed b { color:var(--gold-light); }
   @media (max-width:760px) {
-    #yardage { left:6px; gap:14px; }
+    #yardage { left:6px; top:5vh; bottom:5vh; }
     #yardage b { width:36px; height:22px; font-size:11px; }
     #yardage b::after { display:none; }
     #yardage .yd-track { left:18px; }

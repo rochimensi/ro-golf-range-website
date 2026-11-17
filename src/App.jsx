@@ -27,12 +27,16 @@ export default function App() {
   useGSAP(() => {
     const stopSmooth = startSmoothScroll();
 
-    // Reveal content as it scrolls into view (CSS handles the motion, GSAP decides when).
-    ScrollTrigger.batch('[data-reveal], .ph', {
-      start: 'top 88%',
-      once: true,
-      onEnter: (els) => els.forEach((el, i) => setTimeout(() => el.classList.add('in'), i * 70)),
-    });
+    // Reveal content as it scrolls into view (CSS handles the motion). An IntersectionObserver also
+    // catches elements already on screen after a jump (anchor links, reloading partway down the page).
+    const revealIO = new IntersectionObserver((entries) => {
+      entries.filter((e) => e.isIntersecting)
+        .forEach((e, i) => {
+          setTimeout(() => e.target.classList.add('in'), i * 70);
+          revealIO.unobserve(e.target);
+        });
+    }, { rootMargin: '0px 0px -12% 0px' });
+    root.current.querySelectorAll('[data-reveal], .ph').forEach((el) => revealIO.observe(el));
 
     // Photos not supplied yet (e.g. the Figma images) show a labelled placeholder instead.
     const markMissing = (img) => img.parentElement.classList.add('missing');
@@ -43,7 +47,7 @@ export default function App() {
 
     // Images change section heights as they load: recompute trigger positions.
     window.addEventListener('load', () => ScrollTrigger.refresh());
-    return stopSmooth;
+    return () => { stopSmooth(); revealIO.disconnect(); };
   }, { scope: root });
 
   return (
