@@ -63,10 +63,10 @@ export default function PuttIntro() {
       gsap.set(lines, { yPercent: 110 });
       const tl = gsap.timeline({ delay: 0.2 });
       lines.forEach((line, i) => {
-        tl.to(line, { yPercent: 0, duration: 0.42, ease: 'power4.out' }, i ? '-=0.12' : 0)
-          .to(line, { yPercent: -110, duration: 0.24, ease: 'power2.in' }, '+=0.08')
+        tl.to(line, { yPercent: 0, duration: 0.16, ease: 'power3.out' }, i ? '-=0.1' : 0)   // quick flash in…
+          .to(line, { yPercent: -110, duration: 0.11, ease: 'power2.in' })                    // …and out the top
           .set(line, { yPercent: 110 })
-          .to(line, { yPercent: 0, duration: 0.42, ease: 'power4.out' });
+          .to(line, { yPercent: 0, duration: 0.34, ease: 'power4.out' });                     // final rise, stays
       });
       tl.from(el.querySelectorAll('.hero-after'), { autoAlpha: 0, y: 16, duration: 0.6, ease: 'power2.out', stagger: 0.1 }, '-=0.2');
     }
