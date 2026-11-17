@@ -60,7 +60,6 @@ export default function PuttIntro() {
                 <h2 className="display-xl">El nuevo<br />driving de<br /><span className="gold-text">Mar del Plata</span></h2>
                 <div className="rule" />
                 <p className="body-l">Tu espacio de golf, relajación y entrenamiento.</p>
-                <div className="pill label"><span className="dot" />Abierto a todo público</div>
                 <div className="hint label" id="hint">Deslizá para embocar el putt <span className="arrow">→</span></div>
               </div>
             </div>
