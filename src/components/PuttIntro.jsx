@@ -72,6 +72,9 @@ export default function PuttIntro() {
           .to(line, { yPercent: 0, duration: FINAL, ease: 'power4.out' }, t + IN + OUT);
       });
       tl.from(el.querySelectorAll('.hero-after'), { autoAlpha: 0, y: 16, duration: 0.6, ease: 'power2.out', stagger: 0.1 }, '-=0.2');
+      // the scroll prompt shows straight away, so it's there even if the visitor scrolls before the headline lands
+      // (the inner span animates in; the scene fades the outer #hint out once scrolling starts)
+      gsap.from(el.querySelector('.hint-in'), { autoAlpha: 0, y: 10, duration: 0.5, ease: 'power2.out', delay: 0.35 });
     }
 
     const tick = () => scene.render(state.p, performance.now());
@@ -99,7 +102,7 @@ export default function PuttIntro() {
                 <div className="hero-sub">
                   <div className="rule hero-after" />
                   <p className="body-l hero-after">Tu espacio de golf, relajación y entrenamiento.</p>
-                  <div className="hint label hero-after" id="hint">Deslizá para embocar el putt <span className="arrow">→</span></div>
+                  <div className="hint label" id="hint"><span className="hint-in">Deslizá para embocar el putt <span className="arrow">→</span></span></div>
                 </div>
               </div>
             </div>
