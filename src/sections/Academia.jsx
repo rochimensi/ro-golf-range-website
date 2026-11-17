@@ -1,3 +1,5 @@
+import ScrollHighlight from '../components/ScrollHighlight.jsx';
+
 export default function Academia() {
   return (
     <section id="academia" className="vs green" data-sec={50}>
@@ -16,9 +18,11 @@ export default function Academia() {
           <article className="value" data-reveal><span className="leaf">05</span><h3 className="label">Estrategia</h3><p>Por otro lado, el golf es un deporte de estrategia, donde cada decisión cuenta y cada golpe tiene consecuencias. Esto forma en los jóvenes la capacidad de pensar antes de actuar, de analizar riesgos y tomar decisiones con cabeza fría, habilidades cruciales para la vida personal y profesional.</p></article>
           <article className="value" data-reveal><span className="leaf">06</span><h3 className="label">Comunidad</h3><p>El entorno social que se genera es único, donde se comparten momentos, se crean amistades y se generan redes que pueden ser valiosas a lo largo de los años. La combinación de deporte, naturaleza, valores y relaciones hace del golf una actividad que educa para la vida.</p></article>
         </div>
-        <blockquote className="quote" data-reveal>
-          Son pocas las academias que reúnen a un profesional con tanta versatilidad y experiencia para que todos puedan dar sus primeros pasos en el Golf, o se acerquen a perfeccionarse y dar un salto en su nivel deportivo.
-        </blockquote>
+        <ScrollHighlight
+          as="blockquote"
+          className="quote"
+          text="Son pocas las academias que reúnen a un profesional con tanta versatilidad y experiencia para que todos puedan dar sus primeros pasos en el Golf, o se acerquen a perfeccionarse y dar un salto en su nivel deportivo."
+        />
       </div>
     </section>
   );
