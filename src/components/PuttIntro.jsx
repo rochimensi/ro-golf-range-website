@@ -40,9 +40,29 @@ export default function PuttIntro() {
       },
     });
 
+    // Headline: as large as the space right of the putter allows (the longest line fills the width,
+    // capped by screen height), then each line rises out of its mask one after another.
+    const title = el.querySelector('.hero-title');
+    const fitTitle = () => {
+      title.style.fontSize = '100px';
+      const widest = Math.max(...[...title.querySelectorAll('.hl > span')].map((n) => n.scrollWidth));
+      const avail = title.parentElement.clientWidth;
+      const size = Math.min((avail / widest) * 100, window.innerHeight * 0.17);
+      title.style.fontSize = `${Math.max(32, Math.floor(size))}px`;
+    };
+    fitTitle();
+    if (document.fonts) document.fonts.ready.then(fitTitle);
+    ScrollTrigger.addEventListener('refreshInit', fitTitle);
+
+    if (!reduce) {
+      gsap.timeline({ delay: 0.25 })
+        .from(title.querySelectorAll('.hl > span'), { yPercent: 110, duration: 1.1, ease: 'power4.out', stagger: 0.45 })
+        .from(el.querySelectorAll('.hero-after'), { autoAlpha: 0, y: 16, duration: 0.7, ease: 'power2.out', stagger: 0.12 }, '-=0.5');
+    }
+
     const tick = () => scene.render(state.p, performance.now());
     gsap.ticker.add(tick);
-    return () => gsap.ticker.remove(tick);
+    return () => { gsap.ticker.remove(tick); ScrollTrigger.removeEventListener('refreshInit', fitTitle); };
   }, { scope: stage });
 
   const goDown = () => document.getElementById('canastos').scrollIntoView({ behavior: 'smooth' });
@@ -57,10 +77,14 @@ export default function PuttIntro() {
               <h1 className="sr-only">R&amp;O Golf Range · Los Acantilados</h1>
               <div className="logo-badge"><img className="logo" src="img/logo.jpg" alt="R&O Golf Range · Los Acantilados" width={640} height={641} /></div>
               <div className="hero-text">
-                <h2 className="display-xl">El nuevo<br />driving de<br /><span className="gold-text">Mar del Plata</span></h2>
-                <div className="rule" />
-                <p className="body-l">Tu espacio de golf, relajación y entrenamiento.</p>
-                <div className="hint label" id="hint">Deslizá para embocar el putt <span className="arrow">→</span></div>
+                <h2 className="display-xl hero-title" aria-label="El nuevo driving de Mar del Plata">
+                  <span className="hl" aria-hidden="true"><span>El nuevo</span></span>
+                  <span className="hl" aria-hidden="true"><span>driving de</span></span>
+                  <span className="hl" aria-hidden="true"><span className="gold-text">Mar del Plata</span></span>
+                </h2>
+                <div className="rule hero-after" />
+                <p className="body-l hero-after">Tu espacio de golf, relajación y entrenamiento.</p>
+                <div className="hint label hero-after" id="hint">Deslizá para embocar el putt <span className="arrow">→</span></div>
               </div>
             </div>
           </section>
