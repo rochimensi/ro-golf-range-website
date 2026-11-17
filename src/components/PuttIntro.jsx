@@ -58,15 +58,18 @@ export default function PuttIntro() {
     ScrollTrigger.addEventListener('refreshInit', fitTitle);
 
     if (!reduce) {
-      // each line reveals twice (rises in, slips out the top, rises in again), then the next line starts
+      // each line reveals twice: a quick flash in and out the top, then a final rise that stays.
+      // The next line starts its flash the moment the previous line begins its final rise.
       const lines = title.querySelectorAll('.hl > span');
       gsap.set(lines, { yPercent: 110 });
+      const IN = 0.16, OUT = 0.11, FINAL = 0.34;
       const tl = gsap.timeline({ delay: 0.2 });
       lines.forEach((line, i) => {
-        tl.to(line, { yPercent: 0, duration: 0.16, ease: 'power3.out' }, i ? '-=0.1' : 0)   // quick flash in…
-          .to(line, { yPercent: -110, duration: 0.11, ease: 'power2.in' })                    // …and out the top
-          .set(line, { yPercent: 110 })
-          .to(line, { yPercent: 0, duration: 0.34, ease: 'power4.out' });                     // final rise, stays
+        const t = i * (IN + OUT);
+        tl.to(line, { yPercent: 0, duration: IN, ease: 'power3.out' }, t)
+          .to(line, { yPercent: -110, duration: OUT, ease: 'power2.in' }, t + IN)
+          .set(line, { yPercent: 110 }, t + IN + OUT)
+          .to(line, { yPercent: 0, duration: FINAL, ease: 'power4.out' }, t + IN + OUT);
       });
       tl.from(el.querySelectorAll('.hero-after'), { autoAlpha: 0, y: 16, duration: 0.6, ease: 'power2.out', stagger: 0.1 }, '-=0.2');
     }
