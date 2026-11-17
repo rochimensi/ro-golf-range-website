@@ -2,6 +2,7 @@ import { useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
+import { startSmoothScroll } from './smoothScroll.js';
 import PuttIntro from './components/PuttIntro.jsx';
 import YardageNav from './components/YardageNav.jsx';
 import Canastos from './sections/Canastos.jsx';
@@ -24,6 +25,8 @@ export default function App() {
   const root = useRef(null);
 
   useGSAP(() => {
+    const stopSmooth = startSmoothScroll();
+
     // Reveal content as it scrolls into view (CSS handles the motion, GSAP decides when).
     ScrollTrigger.batch('[data-reveal], .ph', {
       start: 'top 88%',
@@ -40,6 +43,7 @@ export default function App() {
 
     // Images change section heights as they load: recompute trigger positions.
     window.addEventListener('load', () => ScrollTrigger.refresh());
+    return stopSmooth;
   }, { scope: root });
 
   return (

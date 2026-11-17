@@ -3,6 +3,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
 import { createPuttScene } from '../putt/scene.js';
+import { scrollToTarget } from '../smoothScroll.js';
 
 // How long the putt lasts, in screen-heights of scroll. Two big, quick scrolls reach the pin.
 const SCREENS = 5;
@@ -86,8 +87,8 @@ export default function PuttIntro() {
     return () => { gsap.ticker.remove(tick); ScrollTrigger.removeEventListener('refreshInit', fitTitle); };
   }, { scope: stage });
 
-  const goDown = () => document.getElementById('canastos').scrollIntoView({ behavior: 'smooth' });
-  const replay = () => window.scrollTo({ top: 0, behavior: 'instant' });
+  const goDown = () => scrollToTarget('#canastos');
+  const replay = () => scrollToTarget(0, { immediate: true });
 
   return (
     <div id="stage" ref={stage}>

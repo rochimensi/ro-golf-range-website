@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
+import { pauseScroll } from '../smoothScroll.js';
 
 // Photos: aspect ratio = width / height. Videos are 9:16 slots: drop the files in public/video/ to fill them.
 const ITEMS = [
@@ -41,14 +42,14 @@ export default function Gallery() {
 
   useEffect(() => {
     if (open < 0) return;
-    document.documentElement.style.overflow = 'hidden';
+    pauseScroll(true);
     const onKey = (e) => {
       if (e.key === 'Escape') setOpen(-1);
       if (e.key === 'ArrowRight') show(open + 1);
       if (e.key === 'ArrowLeft') show(open - 1);
     };
     addEventListener('keydown', onKey);
-    return () => { removeEventListener('keydown', onKey); document.documentElement.style.overflow = ''; };
+    return () => { removeEventListener('keydown', onKey); pauseScroll(false); };
   }, [open, show]);
 
   let pi = -1;
