@@ -58,9 +58,17 @@ export default function PuttIntro() {
     ScrollTrigger.addEventListener('refreshInit', fitTitle);
 
     if (!reduce) {
-      gsap.timeline({ delay: 0.25 })
-        .from(title.querySelectorAll('.hl > span'), { yPercent: 110, duration: 1.1, ease: 'power4.out', stagger: 0.45 })
-        .from(el.querySelectorAll('.hero-after'), { autoAlpha: 0, y: 16, duration: 0.7, ease: 'power2.out', stagger: 0.12 }, '-=0.5');
+      // each line reveals twice (rises in, slips out the top, rises in again), then the next line starts
+      const lines = title.querySelectorAll('.hl > span');
+      gsap.set(lines, { yPercent: 110 });
+      const tl = gsap.timeline({ delay: 0.2 });
+      lines.forEach((line, i) => {
+        tl.to(line, { yPercent: 0, duration: 0.42, ease: 'power4.out' }, i ? '-=0.12' : 0)
+          .to(line, { yPercent: -110, duration: 0.24, ease: 'power2.in' }, '+=0.08')
+          .set(line, { yPercent: 110 })
+          .to(line, { yPercent: 0, duration: 0.42, ease: 'power4.out' });
+      });
+      tl.from(el.querySelectorAll('.hero-after'), { autoAlpha: 0, y: 16, duration: 0.6, ease: 'power2.out', stagger: 0.1 }, '-=0.2');
     }
 
     const tick = () => scene.render(state.p, performance.now());
