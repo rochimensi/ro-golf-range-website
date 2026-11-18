@@ -1,41 +1,96 @@
 import BasketArt from '../components/BasketArt.jsx';
+import BasketOrbit from '../components/BasketOrbit.jsx';
+
+// How the basket cards are drawn: 'orbit' (number with spinning balls) or 'heap' (original basket art).
+const BASKET_STYLE = 'orbit';
+
+const BASKETS = [
+  { n: 30, text: 'Calenta antes de salir a la cancha o hace una práctica rápida.' },
+  { n: 60, text: 'Sesión completa para trabajar tu swing solo o en una clase.' },
+  { n: 100, text: 'Para entrenar todo el juego, de wedges al driver.' }
+];
+
+const CLIPS = ['ball_and_tee', 'balls', 'divot'];
+
+// React doesn't reliably set the `muted` attribute, which iOS needs for autoplay.
+function startClip(el) {
+  if (!el) return;
+  el.muted = true;
+  el.defaultMuted = true;
+  if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) {
+    el.pause();
+    return;
+  }
+  el.play()?.catch(() => {});
+}
+
 export default function Canastos() {
   return (
-    <section id="canastos" className="vs green" data-sec={30}>
+    <section id="canastos" className="vs green has-cover" data-sec={30}>
+      <div className="cv">
+        <div className="cv-grid">
+          {CLIPS.map((name) => (
+            <div key={name} className={`cv-tile cv-${name}`}>
+              <video
+                ref={startClip}
+                src={`video/${name}.mp4`}
+                poster={`video/${name}.jpg`}
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="auto"
+                disablePictureInPicture
+                aria-hidden="true"
+                tabIndex={-1}
+              />
+            </div>
+          ))}
+        </div>
+        <div className="cv-shade" aria-hidden="true" />
+        <h2 className="cv-title">Canastos</h2>
+      </div>
+      <header className="vh" data-reveal>
+        <h2 className="display-l">Practica a tu ritmo</h2>
+        <div className="ball-pick">
+          <img className="ball-pick-logo" src="img/logo-taylormade.svg" alt="TaylorMade" width="1024" height="207" />
+          <p className="body-l">
+            <strong>TaylorMade Range Balls.</strong> Pelota de golf de alto rendimiento y primera calidad con construcción sólida de dos piezas, compresión de 90. Esta es nuestra pelota elegida.
+          </p>
+        </div>
+      </header>
       <div className="wrap">
-        <header className="vh" data-reveal>
-          <div className="label">30 yd · Canastos</div>
-          <h2 className="display-l">Elegí tu canasto</h2>
-          <div className="rule" />
-          <p className="body-l">Tres tamaños para practicar a tu ritmo.</p>
-        </header>
-        <div className="baskets">
-          <article className="basket" data-reveal>
-            <BasketArt n={30} />
-            <div className="basket-n"><b>30</b><span className="label">pelotas</span></div>
-            <p>Para calentar antes de salir a la cancha o una práctica rápida.</p>
-          </article>
-          <article className="basket" data-reveal>
-            <BasketArt n={60} />
-            <div className="basket-n"><b>60</b><span className="label">pelotas</span></div>
-            <p>Una sesión completa para trabajar tu swing.</p>
-          </article>
-          <article className="basket" data-reveal>
-            <BasketArt n={100} />
-            <div className="basket-n"><b>100</b><span className="label">pelotas</span></div>
-            <p>Para entrenar todo el juego, del driver al wedge.</p>
-          </article>
+        <div className={`baskets baskets-${BASKET_STYLE}`}>
+          {BASKETS.map(({ n, text }) => (
+            <article key={n} className="basket" data-reveal>
+              {BASKET_STYLE === 'orbit' ? (
+                <BasketOrbit n={n} />
+              ) : (
+                <>
+                  <BasketArt n={n} />
+                  <div className="basket-n"><b>{n}</b><span className="label">pelotas</span></div>
+                </>
+              )}
+              <p>{text}</p>
+            </article>
+          ))}
         </div>
         <div className="benefits">
           <article className="benefit" data-reveal>
+            <div className="benefit-logo round">
+              <img src="img/logo-acantilados.png" alt="Club Mar del Plata" width="200" height="200" />
+            </div>
             <div className="label">Beneficio socios</div>
             <h3 className="heading-3">Club Mar del Plata · Golf Los Acantilados</h3>
-            <p>Los socios del club tienen un <strong>valor preferencial</strong> en los canastos.</p>
+            <p>Los socios del club tienen un <strong>valor preferencial</strong> en los canastos todo el año.</p>
           </article>
           <article className="benefit" data-reveal>
+            <div className="benefit-logo plain">
+              <img src="img/logo-sportclub-white.png" alt="SportClub" width="560" height="107" />
+            </div>
             <div className="label">Beneficio socios</div>
             <h3 className="heading-3">SportClub</h3>
-            <p>Los socios de SportClub tienen <strong>un canasto de 30 pelotas sin cargo</strong> todas las semanas.</p>
+            <p>Los socios de SportClub tienen <strong>un canasto sin cargo</strong> todas las semanas.</p>
           </article>
         </div>
       </div>

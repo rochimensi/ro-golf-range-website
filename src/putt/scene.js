@@ -315,6 +315,9 @@ export function createPuttScene(els) {
         const bw = boardWidth(board);
         if (bw) { board.style.width = bw + 'px'; w = board.offsetLeft + bw; sec.style.width = w + 'px'; }
       }
+      // Phones: every panel is exactly one screen wide, so content runs edge to edge into the next one. Leave a
+      // stretch of grass after the hero and after the first card panel.
+      if (secs.indexOf(sec) < 2 && window.matchMedia('(max-width: 760px)').matches) w += Math.round(W * 0.35);
       x += w;
       lastLeft = sec.offsetLeft;
     }

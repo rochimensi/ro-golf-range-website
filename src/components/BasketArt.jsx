@@ -31,7 +31,6 @@ export default function BasketArt({ n }) {
         {[0.33, 0.66].map((k) => (
           <path key={k} d={`M${4 + 5 * k} ${top + (H - 2 - top) * k} H${136 - 5 * k}`} stroke="#c9aa60" strokeOpacity=".5" strokeWidth="1" />
         ))}
-        <text x="70" y={top + (H - top) * 0.62} textAnchor="middle" fill="#f1e49b" fontFamily="Bakbak One, Arial Black" fontSize="13" letterSpacing="2">{n}</text>
       </svg>
     </div>
   );

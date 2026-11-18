@@ -16,21 +16,25 @@ function CrossedTees() {
 
 // Menu button for the putt intro, top right: a small yardage sign standing on its post. It opens a
 // full-height panel with the same sections as the yardage rail, and hides once Canastos is on screen
-// (where the rail takes over), so there's only ever one menu on screen.
+// (where the rail takes over), so there's only ever one menu on screen. Phones have no rail (see
+// styles.css), so there the button stays on for the whole page.
+const PHONE = '(max-width: 760px)';
 export default function HeroMenu() {
   const root = useRef(null);
   const btn = useRef(null);
   const panel = useRef(null);
   const [open, setOpen] = useState(false);
 
-  // Hide once Canastos is on screen, the same moment the yardage rail slides in.
+  // Hide once Canastos is on screen, the same moment the yardage rail slides in (except on phones).
   useGSAP(() => {
     const el = root.current;
+    const phone = window.matchMedia(PHONE);
     const toggle = (st) => {
-      el.classList.toggle('off', st.isActive);
-      if (st.isActive) setOpen(false);
+      const hide = st.isActive && !phone.matches;
+      el.classList.toggle('off', hide);
+      if (hide) setOpen(false);
     };
-    ScrollTrigger.create({
+    const st = ScrollTrigger.create({
       trigger: document.getElementById('canastos'),
       endTrigger: document.getElementById('v'),
       start: 'top bottom',
@@ -38,6 +42,10 @@ export default function HeroMenu() {
       onToggle: toggle,
       onRefresh: toggle,
     });
+    // Rotating a tablet or resizing a window can cross the phone breakpoint.
+    const onChange = () => toggle(st);
+    phone.addEventListener('change', onChange);
+    return () => phone.removeEventListener('change', onChange);
   }, { scope: root });
 
   // While open: the page doesn't scroll, Escape closes, Tab stays inside the panel, and focus moves to

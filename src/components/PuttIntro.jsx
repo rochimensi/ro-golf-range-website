@@ -102,16 +102,32 @@ export default function PuttIntro() {
     // capped by screen height), then each line rises out of its mask one after another.
     const title = el.querySelector('.hero-title');
     const fitTitle = () => {
+      const text = el.querySelector('.hero-text');
+      const setSize = (px) => {
+        title.style.fontSize = `${px}px`;
+        // the Academia block below sizes its type from the headline's size
+        text.style.setProperty('--title-size', title.style.fontSize);
+        // the rule, tagline and scroll prompt line up with the right edge of the longest line
+        const w = Math.max(...[...title.querySelectorAll('.hl > span')].map((n) => n.offsetWidth));   // layout width: ignores the intro transforms
+        el.querySelector('.hero-sub').style.width = `${Math.ceil(w)}px`;
+      };
       title.style.fontSize = '100px';
       const widest = Math.max(...[...title.querySelectorAll('.hl > span')].map((n) => n.scrollWidth));
       const avail = title.parentElement.clientWidth;
       const size = Math.min((avail / widest) * 100, window.innerHeight * 0.17);
-      title.style.fontSize = `${Math.max(32, Math.floor(size))}px`;
-      // the Academia block below sizes its type from the headline's size
-      el.querySelector('.hero-text').style.setProperty('--title-size', title.style.fontSize);
-      // the rule, tagline and scroll prompt line up with the right edge of the longest line
-      const w = Math.max(...[...title.querySelectorAll('.hl > span')].map((n) => n.offsetWidth));   // layout width: ignores the intro transforms
-      el.querySelector('.hero-sub').style.width = `${Math.ceil(w)}px`;
+      let px = Math.max(32, Math.floor(size));
+      setSize(px);
+      // Phones: the scroll prompt moves below the ball (72% down the screen, see putt/scene.js) to leave
+      // more room for the headings, and the rest of the text stack has to end above the putter head, so on
+      // short screens step the headline (and with it the Academia block) down until it does.
+      const hint = text.querySelector('.hint');
+      if (window.matchMedia('(max-width: 760px)').matches) {
+        Object.assign(hint.style, { position: 'absolute', right: '0', top: `${Math.round(window.innerHeight * 0.72 + 30 - text.offsetTop)}px` });
+        const limit = window.innerHeight * 0.72 - 70;   // clears the putter head too
+        while (px > 24 && text.offsetTop + text.offsetHeight > limit) setSize(px -= 2);
+      } else {
+        Object.assign(hint.style, { position: '', right: '', top: '' });
+      }
     };
     fitTitle();
     if (document.fonts) document.fonts.ready.then(fitTitle);

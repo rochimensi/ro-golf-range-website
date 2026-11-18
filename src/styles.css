@@ -129,13 +129,24 @@
   .hero-academia .ha-big { font-size:calc(var(--title-size) * .77); line-height:.94; letter-spacing:.026em; margin-top:var(--space-4); }
   @keyframes heroIn { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:none; } }
   @media (max-width:760px) {
-    .logo-badge { left:var(--space-4); top:var(--space-8); width:168px; }
-    .hero-text { left:var(--space-4); right:var(--space-4); top:calc(var(--space-8) + 186px); width:auto; }
-    .hero-text .body-l { font-size:15px; line-height:22px; }
-    .hero-text .rule { margin:var(--space-3) 0; }
+    .logo-badge { left:var(--space-4); top:clamp(16px, 4vh, 32px); width:clamp(80px, 14vh, 140px); }
+    .hero-text { left:var(--space-4); right:var(--space-4); top:calc(clamp(16px, 4vh, 32px) + clamp(80px, 14vh, 140px) + clamp(8px, 1.8vh, 16px)); width:auto; }
+    .hero-title { letter-spacing:0; }
+    .hero-text .body-l { font-size:clamp(13px, min(3.9vw, 2.15vh), 16px); line-height:1.45; }
+    .hero-text .rule { margin:var(--space-3) 0 var(--space-3) auto; }
     .hero-text .hint { margin-top:var(--space-4); }
-    .hero-academia .ha-intro { font-size:15px; line-height:22px; margin-bottom:var(--space-2); }
+    .hero-academia .ha-intro { font-size:clamp(13px, min(3.9vw, 2.15vh), 16px); line-height:1.45; margin-bottom:var(--space-2); }
     .hero-academia .ha-big { margin-top:var(--space-2); }
+    /* bigger Academia lines relative to the headline */
+    .hero-academia { margin-top:calc(var(--title-size) * .32); }
+    .hero-academia .ha-name { font-size:calc(var(--title-size) * .6); }
+    .hero-academia .ha-big { font-size:calc(var(--title-size) * .92); }
+    /* the scroll prompt sits below the ball (placed by fitTitle in PuttIntro.jsx) */
+    .hero-text .hint { white-space:nowrap; margin-top:0; }
+    /* phones: the whole text stack lines up on the right edge */
+    .hero-text { text-align:right; }
+    .hero-sub { margin-left:auto; }
+    .hero-academia { text-align:right; margin-left:auto; margin-right:0; }
   }
 
   /* ---------- Open-to-all highlight ---------- */
@@ -279,33 +290,47 @@
   .end-replay:focus-visible, .end-more:focus-visible { outline:2px solid var(--gold-light); outline-offset:4px; }
   @media (prefers-reduced-motion:reduce) { #track .board.cta > * { transition:none; } }
 
-  /* phones: no board; the cards stack in the panel, between the menu button and the yardage chip */
+  /* Phones: no board. The cards stack in the panel, between the menu button and the yardage chip. They hug
+     their content (capped so long text wraps) and sit staggered left/right like the desktop boards. Type is
+     fluid: it follows the screen width but also shrinks on short screens, so a panel never overflows. */
   @media (max-width:760px) {
-    .board-sec { padding:72px var(--space-4) 150px; }
-    .board { position:static; flex:1; align-self:stretch; width:auto; height:auto; display:flex; flex-direction:column; justify-content:center; gap:var(--space-2); }
-    .board > *, .board .svc { position:static; width:auto; min-height:0; }
+    .board-sec { --gap:clamp(6px, 1.3vh, 12px); --pad:clamp(12px, min(3.8vw, 2.1vh), 18px);
+      --fs-body:clamp(13px, min(3.9vw, 2.15vh), 16px); --fs-head:clamp(17px, min(5.4vw, 3vh), 26px);
+      padding:clamp(64px, 10vh, 84px) var(--space-4) calc(max(4vh, 18px) + 84px); }
+    .board { position:static; flex:1; align-self:stretch; width:auto; height:auto; display:flex; flex-direction:column;
+      justify-content:safe center; align-items:flex-start; gap:var(--gap); }
+    .board > *, .board .svc { position:static; min-height:0; width:fit-content; max-width:min(86%, 340px); }
     .board .card { border-radius:var(--radius-md); }
-    .b-acceso { grid-template-columns:1fr; gap:var(--space-2); padding:var(--space-4); }
-    .b-acceso .big { font-size:32px; }
-    .b-acceso .feat-list li { padding:var(--space-2) 0; }
-    .b-acceso .feat-list .txt { font-size:15px; line-height:22px; }
-    .bcard { padding:var(--space-3) var(--space-4); gap:var(--space-1); }
-    .bcard h2 { font-size:20px; line-height:24px; }
-    .bcard p { font-size:15px; line-height:22px; }
-    .svc-list { display:flex; flex-direction:column; gap:var(--space-2); }
-    .svc { padding:var(--space-3) var(--space-4); gap:var(--space-3); border-radius:var(--radius-md); }
-    .svc svg { width:22px; height:22px; }
-    .svc h3 { font-size:16px; line-height:18px; letter-spacing:.06em; margin-bottom:2px; white-space:normal; }
-    .svc p { font-size:15px; line-height:22px; }
-    .b-alquiler { padding:var(--space-3) var(--space-4); }
-    .b-alquiler .al-intro { font-size:15px; line-height:22px; }
-    .b-alquiler h2 { gap:var(--space-1); }
-    .al-name { font-size:20px; line-height:20px; letter-spacing:.04em; }
-    .al-name.al-big { font-size:32px; line-height:30px; }
-    .board.cta { display:grid; grid-template-columns:64px 1fr; gap:var(--space-3); align-content:start; justify-content:stretch; }
-    .end-title { grid-column:1 / -1; font-size:34px; line-height:1; white-space:normal; }
-    .end-badge { width:64px; }
-    .end-text { width:auto; font-size:15px; line-height:21px; align-self:center; }
+    /* stagger */
+    .board .b-techada, .board .b-alquiler { align-self:flex-end; }
+    .board .b-cesped { margin-left:5%; }
+
+    .board .b-acceso { display:flex; flex-direction:column; align-items:flex-start; gap:var(--gap); padding:var(--pad); }
+    .b-acceso .big { font-size:clamp(26px, min(8.4vw, 4.6vh), 40px); }
+    .b-acceso .feat-list li { padding:calc(var(--gap) * .8) 0; }
+    .b-acceso .feat-list .txt { font-size:var(--fs-body); line-height:1.45; }
+    .bcard { padding:var(--pad); gap:calc(var(--gap) * .6); }
+    .bcard h2 { font-size:var(--fs-head); line-height:1.12; }
+    .bcard p { font-size:var(--fs-body); line-height:1.45; }
+
+    .board .svc-list { display:flex; flex-direction:column; align-items:flex-start; gap:var(--gap); width:100%; max-width:none; }
+    .board .svc { max-width:min(88%, 340px); padding:var(--pad); gap:calc(var(--pad) * .8); border-radius:var(--radius-md); }
+    .board .svc-2 { margin-left:6%; }
+    .board .svc-3 { margin-left:12%; }
+    .svc svg { width:clamp(18px, 5.4vw, 24px); height:clamp(18px, 5.4vw, 24px); }
+    .svc h3 { font-size:clamp(14px, min(4.3vw, 2.4vh), 18px); line-height:1.1; letter-spacing:.06em; margin-bottom:2px; white-space:normal; }
+    .svc p { font-size:var(--fs-body); line-height:1.45; }
+    .b-alquiler { padding:var(--pad); }
+    .b-alquiler .al-intro { font-size:var(--fs-body); line-height:1.45; }
+    .b-alquiler h2 { gap:calc(var(--gap) * .5); }
+    .al-name { font-size:clamp(16px, min(5vw, 2.8vh), 22px); line-height:1.05; letter-spacing:.04em; }
+    .al-name.al-big { font-size:clamp(26px, min(8.4vw, 4.6vh), 40px); line-height:.95; }
+
+    .board.cta { display:grid; grid-template-columns:auto 1fr; gap:var(--space-3); align-content:start; justify-content:stretch; }
+    .board.cta > * { max-width:none; width:auto; }
+    .board.cta .end-badge { width:clamp(52px, 16vw, 72px); height:auto; }
+    .end-title { grid-column:1 / -1; font-size:clamp(28px, min(9.6vw, 5.4vh), 46px); line-height:1; white-space:normal; }
+    .end-text { font-size:var(--fs-body); line-height:1.4; align-self:center; }
     .end-more { grid-column:1 / -1; justify-self:start; }
     .end-replay { position:absolute; left:70vw; top:calc(72vh + 36px); transform:translateX(-50%); }
     #track .board.cta.show > .end-replay { transform:translateX(-50%); }
@@ -471,13 +496,12 @@
   #yardage a:hover span, #yardage a:focus-visible span { opacity:1; transform:none; }
   #yardage a.active b { background:var(--gradient-gold); color:var(--brand-green); border-color:transparent; transform:scale(1.18); }
   #yardage a.passed b { color:var(--gold-light); }
+  /* Phones: no yardage rail (the putt intro's menu button stays on instead, see HeroMenu.jsx),
+     so content no longer needs the left inset that kept it clear of the rail. */
   @media (max-width:760px) {
-    #yardage { left:6px; top:max(8vh, 40px); bottom:max(8vh, 40px); }
-    #yardage b { width:36px; height:22px; font-size:11px; }
-    #yardage b::after { display:none; }
-    #yardage .yd-track { left:18px; }
-    #yardage span { display:none; }
-    .wrap { padding:0 var(--space-4) 0 58px; }
+    #yardage { display:none; }
+    .wrap { padding:0 var(--space-4); }
+    .foot { padding-left:var(--space-4); }
   }
 
   /* ---------- Canastos ---------- */
@@ -680,3 +704,82 @@
     .ph { margin-bottom:var(--space-3); border-width:2px; }
     .corp { padding:var(--space-6); }
   }
+
+/* the rhythm heading is centered on the screen, outside the wrap's yardage inset */
+#canastos > .vh { max-width:none; text-align:center; padding:0 var(--space-4); }
+
+/* ── Canastos video cover ─────────────────────────────── */
+.vs.has-cover { padding-top:0; }
+.cv { position:relative; height:min(100svh, 920px); min-height:560px; overflow:hidden; margin-bottom:var(--space-16); isolation:isolate; }
+/* left padding clears the yardage rail */
+.cv-grid { position:absolute; inset:0; display:grid; grid-template-columns:1fr 1.18fr 1fr; gap:clamp(8px, 1.2vw, 18px); padding:0 clamp(8px, 1.2vw, 18px) 0 112px; align-items:center; }
+.cv-tile { position:relative; overflow:hidden; border-radius:var(--radius-md); background:var(--surface-alt); }
+.cv-tile video { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; }
+/* staggered, irregular heights */
+.cv-ball_and_tee { height:80%; transform:translateY(-8%); }
+.cv-balls { height:94%; transform:translateY(5%); }
+.cv-divot { height:72%; transform:translateY(-1%); }
+.cv-shade { position:absolute; inset:0; z-index:1; pointer-events:none;
+  background:
+    radial-gradient(ellipse 70% 45% at 50% 50%, rgba(16,44,26,.6), rgba(16,44,26,.12) 100%),
+    linear-gradient(180deg, rgba(16,44,26,.35) 0%, rgba(16,44,26,0) 22%, rgba(16,44,26,0) 70%, var(--brand-green) 100%); }
+.cv-title { position:absolute; left:56px; right:0; top:50%; transform:translateY(-50%); z-index:2; margin:0; text-align:center;
+  font-family:var(--font-display); font-weight:400; text-transform:uppercase; font-size:clamp(56px, 15vw, 236px); line-height:.9; letter-spacing:.04em;
+  color:var(--brand-cream); text-shadow:0 6px 48px rgba(16,44,26,.65); pointer-events:none; }
+@media (max-width:640px) {
+  .vs.has-cover { padding-top:0; }
+  .cv { height:88svh; min-height:520px; margin-bottom:var(--space-12); }
+  .cv-grid { gap:6px; padding:0 6px; }
+  .cv-title { left:0; }
+}
+
+/* ── Basket cards: orbit variant ──────────────────────── */
+.baskets-orbit .basket { align-items:center; text-align:center; gap:var(--space-4); background:none; border:0; border-radius:0; padding:var(--space-4) 0; }
+.baskets-orbit .basket p { max-width:250px; }
+.basket-orbit { --size:208px; --R:86px; --ball:11px; position:relative; width:var(--size); height:var(--size); flex:none; }
+.orbit-track { position:absolute; inset:calc(50% - var(--R)); border-radius:50%; border:1px dashed rgba(201,170,96,.35); }
+.orbit-ring { position:absolute; inset:0; animation:orbit-spin 34s linear infinite; }
+.basket:nth-child(2) .orbit-ring { animation-duration:28s; }
+.basket:nth-child(3) .orbit-ring { animation-duration:23s; }
+.orbit-slot { position:absolute; left:50%; top:50%; width:var(--ball); height:var(--ball); margin:calc(var(--ball) / -2) 0 0 calc(var(--ball) / -2);
+  transform:rotate(var(--a)) translateY(calc(-1 * var(--R))) rotate(calc(-1 * var(--a))); }
+/* counter-spin keeps each ball's highlight top-left while the ring turns */
+.orbit-ball { display:block; width:100%; height:100%; border-radius:50%;
+  background:radial-gradient(circle at 34% 30%, #fff 0 18%, #eef0ea 42%, #c9ccc4 78%, #a5a99f 100%);
+  box-shadow:0 2px 5px rgba(0,0,0,.35);
+  scale:0; opacity:0; transition:scale .5s cubic-bezier(.3,1.6,.5,1), opacity .3s; transition-delay:calc(var(--i) * 45ms + var(--d, 0s)); }
+.orbit-slot .orbit-ball { animation:orbit-spin 34s linear infinite reverse; }
+.basket:nth-child(2) .orbit-ball { animation-duration:28s; }
+.basket:nth-child(3) .orbit-ball { animation-duration:23s; }
+.basket.in .orbit-ball { scale:1; opacity:1; }
+.orbit-num { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px; }
+.orbit-num b { font-family:var(--font-display); font-weight:400; font-size:64px; line-height:1; background:var(--gradient-gold); -webkit-background-clip:text; background-clip:text; color:transparent; }
+.orbit-num .label { font-size:12px; line-height:16px; }
+@keyframes orbit-spin { to { rotate:360deg; } }
+@media (prefers-reduced-motion: reduce) {
+  .orbit-ring, .orbit-slot .orbit-ball { animation:none; }
+  .orbit-ball { transition:none; }
+}
+@media (max-width:640px) {
+  .baskets-orbit .basket { text-align:left; }
+  .basket-orbit { --size:140px; --R:58px; --ball:8px; }
+  .orbit-num b { font-size:36px; }
+  .orbit-num .label { font-size:10px; letter-spacing:.1em; }
+}
+
+/* ── Benefit partner logos ────────────────────────────── */
+.benefit-logo { display:inline-flex; align-items:center; height:64px; padding:10px 16px; margin-bottom:var(--space-4); background:var(--brand-cream); border-radius:var(--radius-md); }
+.benefit-logo img { display:block; height:100%; width:auto; }
+/* the club crest is already a ringed circle, so it stands on its own */
+.benefit-logo.round { padding:0; background:none; border-radius:50%; }
+/* white wordmark sits straight on the green, centred on the crest's height */
+.benefit-logo.plain { padding:12px 0; background:none; border-radius:0; }
+@media (max-width:640px) { .benefit-logo { height:56px; padding:8px 14px; } .benefit-logo.plain { padding:11px 0; } }
+
+/* ── Chosen range ball (TaylorMade) ───────────────────── */
+.ball-pick { max-width:560px; margin:var(--space-8) auto 0; display:flex; flex-direction:column; align-items:center; gap:var(--space-4); }
+.ball-pick-logo { display:block; width:200px; height:auto; }
+.ball-pick p { color:var(--ink-muted); }
+.ball-pick strong { color:var(--gold-light); font-weight:600; }
+@media (max-width:640px) { .ball-pick { margin-top:var(--space-6); } .ball-pick-logo { width:160px; } }
+@media (min-width:641px) and (max-width:760px) { .cv-grid { padding-left:clamp(8px, 1.2vw, 18px); } .cv-title { left:0; } }
