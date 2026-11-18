@@ -431,6 +431,7 @@
                           transform:translateX(-120%) skewX(-18deg); transition:transform .55s cubic-bezier(.65,0,.2,1); }
   .btn.academia:is(:hover, :focus-visible) { color:var(--brand-green); }
   .btn.academia:is(:hover, :focus-visible)::before { transform:translateX(-6%) skewX(-18deg); }
+  .vs.green .btn.academia { box-shadow:inset 0 0 0 1px var(--gold-deep); }
   @media (prefers-reduced-motion: reduce) { .btn.academia, .btn.academia::before { transition:none; } }
   .btn:focus-visible, .contact:focus-visible, #yardage a:focus-visible { outline:2px solid var(--focus-ring); outline-offset:2px; }
 
@@ -678,6 +679,30 @@
   .omar-top { display:flex; justify-content:space-between; align-items:flex-start; gap:var(--space-6); }
   .omar-name { font-family:var(--font-display); font-weight:400; font-size:clamp(40px, 5vw, 64px); line-height:1; letter-spacing:.02em; text-transform:uppercase; color:#fff; }
   .omar-pga { font-size:clamp(22px, 2.4vw, 30px); color:#fff; margin-top:4px; }
+  /* centered: heading, rule, text, logos and button */
+  .omar-brief .vh { max-width:1000px; margin:0 auto; text-align:center; }
+  .omar-brief .rule { margin-left:auto; margin-right:auto; }
+  .omar-brief .btns { justify-content:center; margin-top:0; }
+  .omar-brief p { color:#fff; }
+  .omar-brief .omar-lead { max-width:880px; margin:clamp(28px, 3vw, 44px) auto 0; font-size:18px; line-height:28px; }
+  /* Stats (option C): huge outlined numbers that count up, logos in white circles at the number's top corner */
+  .omar-stats { display:flex; justify-content:center; flex-wrap:wrap; gap:clamp(40px, 5vw, 56px) clamp(32px, 4.5vw, 72px); margin:clamp(48px, 6vw, 88px) 0 clamp(40px, 5vw, 72px); text-align:left; }
+  .omar-stat { display:flex; flex-direction:column; align-items:flex-start; }
+  .omar-stat-fig { display:flex; align-items:flex-start; }
+  .omar-stat-num { position:relative; display:inline-block; font-family:var(--font-display); font-size:clamp(88px, 9.6vw, 148px); line-height:.9; letter-spacing:.02em;
+                   color:transparent; -webkit-text-stroke:max(1.5px, .012em) var(--gold-light); }
+  /* the final value reserves the width, so the layout doesn't shift while counting */
+  .omar-stat-sizer { visibility:hidden; }
+  .omar-stat-count { position:absolute; left:0; top:0; }
+  /* just past the "+", tucked against its top corner */
+  .omar-stat-logos { display:flex; margin:-6px 0 0 4px; }
+  /* white circle; each logo is sized to fit inside it by its own shape (fitInCircle in Omar.jsx) */
+  .omar-logo { display:grid; place-items:center; width:clamp(72px, 6.6vw, 96px); aspect-ratio:1; border-radius:50%; background:#fff;
+               box-shadow:0 8px 22px rgba(6,20,10,.4), 0 0 0 3px var(--brand-green); }
+  .omar-logo img { display:block; object-fit:contain; }
+  /* two logos overlap like an avatar stack */
+  .omar-logo + .omar-logo { margin-left:-16px; }
+  .omar-brief .omar-stat-cap { max-width:260px; margin-top:var(--space-3); font-size:16px; line-height:1.45; color:var(--ink-muted); }
   .pga-badge { position:relative; width:110px; height:110px; flex:0 0 auto; }
   .pga-badge img { width:100%; height:100%; object-fit:contain; }
   .pga-badge.missing { border-radius:50%; border:2px solid var(--gold-deep); }
@@ -827,6 +852,11 @@
 .cv-ball_and_tee { height:80%; transform:translateY(-8%); }
 .cv-balls { height:94%; transform:translateY(5%); }
 .cv-divot { height:72%; transform:translateY(-1%); }
+.cv-omar_1 { height:86%; transform:translateY(4%); }
+.cv-omar_2 { height:74%; transform:translateY(-7%); }
+.cv-omar_3 { height:92%; transform:translateY(2%); }
+/* two words: smaller than "Canastos" so they sit on two lines without crowding */
+.omar .cv-title { font-size:clamp(52px, 12vw, 190px); }
 .cv-shade { position:absolute; inset:0; z-index:1; pointer-events:none;
   background:
     radial-gradient(ellipse 70% 45% at 50% 50%, rgba(16,44,26,.6), rgba(16,44,26,.12) 100%),
