@@ -112,10 +112,21 @@
   .hero-title { line-height:.98; letter-spacing:.02em; white-space:nowrap; }
   .hero-title .hl { display:block; overflow:hidden; padding-bottom:.06em; margin-bottom:-.06em; }
   .hero-title .hl > span { display:inline-block; will-change:transform; }
+  .hero-title .ch, .hero-title .w { display:inline-block; will-change:transform; }
+  .hero-title .hl-pop { overflow:visible; }                /* room for the pop's overshoot */
+  .hero-title .hl-pop > span { transform-origin:50% 60%; }
   .hero-text .gold-text { text-shadow:none; filter:drop-shadow(0 2px 10px rgba(6,20,10,.5)); }
   .hero-text .pill { text-shadow:none; }
   .hero-text .no-member { margin-top:var(--space-2); color:var(--brand-cream); }
-  .hero-text .hint { display:flex; margin-top:var(--space-6); }
+  .hero-text .hint { display:flex; margin-top:var(--space-12); }
+  /* "Junto a la Academia Omar Peralta" (Figma 3244:2000): left-aligned, inset from the headline's left edge,
+     type scaled from the headline (--title-size, set by fitTitle; 83px in the 1440×900 design) */
+  .hero-text { --title-size:83px; }
+  .hero-academia { text-align:left; margin:calc(var(--title-size) * .45) 0 0 17%; color:var(--brand-cream); }
+  .hero-academia .ha-intro { display:block; font-size:18px; line-height:28px; margin-bottom:var(--space-4); }
+  .hero-academia .ha-name { display:block; font-family:var(--font-display); font-weight:400; text-transform:uppercase;
+                            font-size:calc(var(--title-size) * .48); line-height:.8; letter-spacing:.04em; }
+  .hero-academia .ha-big { font-size:calc(var(--title-size) * .77); line-height:.94; letter-spacing:.026em; margin-top:var(--space-4); }
   @keyframes heroIn { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:none; } }
   @media (max-width:760px) {
     .logo-badge { left:var(--space-4); top:var(--space-8); width:168px; }
@@ -123,6 +134,8 @@
     .hero-text .body-l { font-size:15px; line-height:22px; }
     .hero-text .rule { margin:var(--space-3) 0; }
     .hero-text .hint { margin-top:var(--space-4); }
+    .hero-academia .ha-intro { font-size:15px; line-height:22px; margin-bottom:var(--space-2); }
+    .hero-academia .ha-big { margin-top:var(--space-2); }
   }
 
   /* ---------- Open-to-all highlight ---------- */
@@ -135,11 +148,18 @@
   }
   .feature .label { color:#4b5e4d; }
   .feature .big { font-family:var(--font-display); font-size:clamp(38px, 4.6vw, 64px); line-height:1; letter-spacing:.04em; text-transform:uppercase; color:var(--brand-green); }
+  .feature .spin-head { letter-spacing:0; }
+  .feature .spin-line { display:flex; width:max-content; gap:.04em; }
+  .feature .spin-space { flex:none; width:.28em; }
+  .feature .slot { position:relative; display:block; height:1em; overflow:hidden; line-height:1; }
+  .feature .slot-sizer { visibility:hidden; }
+  .feature .slot-reel { position:absolute; left:0; top:0; width:100%; display:flex; flex-direction:column; align-items:center; }
+  .feature .slot-reel span { display:grid; place-items:center; height:1em; line-height:1; width:100%; }
   .feature .rule { margin:var(--space-4) 0; }
   .feature p { color:var(--brand-green); }
   .feature p strong { font-weight:700; }
   .feat-list { list-style:none; }
-  .feat-list li { display:flex; gap:var(--space-4); align-items:flex-start; padding:var(--space-4) 0; border-bottom:1px solid #d1d0c1; }
+  .feat-list li { display:flex; gap:var(--space-4); align-items:flex-start; padding:var(--space-4) 0; border-bottom:1px dashed #d1d0c1; }
   .feat-list li:first-child { padding-top:0; }
   .feat-list li:last-child { border-bottom:0; padding-bottom:0; }
   .feat-list svg { flex:0 0 32px; width:32px; height:32px; stroke:var(--brand-green); fill:none; stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round; }
@@ -187,6 +207,146 @@
   .text-link { display:inline-block; margin-top:var(--space-4); color:var(--gold-light); font-family:var(--font-display); letter-spacing:.14em; text-transform:uppercase; font-size:13px; text-decoration:none; border-bottom:1px solid var(--gold-deep); padding-bottom:2px; }
   @media (max-width:640px) { .ico-list li { padding:var(--space-2) 0; } .ico-list .txt { font-size:14px; line-height:20px; } }
 
+  /* =================== Putt panels laid out on a 1440×900 board (Figma 3211:2, 3212:2) ===================
+     --u is one design pixel: the board scales with the screen (whichever of width or height runs out first),
+     so every position and type size below is written as "Figma px × --u". */
+  .board-sec { padding:0; }
+  /* the scene narrows each board (and its panel) to end at its rightmost card */
+  .board { --u:min(calc(100vw / 1440), calc(100vh / 900)); position:absolute; top:0; left:0;
+           width:calc(1440 * var(--u)); height:calc(900 * var(--u)); }
+  .board > * { position:absolute; margin:0; }
+  .board .card { max-width:none; border-radius:calc(8 * var(--u)); }
+
+  /* panel 1: Acceso sin cargo */
+  .b-acceso { left:calc(198 * var(--u)); top:calc(64 * var(--u)); width:calc(769 * var(--u)); padding:calc(32 * var(--u));
+              grid-template-columns:auto 1fr; gap:0 calc(31 * var(--u)); }
+  .b-acceso .big { font-size:calc(64 * var(--u)); line-height:1; }
+  .b-acceso .feat-list li { padding:calc(16 * var(--u)) 0; border-bottom:1px dashed #d1d0c1; }
+  .b-acceso .feat-list li:first-child { padding-top:0; }
+  .b-acceso .feat-list .txt { font-size:calc(18 * var(--u)); line-height:calc(28 * var(--u)); }
+
+  /* dark cards: title + line of copy */
+  .bcard { display:flex; flex-direction:column; gap:calc(16 * var(--u)); padding:calc(26 * var(--u)) calc(24 * var(--u));
+           background:var(--brand-green); border-color:transparent; color:var(--brand-cream); }
+  .bcard h2 { font-family:var(--font-display); font-weight:400; font-size:calc(40 * var(--u)); line-height:calc(44 * var(--u)); letter-spacing:0; text-transform:uppercase; }
+  .bcard p { font-size:calc(18 * var(--u)); line-height:calc(28 * var(--u)); color:var(--brand-cream); }
+  .b-techada { left:calc(589 * var(--u)); top:calc(280 * var(--u)); width:calc(781 * var(--u)); }
+  .b-cesped { left:calc(361 * var(--u)); top:calc(431 * var(--u)); width:calc(651 * var(--u)); }
+
+  /* panel 2: comfort services */
+  .svc-list { inset:0; list-style:none; padding:0; }
+  .svc { position:absolute; display:flex; align-items:flex-start; gap:calc(16 * var(--u)); padding:calc(24 * var(--u));
+         background:var(--brand-cream); color:var(--brand-green); border-radius:calc(8 * var(--u)); }
+  .svc svg { flex:none; width:calc(30 * var(--u)); height:calc(30 * var(--u)); stroke:var(--brand-green); fill:none; stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round; }
+  .svc h3 { font-family:var(--font-display); font-weight:400; font-size:calc(32 * var(--u)); line-height:calc(32 * var(--u)); letter-spacing:calc(1.82 * var(--u));
+            text-transform:uppercase; margin:0 0 calc(10 * var(--u)); white-space:nowrap; }
+  .svc p { font-size:calc(18 * var(--u)); line-height:calc(28 * var(--u)); margin:0; color:var(--brand-green); }
+  .svc-1 { left:calc(117 * var(--u)); top:calc(107 * var(--u)); width:calc(401 * var(--u)); }
+  .svc-2 { left:calc(157 * var(--u)); top:calc(255 * var(--u)); width:calc(422 * var(--u)); }
+  .svc-3 { left:calc(187 * var(--u)); top:calc(401 * var(--u)); width:calc(563 * var(--u)); }
+
+  /* club rental */
+  .b-alquiler { left:calc(837 * var(--u)); top:calc(135 * var(--u)); width:calc(480 * var(--u)); min-height:calc(286 * var(--u)); padding:calc(24 * var(--u)); }
+  .b-alquiler .al-intro { font-size:calc(18 * var(--u)); line-height:calc(28 * var(--u)); }
+  .b-alquiler h2 { display:flex; flex-direction:column; gap:calc(16 * var(--u)); font-size:inherit; line-height:inherit; }
+  .al-name { display:block; font-family:var(--font-display); font-size:calc(40 * var(--u)); line-height:calc(32 * var(--u)); letter-spacing:calc(1.66 * var(--u)); }
+  .al-name.al-big { font-size:calc(64 * var(--u)); line-height:calc(60 * var(--u)); }
+
+  /* reveal (same motion as the hero's Academia block): fade in while rising 16px, staggered by --d */
+  #track .board > :not(.svc-list), #track .board .svc { opacity:0; transform:translateY(16px);
+    transition:opacity .6s cubic-bezier(.33,1,.68,1), transform .6s cubic-bezier(.33,1,.68,1), border-color .35s; }
+  #track .board.in > :not(.svc-list), #track .board.in .svc { opacity:1; transform:none; transition-delay:calc(var(--d, 0) * .1s); }
+  @media (prefers-reduced-motion:reduce) { #track .board > :not(.svc-list), #track .board .svc { opacity:1; transform:none; transition:none; } }
+
+  /* closing panel (Figma 3215:2): no card, the content sits on the grass. It appears while the ball rolls its
+     last 4 yards (the scene adds .show), each piece rising in like the other panels' cards. */
+  .board.cta { opacity:1; transform:none; transition:none; }
+  #track .board.cta > * { opacity:0; transform:translateY(16px); transition:opacity .6s cubic-bezier(.33,1,.68,1), transform .6s cubic-bezier(.33,1,.68,1); }
+  #track .board.cta.show > * { opacity:1; transform:none; transition-delay:calc(var(--d, 0) * .1s); }
+  .end-title { left:calc(196 * var(--u)); top:calc(183 * var(--u)); font-family:var(--font-display); font-weight:400; font-size:calc(80 * var(--u));
+               line-height:calc(44 * var(--u)); letter-spacing:calc(2 * var(--u)); text-transform:uppercase; color:var(--brand-cream); white-space:nowrap;
+               text-shadow:0 2px 16px rgba(6,20,10,.45); }
+  .end-badge { left:calc(196 * var(--u)); top:calc(276 * var(--u)); width:calc(121 * var(--u)); height:auto; filter:drop-shadow(0 6px 14px rgba(6,20,10,.35)); }
+  .end-text { left:calc(341 * var(--u)); top:calc(296 * var(--u)); width:calc(751 * var(--u)); font-size:calc(32 * var(--u)); line-height:calc(40 * var(--u));
+              color:var(--brand-cream); text-shadow:0 2px 12px rgba(6,20,10,.45); }
+  .end-more { left:calc(505 * var(--u)); top:calc(450 * var(--u)); }
+  /* "Puttear de nuevo" sits just right of the cup, which is drawn at 70% across and 72% down the screen */
+  .end-replay { position:absolute; left:calc(70vw + 2.4 * clamp(10px, 2.4vmin, 21px) + 38px); top:calc(72vh - 21px);
+                display:inline-flex; gap:13px; align-items:center; padding:0; background:none; border:0; border-radius:0;
+                font-size:14px; line-height:20px; letter-spacing:1.96px; color:var(--gold-light); white-space:nowrap; }
+  .end-replay span { display:inline-block; transition:transform .3s cubic-bezier(.2,.8,.2,1); }
+  .end-replay:hover span, .end-replay:focus-visible span { transform:translateX(5px); }
+  .end-replay:focus-visible, .end-more:focus-visible { outline:2px solid var(--gold-light); outline-offset:4px; }
+  @media (prefers-reduced-motion:reduce) { #track .board.cta > * { transition:none; } }
+
+  /* phones: no board; the cards stack in the panel, between the menu button and the yardage chip */
+  @media (max-width:760px) {
+    .board-sec { padding:72px var(--space-4) 150px; }
+    .board { position:static; flex:1; align-self:stretch; width:auto; height:auto; display:flex; flex-direction:column; justify-content:center; gap:var(--space-2); }
+    .board > *, .board .svc { position:static; width:auto; min-height:0; }
+    .board .card { border-radius:var(--radius-md); }
+    .b-acceso { grid-template-columns:1fr; gap:var(--space-2); padding:var(--space-4); }
+    .b-acceso .big { font-size:32px; }
+    .b-acceso .feat-list li { padding:var(--space-2) 0; }
+    .b-acceso .feat-list .txt { font-size:15px; line-height:22px; }
+    .bcard { padding:var(--space-3) var(--space-4); gap:var(--space-1); }
+    .bcard h2 { font-size:20px; line-height:24px; }
+    .bcard p { font-size:15px; line-height:22px; }
+    .svc-list { display:flex; flex-direction:column; gap:var(--space-2); }
+    .svc { padding:var(--space-3) var(--space-4); gap:var(--space-3); border-radius:var(--radius-md); }
+    .svc svg { width:22px; height:22px; }
+    .svc h3 { font-size:16px; line-height:18px; letter-spacing:.06em; margin-bottom:2px; white-space:normal; }
+    .svc p { font-size:15px; line-height:22px; }
+    .b-alquiler { padding:var(--space-3) var(--space-4); }
+    .b-alquiler .al-intro { font-size:15px; line-height:22px; }
+    .b-alquiler h2 { gap:var(--space-1); }
+    .al-name { font-size:20px; line-height:20px; letter-spacing:.04em; }
+    .al-name.al-big { font-size:32px; line-height:30px; }
+    .board.cta { display:grid; grid-template-columns:64px 1fr; gap:var(--space-3); align-content:start; justify-content:stretch; }
+    .end-title { grid-column:1 / -1; font-size:34px; line-height:1; white-space:normal; }
+    .end-badge { width:64px; }
+    .end-text { width:auto; font-size:15px; line-height:21px; align-self:center; }
+    .end-more { grid-column:1 / -1; justify-self:start; }
+    .end-replay { position:absolute; left:70vw; top:calc(72vh + 36px); transform:translateX(-50%); }
+    #track .board.cta.show > .end-replay { transform:translateX(-50%); }
+  }
+
+  /* Track card hover ("rule draw and stagger"): the gold rule stretches across the card, then the text in each
+     list row (or the text below the rule) nudges right one row after another and the icons brighten.
+     Mouse/trackpad only; keyboard focus inside a card triggers it too. Reduced motion keeps only the colours. */
+  #track .card .rule { transition:width .55s cubic-bezier(.2,.8,.2,1); }
+  #track .card :is(.ico-list li > div, .feat-list li > div, .pro > p:not(.pro-sub), .pro .text-link, .cta .body-l) {
+    transition:transform .4s cubic-bezier(.2,.8,.2,1);
+  }
+  #track .card { transition:border-color .35s; }
+  #track :is(.bcard h2, .bcard p, .svc > div), #track .svc svg { transition:transform .4s cubic-bezier(.2,.8,.2,1); }
+  #track .ico-list svg { transition:stroke .3s, transform .4s cubic-bezier(.2,.8,.2,1); }
+  #track .text-link { transition:transform .4s cubic-bezier(.2,.8,.2,1), border-color .3s; }
+  @media (hover:hover) and (pointer:fine) {
+    #track .card:is(:hover, :focus-within):not(.feature) { border-color:var(--gold-deep); }
+    #track .card:is(:hover, :focus-within) .ico-list svg { stroke:var(--brand-cream); }
+    #track .card:is(:hover, :focus-within) .text-link { border-color:var(--gold-light); }
+    /* Acceso card: the dashed dividers turn solid gold, each in step with its row's nudge */
+    #track .feat-list li { transition:border-bottom-style 0s, border-bottom-color .3s; transition-behavior:allow-discrete; }
+    #track .card:is(:hover, :focus-within) .feat-list li { border-bottom-style:solid; border-bottom-color:var(--gold-deep); }
+    #track .card:is(:hover, :focus-within) .feat-list li:nth-child(2) { transition-delay:.16s; }
+    #track .card:is(:hover, :focus-within) .feat-list li:nth-child(1) { transition-delay:.1s; }
+  }
+  @media (hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference) {
+    #track .card:is(:hover, :focus-within) .rule { width:100%; }
+    #track .card:is(:hover, :focus-within) :is(.ico-list li > div, .feat-list li > div, .pro > p:not(.pro-sub), .cta .body-l) { transform:translateX(6px); }
+    #track .card:is(:hover, :focus-within) .pro .text-link { transform:translateX(6px); transition-delay:.12s; }
+    #track .card:is(:hover, :focus-within) :is(.ico-list, .feat-list) li:nth-child(1) > :is(div, svg) { transition-delay:.1s; }
+    #track .card:is(:hover, :focus-within) :is(.ico-list, .feat-list) li:nth-child(2) > :is(div, svg) { transition-delay:.16s; }
+    #track .card:is(:hover, :focus-within) :is(.ico-list, .feat-list) li:nth-child(3) > :is(div, svg) { transition-delay:.22s; }
+    #track .card:is(:hover, :focus-within) :is(.pro > p:not(.pro-sub), .cta .body-l) { transition-delay:.1s; }
+    #track .card:is(:hover, :focus-within) .ico-list svg { transform:scale(1.12); }
+    /* new board cards: the text nudges right line by line; on the comfort cards the icon grows */
+    #track :is(.bcard, .svc):is(:hover, :focus-within) :is(h2, p, .svc > div) { transform:translateX(6px); }
+    #track .bcard:is(:hover, :focus-within) > :nth-child(2) { transition-delay:.08s; }
+    #track .svc:is(:hover, :focus-within) svg { transform:scale(1.12); }
+  }
+
   /* =================== Vertical part =================== */
   /* Lenis smooth scrolling (see src/smoothScroll.js) */
   html.lenis, html.lenis body { height:auto; }
@@ -219,10 +379,83 @@
   [data-reveal].in { opacity:1; transform:none; }
   @media (prefers-reduced-motion: reduce) { [data-reveal] { opacity:1; transform:none; transition:none; } }
 
+  /* ---------- Hero menu: yardage-sign button (putt intro only) + full-height panel ---------- */
+  #hero-menu { position:fixed; top:var(--space-4); right:3vw; z-index:40; transition:opacity .4s, visibility 0s; }
+  #hero-menu.off { opacity:0; visibility:hidden; transition:opacity .4s, visibility 0s .4s; }
+  #hero-menu button { padding:0; background:none; border:0; border-radius:var(--radius-sm); cursor:pointer; }
+  #hero-menu button:focus-visible { outline:2px solid var(--gold-light); outline-offset:4px; }
+  #hero-menu svg { display:block; width:100%; height:100%; overflow:visible; }
+  #hero-menu svg * { transition:transform .45s cubic-bezier(.2,.8,.2,1), fill .3s; }
+  .hm-btn { display:block; width:60px; height:60px; filter:drop-shadow(0 6px 10px rgba(6,20,10,.4)); }
+  .hm-post { fill:var(--gold-deep); transform-box:fill-box; transform-origin:center bottom; }
+  .hm-board { fill:var(--brand-green); stroke:var(--gold-deep); stroke-width:1; }
+  .hm-ln { stroke:var(--brand-cream); stroke-width:1.15; stroke-linecap:round; }
+  @media (hover:hover) {
+    .hm-btn:hover .hm-sign { transform:translateY(-3px); }   /* the sign rises on its post */
+    .hm-btn:hover .hm-post { transform:scaleY(1.45); }
+  }
+
+  /* dimmed page behind the panel; clicking it closes the menu */
+  .hm-scrim { position:fixed; inset:0; background:rgba(6,20,10,.55); opacity:0; visibility:hidden; transition:opacity .4s, visibility 0s .4s; }
+  #hero-menu.open .hm-scrim { opacity:1; visibility:visible; transition:opacity .4s, visibility 0s; }
+
+  /* the panel: full viewport height, rises in from the bottom */
+  .hm-panel { position:fixed; top:0; right:0; height:100vh; height:100dvh; width:min(560px, 100vw);
+              display:flex; flex-direction:column; justify-content:center; padding:0 clamp(32px, 6vw, 88px);
+              background:var(--brand-green); border-left:1px solid var(--gold-deep); box-shadow:-24px 0 60px rgba(6,20,10,.45);
+              transform:translateY(100%); visibility:hidden;
+              transition:transform .6s cubic-bezier(.7,0,.2,1), visibility 0s .6s; }
+  #hero-menu.open .hm-panel { transform:none; visibility:visible; transition:transform .6s cubic-bezier(.2,.8,.2,1), visibility 0s; }
+
+  /* close: two crossed tees, in the same spot as the sign button; on hover they swing past each other like
+     scissors and land back in an X, heads up */
+  .hm-close { position:absolute; top:var(--space-4); right:3vw; width:56px; height:56px; display:grid; place-items:center; }
+  #hero-menu .hm-close svg.ct { width:40px; height:40px; }
+  .ct-tee { fill:var(--brand-cream); transform-box:view-box; transform-origin:11.66px 11.66px; }
+  @media (hover:hover) {
+    .hm-close:hover .ct-a { transform:rotate(-90deg); }
+    .hm-close:hover .ct-b { transform:rotate(90deg); }
+    .hm-close:hover .ct-tee { fill:var(--gold-light); }
+  }
+
+  /* the sections, spread evenly over 75% of the panel's height */
+  .hm-panel ul { list-style:none; margin:0; padding:0; height:75vh; height:75dvh; display:flex; flex-direction:column; justify-content:space-between; }
+  .hm-panel li { opacity:0; transform:translateX(40px); transition:opacity .3s, transform .5s cubic-bezier(.2,.8,.2,1); }
+  #hero-menu.open .hm-panel li { opacity:1; transform:none; transition-delay:calc(.25s + var(--i) * .05s); }
+  .hm-panel a { display:inline-flex; align-items:center; gap:clamp(16px, 2vw, 28px); text-decoration:none; color:var(--brand-cream);
+                font-family:var(--font-display); font-size:clamp(20px, 2.2vw, 30px); letter-spacing:.08em; text-transform:uppercase; outline:none; }
+  /* each section's yardage sign, with a post that appears when it rises */
+  .hm-panel a b { position:relative; display:grid; place-items:center; flex:none; width:clamp(58px, 5vw, 72px); height:clamp(30px, 2.6vw, 38px);
+                  font-weight:400; font-size:.62em; letter-spacing:.06em; background:var(--brand-green); color:var(--brand-cream);
+                  border:1px solid var(--gold-deep); border-radius:var(--radius-sm);
+                  transition:transform .4s cubic-bezier(.2,.8,.2,1), background .3s, color .3s, border-color .3s; }
+  .hm-panel a b::after { content:""; position:absolute; left:calc(50% - 2px); top:100%; width:4px; height:10px; background:var(--gold-deep);
+                         transform:scaleY(0); transform-origin:top; transition:transform .4s cubic-bezier(.2,.8,.2,1); }
+  /* the label slides along and a gold rule draws under it */
+  .hm-panel a span { position:relative; padding-bottom:4px; transition:transform .4s cubic-bezier(.2,.8,.2,1), color .3s; }
+  .hm-panel a span::after { content:""; position:absolute; left:0; bottom:0; height:1px; width:100%; background:var(--gradient-gold);
+                            transform:scaleX(0); transform-origin:left; transition:transform .5s cubic-bezier(.2,.8,.2,1); }
+  /* hover (or keyboard focus): the sign turns gold and rises on its post, the label slides right and is underlined */
+  .hm-panel a:is(:hover, :focus-visible) b { background:var(--gradient-gold); color:var(--brand-green); border-color:transparent; transform:translateY(-5px); }
+  .hm-panel a:is(:hover, :focus-visible) b::after { transform:scaleY(1); }
+  .hm-panel a:is(:hover, :focus-visible) span { color:var(--gold-light); transform:translateX(10px); }
+  .hm-panel a:is(:hover, :focus-visible) span::after { transform:scaleX(1); transition-delay:.08s; }
+
+  @media (prefers-reduced-motion:reduce) {
+    #hero-menu svg *, .hm-panel, .hm-panel li, .hm-panel a b, .hm-panel a b::after, .hm-panel a span, .hm-panel a span::after { transition-duration:0s !important; transition-delay:0s !important; }
+  }
+  @media (max-width:760px) {
+    #hero-menu { top:var(--space-3); right:var(--space-3); }
+    .hm-btn { width:52px; height:52px; }
+    .hm-close { top:var(--space-3); right:var(--space-3); width:48px; height:48px; }
+    .hm-panel { border-left:0; }
+  }
+
   /* ---------- Yardage indicator ---------- */
-  #yardage { position:fixed; left:28px; top:6vh; bottom:6vh; transform:translateX(-140%); z-index:30; display:flex; flex-direction:column; justify-content:space-between;
-             transition:transform .6s cubic-bezier(.2,.8,.2,1); }
-  #yardage.on { transform:none; }
+  #yardage { position:fixed; left:28px; top:max(9vh, 56px); bottom:max(12vh, 80px); transform:translateX(-200px); opacity:0; visibility:hidden; z-index:30; display:flex; flex-direction:column; justify-content:space-between;
+             transition:transform .6s cubic-bezier(.2,.8,.2,1), opacity .4s, visibility 0s .6s; }
+  /* off-screen through the whole putt; slides in once Canastos is on screen */
+  #yardage.on { transform:none; opacity:1; visibility:visible; transition:transform .6s cubic-bezier(.2,.8,.2,1), opacity .4s, visibility 0s; }
   #yardage .yd-track { position:absolute; left:28px; top:12px; bottom:12px; width:0; border-left:1px dashed rgba(201,170,96,.55); }
   #yardage .yd-ball { position:absolute; left:-5px; top:0; width:9px; height:9px; border-radius:50%; background:#fff; box-shadow:0 0 0 2px var(--brand-green), 0 0 0 3px var(--gold-deep); transition:top .25s linear; }
   #yardage a { position:relative; display:flex; align-items:center; gap:var(--space-3); text-decoration:none; color:var(--brand-cream); }
@@ -230,13 +463,16 @@
                background:var(--brand-green); color:var(--brand-cream); border:1px solid var(--gold-deep); border-radius:var(--radius-sm);
                box-shadow:0 6px 14px rgba(6,20,10,.3); transition:transform .4s cubic-bezier(.2,.8,.2,1), background .3s, color .3s; transform-origin:left center; }
   #yardage b::after { content:""; position:absolute; left:26px; top:30px; width:4px; height:8px; background:var(--gold-deep); }
-  #yardage span { font-family:var(--font-display); font-size:11px; letter-spacing:.14em; text-transform:uppercase; opacity:0; transform:translateX(-6px);
-                  transition:opacity .3s, transform .3s; background:var(--brand-green); padding:3px 8px; border-radius:var(--radius-sm); white-space:nowrap; }
-  #yardage a:hover span, #yardage a.active span { opacity:1; transform:none; }
+  /* label sits under the sign, left-aligned with it (below its post) and only appears on hover / keyboard focus */
+  #yardage span { position:absolute; left:0; top:44px; z-index:2; pointer-events:none;
+                  font-family:var(--font-display); font-size:11px; letter-spacing:.14em; text-transform:uppercase; opacity:0; transform:translateY(-4px);
+                  transition:opacity .25s, transform .25s; background:var(--brand-green); border:1px solid var(--gold-deep); padding:3px 8px; border-radius:var(--radius-sm); white-space:nowrap;
+                  box-shadow:0 6px 14px rgba(6,20,10,.3); }
+  #yardage a:hover span, #yardage a:focus-visible span { opacity:1; transform:none; }
   #yardage a.active b { background:var(--gradient-gold); color:var(--brand-green); border-color:transparent; transform:scale(1.18); }
   #yardage a.passed b { color:var(--gold-light); }
   @media (max-width:760px) {
-    #yardage { left:6px; top:5vh; bottom:5vh; }
+    #yardage { left:6px; top:max(8vh, 40px); bottom:max(8vh, 40px); }
     #yardage b { width:36px; height:22px; font-size:11px; }
     #yardage b::after { display:none; }
     #yardage .yd-track { left:18px; }

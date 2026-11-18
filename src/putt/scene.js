@@ -86,8 +86,8 @@ export function createPuttScene(els) {
   { const N = 72; for (let i = 0; i < N; i++) { const t = i / N * Math.PI * 2; STRIPE.push([0, Math.cos(t), Math.sin(t)]); } }
 
   function drawBall(x, y, R, angle, sink) {
-    // contact shadow
-    const sh = 1 - sink;
+    // contact shadow (smaller once the ball sits on the cup's base)
+    const sh = 1 - .55 * sink;
     if (sh > 0) {
       const sx = x + R * .38, sy = y + R * .48;
       const grd = ctx.createRadialGradient(sx, sy, 0, sx, sy, R * 1.3);
@@ -97,9 +97,9 @@ export function createPuttScene(els) {
       ctx.fillStyle = grd;
       ctx.beginPath(); ctx.arc(sx, sy, R * 1.3, 0, Math.PI * 2); ctx.fill();
     }
-    const r = R * (1 - .3 * sink), yy = y + R * .25 * sink;
+    // once holed it stays visible, resting a little smaller (deeper) on the cup's base
+    const r = R * (1 - .15 * sink), yy = y;
     ctx.save();
-    ctx.globalAlpha = 1 - clamp((sink - .55) / .45, 0, 1);
     const base = ctx.createRadialGradient(x - r * .35, yy - r * .4, r * .08, x, yy, r);
     base.addColorStop(0, '#ffffff'); base.addColorStop(.5, '#eff0eb'); base.addColorStop(1, '#bfc3b9');
     ctx.fillStyle = base;
@@ -123,8 +123,8 @@ export function createPuttScene(els) {
     ctx.fillStyle = hl;
     ctx.beginPath(); ctx.arc(x, yy, r, 0, Math.PI * 2); ctx.fill();
 
-    if (sink > 0) {
-      ctx.fillStyle = `rgba(5,8,4,${.8 * sink})`;
+    if (sink > 0) {   // a touch of shade from the cup wall
+      ctx.fillStyle = `rgba(20,24,18,${.16 * sink})`;
       ctx.beginPath(); ctx.arc(x, yy, r, 0, Math.PI * 2); ctx.fill();
     }
     ctx.restore();
@@ -222,61 +222,69 @@ export function createPuttScene(els) {
     ctx.restore();
   }
 
-  // ---------- hole + flag ----------
+  // ---------- hole (cup only, no flagstick) ----------
+  // A white plastic cup seen from above (like a real putting cup): the turf around it is worn a little darker,
+  // a thin ring of cut soil frames it, the white liner's inner wall is shaded by the light (which comes from
+  // the upper left), and its base has ten dark slots between spokes around the flagstick socket.
+  const CUP_R = 2.4;                                    // cup radius, in ball radii (a real cup is ~2.5× a ball)
+  const floorCenter = (hx, hy, R) => [hx - R * CUP_R * .07, hy + R * CUP_R * .09];
   function drawHole(hx, hy, R) {
-    const cr = R * 2.4;
-    const worn = ctx.createRadialGradient(hx, hy, cr * .9, hx, hy, cr * 1.9);
-    worn.addColorStop(0, 'rgba(0,0,0,.18)'); worn.addColorStop(1, 'rgba(0,0,0,0)');
+    const cr = R * CUP_R;
+    const worn = ctx.createRadialGradient(hx, hy, cr * .95, hx, hy, cr * 1.9);
+    worn.addColorStop(0, 'rgba(0,0,0,.2)'); worn.addColorStop(1, 'rgba(0,0,0,0)');
     ctx.fillStyle = worn;
     ctx.beginPath(); ctx.arc(hx, hy, cr * 1.9, 0, Math.PI * 2); ctx.fill();
 
-    const cup = ctx.createRadialGradient(hx, hy + cr * .25, 0, hx, hy, cr);
-    cup.addColorStop(0, '#030403'); cup.addColorStop(.7, '#10150d'); cup.addColorStop(1, '#26331f');
-    ctx.fillStyle = cup;
+    // cut-soil ring where the turf meets the liner
+    ctx.fillStyle = '#2e2416';
+    ctx.beginPath(); ctx.arc(hx, hy, cr * 1.065, 0, Math.PI * 2); ctx.fill();
+    ctx.strokeStyle = 'rgba(70,52,30,.9)'; ctx.lineWidth = Math.max(1, R * .06);
+    ctx.beginPath(); ctx.arc(hx, hy, cr * 1.035, 0, Math.PI * 2); ctx.stroke();
+
+    // liner: the inner wall, shadowed on the upper-left side, lit on the lower-right
+    const wall = ctx.createLinearGradient(hx - cr, hy - cr, hx + cr, hy + cr);
+    wall.addColorStop(0, '#9fa29a'); wall.addColorStop(.45, '#d9dad3'); wall.addColorStop(1, '#fbfbf7');
+    ctx.fillStyle = wall;
     ctx.beginPath(); ctx.arc(hx, hy, cr, 0, Math.PI * 2); ctx.fill();
-    ctx.strokeStyle = 'rgba(255,255,255,.5)'; ctx.lineWidth = R * .16;
-    ctx.beginPath(); ctx.arc(hx, hy + R * .15, cr * .8, Math.PI * 1.05, Math.PI * 1.95); ctx.stroke();
-    ctx.strokeStyle = 'rgba(0,0,0,.45)'; ctx.lineWidth = 1.2;
+    // soft shadow just under the rim, deepest on the upper-left
+    const lip = ctx.createRadialGradient(hx + cr * .12, hy + cr * .12, cr * .78, hx, hy, cr);
+    lip.addColorStop(0, 'rgba(0,0,0,0)'); lip.addColorStop(1, 'rgba(20,24,18,.28)');
+    ctx.fillStyle = lip;
+    ctx.beginPath(); ctx.arc(hx, hy, cr, 0, Math.PI * 2); ctx.fill();
+
+    // base: seen a little off-centre through the opening (perspective), with slots between ten spokes
+    const [fx, fy] = floorCenter(hx, hy, R), fr = cr * .76;
+    ctx.save();
+    ctx.beginPath(); ctx.arc(hx, hy, cr * .985, 0, Math.PI * 2); ctx.clip();   // keep the base inside the opening
+    const base = ctx.createRadialGradient(fx - fr * .3, fy - fr * .3, fr * .1, fx, fy, fr);
+    base.addColorStop(0, '#f4f4ef'); base.addColorStop(1, '#d4d5ce');
+    ctx.fillStyle = base;
+    ctx.beginPath(); ctx.arc(fx, fy, fr, 0, Math.PI * 2); ctx.fill();
+    const SLOTS = 10, step = (Math.PI * 2) / SLOTS, rIn = fr * .38, rOut = fr * .86;
+    ctx.fillStyle = '#33372f';
+    for (let i = 0; i < SLOTS; i++) {
+      const a0 = i * step + step * .13, a1 = (i + 1) * step - step * .13;
+      ctx.beginPath();
+      ctx.arc(fx, fy, rOut, a0, a1);
+      ctx.arc(fx, fy, rIn, a1 - step * .06, a0 + step * .06, true);
+      ctx.closePath(); ctx.fill();
+    }
+    // flagstick socket in the middle
+    ctx.fillStyle = '#e9eae4';
+    ctx.beginPath(); ctx.arc(fx, fy, fr * .3, 0, Math.PI * 2); ctx.fill();
+    ctx.strokeStyle = 'rgba(0,0,0,.18)'; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.arc(fx, fy, fr * .3, 0, Math.PI * 2); ctx.stroke();
+    ctx.fillStyle = '#3a3227';
+    ctx.beginPath(); ctx.arc(fx, fy, fr * .17, 0, Math.PI * 2); ctx.fill();
+    ctx.restore();
+
+    // crisp rim
+    ctx.strokeStyle = 'rgba(255,255,255,.65)'; ctx.lineWidth = Math.max(1, R * .08);
+    ctx.beginPath(); ctx.arc(hx, hy, cr, Math.PI * .1, Math.PI * .9); ctx.stroke();
+    ctx.strokeStyle = 'rgba(0,0,0,.35)'; ctx.lineWidth = 1;
     ctx.beginPath(); ctx.arc(hx, hy, cr, 0, Math.PI * 2); ctx.stroke();
   }
 
-  function drawFlag(hx, hy, R, now, excite) {
-    const bx = hx + R * .5, by = hy;
-    const tx = bx - R * .4, ty = hy - R * 13;
-    // pole shadow on the green
-    ctx.strokeStyle = 'rgba(0,0,0,.22)'; ctx.lineWidth = R * .3; ctx.lineCap = 'round';
-    ctx.beginPath(); ctx.moveTo(bx, by); ctx.lineTo(bx + R * 7, by + R * 7.5); ctx.stroke();
-    // pole: black & white bands
-    const BANDS = 10;
-    ctx.lineWidth = R * .3; ctx.lineCap = 'butt';
-    for (let i = 0; i < BANDS; i++) {
-      const a = i / BANDS, b = (i + 1) / BANDS;
-      ctx.strokeStyle = i % 2 === 0 ? '#111311' : '#f7f7f2';
-      ctx.beginPath();
-      ctx.moveTo(bx + (tx - bx) * a, by + (ty - by) * a);
-      ctx.lineTo(bx + (tx - bx) * b, by + (ty - by) * b);
-      ctx.stroke();
-    }
-    // soft highlight along the pole for roundness
-    ctx.strokeStyle = 'rgba(255,255,255,.22)'; ctx.lineWidth = R * .07;
-    ctx.beginPath(); ctx.moveTo(bx - R * .06, by); ctx.lineTo(tx - R * .06, ty); ctx.stroke();
-    ctx.lineCap = 'round';
-    // flag
-    const t = now / 1000, amp = R * (.5 + 1.4 * excite);
-    const w1 = Math.sin(t * 3.1) * amp, w2 = Math.sin(t * 3.1 + 1.4) * amp;
-    ctx.fillStyle = '#f6f5ef';
-    ctx.beginPath();
-    ctx.moveTo(tx, ty);
-    ctx.quadraticCurveTo(tx + R * 2.5, ty + w1 * .6, tx + R * 5.2, ty + R * 1.3 + w2);
-    ctx.quadraticCurveTo(tx + R * 2.5, ty + R * 2.2 + w1 * .5, tx + R * .1, ty + R * 2.8);
-    ctx.closePath(); ctx.fill();
-    ctx.strokeStyle = 'rgba(0,0,0,.18)'; ctx.lineWidth = 1; ctx.stroke();
-    ctx.fillStyle = 'rgba(0,0,0,.12)';
-    ctx.beginPath();
-    ctx.moveTo(tx, ty + R * 1.4);
-    ctx.quadraticCurveTo(tx + R * 2.5, ty + R * 2.2 + w1 * .5, tx + R * .1, ty + R * 2.8);
-    ctx.closePath(); ctx.fill();
-  }
 
   // ---------- sizing ----------
   function resize() {
@@ -287,13 +295,26 @@ export function createPuttScene(els) {
     layout();
   }
 
-  // Section widths: normal sections are one screen wide; the gallery is as wide as its photos
+  // Section widths: normal sections are one screen wide; the gallery is as wide as its photos; panels laid
+  // out on a design board hug their cards (they end at the rightmost card), so the next panel follows closer.
+  function boardWidth(board) {
+    if (getComputedStyle(board).position !== 'absolute') return null;   // phones: cards stack, panel stays full width
+    const cards = [...board.children, ...board.querySelectorAll('.svc')].filter((el) => !el.classList.contains('svc-list'));
+    return Math.ceil(Math.max(...cards.map((el) => el.offsetLeft + el.offsetWidth)));
+  }
   function layout() {
     let x = 0;
     for (const sec of secs) {
       sec.style.left = x + 'px';
+      sec.style.width = '';
       let w = W;
       if (sec.hasAttribute("data-gallery")) w = Math.max(W * 2, sec.offsetWidth);
+      const board = sec.querySelector('.board');
+      if (board && sec !== secs[secs.length - 1]) {   // the last panel (the cup) stays a full screen wide
+        board.style.width = '';
+        const bw = boardWidth(board);
+        if (bw) { board.style.width = bw + 'px'; w = board.offsetLeft + bw; sec.style.width = w + 'px'; }
+      }
       x += w;
       lastLeft = sec.offsetLeft;
     }
@@ -324,9 +345,10 @@ export function createPuttScene(els) {
       else { const u = (t - (1 - tf)) / tf; g = (1 - f) + f * (1 - (1 - u) * (1 - u)); }
     }
     const ballX = x0 + (ballEndX - x0) * g;
-    // breaking line: up, down, then settles back onto the cup's line
-    const breakAmp = H * .075;
-    const ballYNow = ballY - breakAmp * Math.sin(3 * Math.PI * g) * (1 - .45 * g);
+    // breaking line: drifts up first, then curves down below the line and settles back onto the cup's line.
+    // Tuned to the four-panel designs: ~5% of the height above the line on panel 1, ~5% below on panel 2.
+    const breakAmp = H * .08;
+    const ballYNow = ballY - breakAmp * Math.sin(2 * Math.PI * g) * (1 - .45 * g);
     // camera eases into the pan instead of jumping to full speed at impact: it starts still and
     // accelerates smoothly until it matches the ball, which settles a little ahead of where it started
     const travel = ballX - x0, lag = W * .15;
@@ -334,9 +356,14 @@ export function createPuttScene(els) {
 
     // sink state (time-based one-shot once the ball arrives)
     if (g >= 1 && sunkAt === null) sunkAt = now;
-    if (p < P_HOLE - .015 && sunkAt !== null) { sunkAt = null; cta.classList.remove('show'); }
+    if (p < P_HOLE - .015 && sunkAt !== null) sunkAt = null;
     const sink = sunkAt === null ? 0 : clamp((now - sunkAt) / 650, 0, 1);
-    if (sunkAt !== null && now - sunkAt > 450) cta.classList.add('show');
+    // The closing card shows up while the ball is still rolling (last 4 yards), so there's time to read it even
+    // on a fast scroll; its "¡Embocada!" kicker only appears once the ball drops.
+    const G_CARD = 1 - 4 / PUTT_YD;
+    if (g >= G_CARD) cta.classList.add('show');
+    else if (g < G_CARD - .02) cta.classList.remove('show');
+    cta.classList.toggle('holed', sunkAt !== null);
 
     // putter pendulum
     const L = H * 1.15, headW = R * 1.25;
@@ -363,9 +390,14 @@ export function createPuttScene(els) {
     }
 
     drawHole(holeX, ballY, R);
-    if (g < 1 || sink < 1) drawBall(ballX, ballYNow, R, (ballX - x0) / R, sink);
+    // after it drops, the ball settles on the cup's base, a little off-centre (and stays there)
+    let bx = ballX, by = ballYNow;
+    if (sink > 0) {
+      const [fx, fy] = floorCenter(holeX, ballY, R), e = 1 - Math.pow(1 - sink, 3);
+      bx += (fx - R * .35 - bx) * e; by += (fy + R * .1 - by) * e;
+    }
+    drawBall(bx, by, R, (bx - x0) / R, sink);
     if (pivotX + R * 6 > camX && pivotX - R * 6 < camX + W) drawPutter(pivotX, pivotY, th, R, L);
-    drawFlag(holeX, ballY, R, now, sink > 0 ? Math.max(0, 1 - (now - sunkAt) / 2500) : 0);
 
     ctx.restore();
 
@@ -390,6 +422,7 @@ export function createPuttScene(els) {
     const holed = sunkAt !== null;
     rBall.style.opacity = holed ? '0' : '1';
     rFlag.classList.toggle('hit', holed);
+    return camX;   // where the camera is, so the page can react to which panel is on screen
   }
 
   return { render, resize, layout };

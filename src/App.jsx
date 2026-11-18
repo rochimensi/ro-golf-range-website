@@ -5,6 +5,7 @@ import { useGSAP } from '@gsap/react';
 import { startSmoothScroll } from './smoothScroll.js';
 import PuttIntro from './components/PuttIntro.jsx';
 import YardageNav from './components/YardageNav.jsx';
+import HeroMenu from './components/HeroMenu.jsx';
 import Canastos from './sections/Canastos.jsx';
 import Clases from './sections/Clases.jsx';
 import Academia from './sections/Academia.jsx';
@@ -19,6 +20,9 @@ import Contacto from './sections/Contacto.jsx';
 import Footer from './sections/Footer.jsx';
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
+// Never restore the previous scroll position on reload: every visit starts on the hero (see main.jsx).
+// ScrollTrigger manages history.scrollRestoration itself, so the setting has to go through it.
+ScrollTrigger.clearScrollMemory('manual');
 if (import.meta.env.DEV || location.search.includes('debug')) window.ScrollTrigger = ScrollTrigger;
 
 export default function App() {
@@ -54,6 +58,7 @@ export default function App() {
     <div ref={root}>
       <PuttIntro />
       <YardageNav />
+      <HeroMenu />
       <main id="v">
         <Canastos />
         <Clases />

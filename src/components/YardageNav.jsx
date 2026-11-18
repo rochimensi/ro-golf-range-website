@@ -4,7 +4,7 @@ import { useGSAP } from '@gsap/react';
 
 // Range yardage signs on the left: each one marks a group of sections. The ball travels between
 // the signs as you scroll; the current sign lights up gold. Click a sign to jump there.
-const SIGNS = [
+export const SIGNS = [
   { yd: 30, id: 'canastos', label: 'Canastos' },
   { yd: 50, id: 'clases', label: 'Clases' },
   { yd: 100, id: 'omar', label: 'Omar Peralta' },
@@ -23,9 +23,13 @@ export default function YardageNav() {
     const ball = el.querySelector('.yd-ball');
     const centerOf = (a) => a.offsetTop + a.offsetHeight / 2 - 4;
 
-    // show the rail as soon as the putt section unpins and vertical scrolling begins
+    // The putt stays pinned until it's done. Show the rail once that releases and Canastos is on screen,
+    // and keep it for the rest of the page.
     ScrollTrigger.create({
-      trigger: document.getElementById('v'), start: 'top bottom', end: 'bottom top',
+      trigger: document.getElementById('canastos'),
+      endTrigger: document.getElementById('v'),
+      start: 'top bottom',
+      end: 'bottom top',
       onToggle: (st) => el.classList.toggle('on', st.isActive),
       onRefresh: (st) => el.classList.toggle('on', st.isActive),
     });

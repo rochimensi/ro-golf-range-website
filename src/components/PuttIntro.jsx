@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useMemo, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
@@ -6,7 +6,64 @@ import { createPuttScene } from '../putt/scene.js';
 import { scrollToTarget } from '../smoothScroll.js';
 
 // How long the putt lasts, in screen-heights of scroll. Two big, quick scrolls reach the pin.
-const SCREENS = 5;
+// (3.5 for the four-panel path: hero, access + bays, comfort, holed.)
+const SCREENS = 3.5;
+
+// Each glyph reels through these digits, in a random order, then lands on the real character.
+const SPIN_DIGITS = ['5', '1', '0', '2', '3', '7'];
+const SPIN_LINES = ['Acceso', 'sin cargo'];
+
+function makeReel(char) {
+  const spins = 7 + Math.floor(Math.random() * 4);
+  const reel = [];
+  let prev = -1;
+  for (let i = 0; i < spins; i++) {
+    let idx = Math.floor(Math.random() * SPIN_DIGITS.length);
+    if (idx === prev) idx = (idx + 1) % SPIN_DIGITS.length;
+    prev = idx;
+    reel.push(SPIN_DIGITS[idx]);
+  }
+  reel.push(char);
+  return reel;
+}
+
+// Hero headline pieces: each letter (or word) in its own inline-block so it can move on its own.
+const splitChars = (text) => [...text].map((ch, i) => (ch === ' ' ? ' ' : <span className="ch" key={i}>{ch}</span>));
+const splitWords = (text, className = '') => text.split(' ').flatMap((w, i) => [
+  i ? ' ' : null,
+  <span className={`w ${className}`.trim()} key={i}>{w}</span>,
+]);
+
+function SpinHeading() {
+  const reduce = useMemo(() => window.matchMedia('(prefers-reduced-motion: reduce)').matches, []);
+  const reels = useMemo(
+    () => SPIN_LINES.map((line) => [...line].map((ch) => (ch === ' ' ? null : makeReel(ch)))),
+    [],
+  );
+  if (reduce) {
+    return <h2 className="big">Acceso<br />sin cargo</h2>;
+  }
+  return (
+    <h2 className="big spin-head" aria-label="Acceso sin cargo">
+      {SPIN_LINES.map((line, li) => (
+        <span className="spin-line" key={line} aria-hidden="true">
+          {[...line].map((ch, i) => (
+            ch === ' ' ? (
+              <span className="spin-space" key={i} />
+            ) : (
+              <span className="slot" key={i}>
+                <span className="slot-sizer">{ch}</span>
+                <span className="slot-reel">
+                  {reels[li][i].map((glyph, j) => <span key={j}>{glyph}</span>)}
+                </span>
+              </span>
+            )
+          ))}
+        </span>
+      ))}
+    </h2>
+  );
+}
 
 export default function PuttIntro() {
   const stage = useRef(null);
@@ -50,41 +107,99 @@ export default function PuttIntro() {
       const avail = title.parentElement.clientWidth;
       const size = Math.min((avail / widest) * 100, window.innerHeight * 0.17);
       title.style.fontSize = `${Math.max(32, Math.floor(size))}px`;
+      // the Academia block below sizes its type from the headline's size
+      el.querySelector('.hero-text').style.setProperty('--title-size', title.style.fontSize);
       // the rule, tagline and scroll prompt line up with the right edge of the longest line
-      const w = Math.max(...[...title.querySelectorAll('.hl > span')].map((n) => n.getBoundingClientRect().width));
+      const w = Math.max(...[...title.querySelectorAll('.hl > span')].map((n) => n.offsetWidth));   // layout width: ignores the intro transforms
       el.querySelector('.hero-sub').style.width = `${Math.ceil(w)}px`;
     };
     fitTitle();
     if (document.fonts) document.fonts.ready.then(fitTitle);
     ScrollTrigger.addEventListener('refreshInit', fitTitle);
 
+    let stopHead = () => {};
     if (!reduce) {
-      // each line reveals twice: a quick flash in and out the top, then a final rise that stays.
-      // The next line starts its flash the moment the previous line begins its final rise.
-      const lines = title.querySelectorAll('.hl > span');
-      gsap.set(lines, { yPercent: 110 });
-      const IN = 0.16, OUT = 0.11, FINAL = 0.34;
-      // logo turns and fades in first; the headline starts once the logo is 50% rendered
-      // (power2.out reaches half its change at 1 - √½ ≈ 29% of the duration)
-      const LOGO = 1.4, START = LOGO * (1 - Math.SQRT1_2);
-      const tl = gsap.timeline({ delay: 0.1 });
-      tl.from(el.querySelector('.logo-badge'), { autoAlpha: 0, scale: 0.9, rotation: -8, duration: LOGO, ease: 'power2.out' }, 0);
-      lines.forEach((line, i) => {
-        const t = START + i * (IN + OUT);
-        tl.to(line, { yPercent: 0, duration: IN, ease: 'power3.out' }, t)
-          .to(line, { yPercent: -110, duration: OUT, ease: 'power2.in' }, t + IN)
-          .set(line, { yPercent: 110 }, t + IN + OUT)
-          .to(line, { yPercent: 0, duration: FINAL, ease: 'power4.out' }, t + IN + OUT);
-      });
+      // Headline, one treatment per line:
+      //   "El nuevo"      each letter drops into its slot, one after another, in a steady rhythm
+      //   "driving de"    the whole line pops in, zooming up from small with a little overshoot
+      //   "Mar del Plata" each word rises from its mask, its letters moving together
+      const dropChars = title.querySelectorAll('.hl-drop .ch');
+      const popLine = title.querySelector('.hl-pop > span');
+      const words = title.querySelectorAll('.hl-words .w');
+      gsap.set(dropChars, { yPercent: -120 });
+      gsap.set(popLine, { scale: 0, autoAlpha: 0 });
+      gsap.set(words, { yPercent: 110 });
+      // The headline starts the moment the page loads and lands completely in 2 s (HEAD); the logo turns
+      // and fades in alongside it. Line timings are fractions of HEAD so the whole thing scales together:
+      //   letters 0 → 41%, pop 32 → 60%, words 52 → 100%
+      const HEAD = 2, LOGO = 1.4;
+      const at = (f) => f * HEAD;
+      const dropStagger = (at(0.41) - at(0.225)) / Math.max(1, dropChars.length - 1);
+      const wordStagger = at(0.2) / Math.max(1, words.length - 1);
+      const tl = gsap.timeline({ paused: true });
+      tl.from(el.querySelector('.logo-badge'), { autoAlpha: 0, scale: 0.9, rotation: -8, duration: LOGO, ease: 'power2.out' }, 0)
+        .to(dropChars, { yPercent: 0, duration: at(0.225), ease: 'bounce.out', stagger: dropStagger }, 0)
+        .to(popLine, { scale: 1, autoAlpha: 1, duration: at(0.275), ease: 'back.out(2.2)' }, at(0.325))
+        .to(words, { yPercent: 0, duration: at(0.275), ease: 'power4.out', stagger: wordStagger }, at(0.525));
       tl.from(el.querySelectorAll('.hero-after'), { autoAlpha: 0, y: 16, duration: 0.6, ease: 'power2.out', stagger: 0.1 }, '-=0.2');
+      // Play on the intro's own clock from the very first frame: each frame advances it at most 1/30 s,
+      // so a busy moment while the page loads (the putt scene building its textures) pauses the headline
+      // for an instant instead of skipping part of it. (The page turns off GSAP's own lag smoothing.)
+      const advance = (time, deltaMs) => {
+        tl.time(tl.time() + Math.min(deltaMs, 1000 / 30) / 1000);
+        if (tl.progress() === 1) gsap.ticker.remove(advance);
+      };
+      gsap.ticker.add(advance);
+      stopHead = () => gsap.ticker.remove(advance);
       // the scroll prompt shows straight away, so it's there even if the visitor scrolls before the headline lands
       // (the inner span animates in; the scene fades the outer #hint out once scrolling starts)
       gsap.from(el.querySelector('.hint-in'), { autoAlpha: 0, y: 10, duration: 0.5, ease: 'power2.out', delay: 0.35 });
     }
 
-    const tick = () => scene.render(state.p, performance.now());
+    // "Acceso / sin cargo": each glyph spins through random digits once the card is on screen.
+    let stopSpin = () => {};
+    const spinHead = el.querySelector('.spin-head');
+    if (!reduce && spinHead) {
+      const reels = [...spinHead.querySelectorAll('.slot-reel')];
+      let played = false;
+      const play = () => {
+        if (played) return;
+        played = true;
+        reels.forEach((reel) => {
+          const cells = reel.children;
+          const end = cells[cells.length - 1].offsetTop;
+          const prev = cells[Math.max(0, cells.length - 2)].offsetTop;
+          const ticks = Math.max(1, cells.length - 2);
+          // Whole digits tick past, then the real character eases into place.
+          gsap.timeline({ delay: Math.random() * 0.08 })
+            .to(reel, { y: -prev, duration: ticks * 0.048, ease: `steps(${ticks})` })
+            .to(reel, { y: -end, duration: 0.14, ease: 'power2.out' });
+        });
+      };
+      const io = new IntersectionObserver((entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          play();
+          io.disconnect();
+        }
+      }, { threshold: 0.55 });
+      io.observe(spinHead);
+      stopSpin = () => io.disconnect();
+    }
+
+    // Board cards reveal like the hero's Academia block (fade in while rising 16px, one after another) as their
+    // panel slides in: once it's half on screen. They reset when you scroll back before it, so they replay.
+    const boards = [...el.querySelectorAll('.board:not(.cta)')];   // the closing panel is shown by the scene instead
+    const reveal = (camX) => {
+      const W = el.clientWidth;
+      boards.forEach((b) => {
+        const left = b.parentElement.offsetLeft - camX;   // panel's left edge on screen
+        if (left < W * 0.5) b.classList.add('in');
+        else if (left > W * 0.95) b.classList.remove('in');
+      });
+    };
+    const tick = () => reveal(scene.render(state.p, performance.now()));
     gsap.ticker.add(tick);
-    return () => { gsap.ticker.remove(tick); ScrollTrigger.removeEventListener('refreshInit', fitTitle); };
+    return () => { stopHead(); stopSpin(); gsap.ticker.remove(tick); ScrollTrigger.removeEventListener('refreshInit', fitTitle); };
   }, { scope: stage });
 
   const goDown = () => scrollToTarget('#canastos');
@@ -100,86 +215,81 @@ export default function PuttIntro() {
               <div className="logo-badge"><img className="logo" src="img/logo.jpg" alt="R&O Golf Range · Los Acantilados" width={640} height={641} /></div>
               <div className="hero-text">
                 <h2 className="display-xl hero-title" aria-label="El nuevo driving de Mar del Plata">
-                  <span className="hl" aria-hidden="true"><span>El nuevo</span></span>
-                  <span className="hl" aria-hidden="true"><span>driving de</span></span>
-                  <span className="hl" aria-hidden="true"><span className="gold-text">Mar del Plata</span></span>
+                  {/* line 1 drops in letter by letter, line 2 pops in whole, line 3 rises word by word */}
+                  <span className="hl hl-drop" aria-hidden="true"><span>{splitChars('El nuevo')}</span></span>
+                  <span className="hl hl-pop" aria-hidden="true"><span>driving de</span></span>
+                  <span className="hl hl-words" aria-hidden="true"><span>{splitWords('Mar del Plata', 'gold-text')}</span></span>
                 </h2>
                 <div className="hero-sub">
                   <div className="rule hero-after" />
                   <p className="body-l hero-after">Tu espacio de golf, relajación y entrenamiento.</p>
+                  <p className="hero-academia hero-after">
+                    <span className="ha-intro">Junto a la</span>{' '}
+                    <span className="ha-name">Academia</span>{' '}
+                    <span className="ha-name ha-big">Omar Peralta</span>
+                  </p>
                   <div className="hint label" id="hint"><span className="hint-in">Deslizá para embocar el putt <span className="arrow">→</span></span></div>
                 </div>
               </div>
             </div>
           </section>
-              <section className="sec center">
-            <div className="card feature">
-              <div>
-                <div className="label">01 — Acceso libre</div>
-                <h2 className="big">Abierto<br />a todos</h2>
-                <div className="rule" />
-                <p className="intro-p">El driving range está dentro del Club Mar del Plata, Golf Los Acantilados, pero <strong>no hace falta ser socio</strong>. Vení cuando quieras.</p>
+          {/* Panel 1 (Figma 3211:2): free access + the practice bays. Laid out on a 1440×900 board that scales with the screen. */}
+          <section className="sec board-sec">
+            <div className="board">
+              <div className="card feature b-acceso" style={{ '--d': 0 }}>
+                <div>
+                  <SpinHeading />
+                </div>
+                <ul className="feat-list">
+                  <li><div><span className="txt">No necesitás ser socio del club para practicar.</span></div></li>
+                  <li><div><span className="txt">La entrada al range es libre y gratuita.</span></div></li>
+                </ul>
               </div>
-              <ul className="feat-list">
-                <li>
-                  <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx={9} cy={7} r={3} /><path d="M3 20a6 6 0 0 1 12 0" /><circle cx="17.5" cy="8.5" r="2.5" /><path d="M15.5 14.2A5 5 0 0 1 22 19" /></svg>
-                  <div><span className="label">Abierto a todo público</span><span className="txt">No necesitás ser socio del club para practicar.</span></div>
-                </li>
-                <li>
-                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 21V5a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v16" /><path d="M14 8l5-2v15" /><path d="M3 21h18" /><path d="M11 13v1" /></svg>
-                  <div><span className="label">Acceso sin cargo</span><span className="txt">La entrada al range es libre y gratuita.</span></div>
-                </li>
-                <li>
-                  <svg viewBox="0 0 24 24" aria-hidden="true"><rect x={3} y={3} width={18} height={18} rx={3} /><path d="M9.5 17V7h3.5a3 3 0 0 1 0 6H9.5" /></svg>
-                  <div><span className="label">Estacionamiento privado</span><span className="txt">Dejá el auto dentro del predio del club.</span></div>
-                </li>
-              </ul>
-            </div>
-          </section>
-          <section className="sec right">
-            <div className="card wide">
-              <div className="label">02 — Gateras de práctica</div>
-              <h2 className="display-l">Elegí dónde pegar</h2>
-              <div className="rule" />
-              <ul className="ico-list">
-                <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 10 12 4l10 6" /><path d="M5 9v11M19 9v11" /><path d="M3 20h18" /></svg><div><span className="label">Techadas y descubiertas</span><span className="txt">Practicá con sol, con viento o con lluvia.</span></div></li>
-                <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 20h18" /><path d="M5 20c0-4 1-7 2-9M9 20c0-5 .5-8 1.5-11M13 20c0-4 1-8 2.5-10M17 20c0-3 .8-6 2-8" /></svg><div><span className="label">Césped natural o alfombras Real Feel</span><span className="txt">Las alfombras más realistas del mercado.</span></div></li>
-                <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11 12 4l9 7v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z" /><circle cx={12} cy={15} r={2} /><path d="M12 13V9" /></svg><div><span className="label">Gatera indoor</span><span className="txt">Un espacio cerrado para practicar todo el año.</span></div></li>
-              </ul>
-            </div>
-          </section>
-          <section className="sec">
-            <div className="card wide">
-              <div className="label">03 — Servicios</div>
-              <h2 className="display-l">Quedate el día</h2>
-              <div className="rule" />
-              <ul className="ico-list">
-                <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5a10 10 0 0 1 14 0" /><path d="M8.5 15.8a5 5 0 0 1 7 0" /><circle cx={12} cy={19} r={1} /><path d="M2 9a14.5 14.5 0 0 1 20 0" /></svg><div><span className="label">Starlink</span><span className="txt">Conexión para trabajar remoto entre baldes.</span></div></li>
-                <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h13v5a6 6 0 0 1-6 6h-1a6 6 0 0 1-6-6z" /><path d="M17 11h1.5a2.5 2.5 0 0 1 0 5H17" /><path d="M8 3c0 1.5 1 1.5 1 3M12 3c0 1.5 1 1.5 1 3" /></svg><div><span className="label">Cafetería</span><span className="txt">Algo rico para acompañar la práctica.</span></div></li>
-                <li><svg viewBox="0 0 24 24" aria-hidden="true"><rect x={7} y={9} width={10} height={12} rx={2} /><path d="M9 9V3l2 1M13 9V2.5l2 1M11 9V5" /><path d="M7 14h10" /></svg><div><span className="label">Alquiler de palos</span><span className="txt">Si no tenés equipo, te lo prestamos.</span></div></li>
-              </ul>
-            </div>
-          </section>
-          <section className="sec right">
-            <div className="card pro">
-              <div className="label">04 — Profesional a cargo</div>
-              <h2 className="display-l">Omar Peralta</h2>
-              <p className="pro-sub">Profesional de golf · PGA Argentina</p>
-              <div className="rule" />
-              <p>Más de 30 años como profesional, y más de 20 como Coach Assistant y Caddie en el PGA Tour y el European Tour. Te asesora desde tu primer golpe hasta el alto rendimiento.</p>
-              <a className="text-link" href="#omar">Conocé a Omar ↓</a>
-            </div>
-          </section>
-          <section className="sec center">
-            <div className="card cta" id="cta">
-              <div className="label">¡Embocada!</div>
-              <h2 className="display-l">Abierto todo el año</h2>
-              <div className="rule" />
-              <p className="body-l">De lunes a lunes, en el Club Mar del Plata, Golf Los Acantilados.</p>
-              <div className="btns">
-                <button className="primary" id="go-down" onClick={goDown}>Seguí bajando ↓</button>
-                <button className="ghost" id="replay" onClick={replay}>Patear de nuevo ↺</button>
+              <div className="card bcard b-techada" style={{ '--d': 1 }}>
+                <h2>Práctica techada y descubierta</h2>
+                <p>Sol, viento o lluvia. ¡Que nada te detenga!</p>
               </div>
+              <div className="card bcard b-cesped" style={{ '--d': 2 }}>
+                <h2>Césped y alfombras</h2>
+                <p>Césped natural y alfombras Real Feel Country Club Elite — las más realistas del mercado profesional.</p>
+              </div>
+            </div>
+          </section>
+          {/* Panel 2 (Figma 3212:2): comfort services + club rental */}
+          <section className="sec board-sec">
+            <div className="board">
+              <ul className="svc-list">
+                <li className="svc svc-1" style={{ '--d': 0 }}>
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5a10 10 0 0 1 14 0" /><path d="M8.5 15.8a5 5 0 0 1 7 0" /><circle cx={12} cy={19} r={1} /><path d="M2 9a14.5 14.5 0 0 1 20 0" /></svg>
+                  <div><h3>Starlink</h3><p>Conexión para trabajar remoto.</p></div>
+                </li>
+                <li className="svc svc-2" style={{ '--d': 1 }}>
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h13v5a6 6 0 0 1-6 6h-1a6 6 0 0 1-6-6z" /><path d="M17 11h1.5a2.5 2.5 0 0 1 0 5H17" /><path d="M8 3c0 1.5 1 1.5 1 3M12 3c0 1.5 1 1.5 1 3" /></svg>
+                  <div><h3>Cafetería</h3><p>Algo rico para acompañar la práctica.</p></div>
+                </li>
+                <li className="svc svc-3" style={{ '--d': 2 }}>
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><rect x={4} y={4} width={16} height={16} rx={2.5} /><path d="M10 16.5V7.5h3a2.5 2.5 0 0 1 0 5h-3" /></svg>
+                  <div><h3>Estacionamiento privado</h3><p>Ya no hay que caminar hacia el Driving Range dentro del Club.</p></div>
+                </li>
+              </ul>
+              <div className="card bcard b-alquiler" style={{ '--d': 3 }}>
+                <p className="al-intro">¿Estás viajando ligero? Vení a practicar igual.</p>
+                <h2>
+                  <span className="al-name">Alquiler de</span>{' '}
+                  <span className="al-name al-big">palos</span>{' '}
+                  <span className="al-name">y training aids</span>
+                </h2>
+              </div>
+            </div>
+          </section>
+          {/* Closing panel (Figma 3215:2): shows while the ball rolls its last 4 yards; "Puttear de nuevo" sits beside the cup */}
+          <section className="sec board-sec end-sec">
+            <div className="board cta" id="cta">
+              <h2 className="end-title" style={{ '--d': 0 }}>Abierto todo el año</h2>
+              <img className="end-badge" src="img/club-mar-del-plata.png" alt="Club Mar del Plata" width={121} height={120} style={{ '--d': 1 }} />
+              <p className="end-text" style={{ '--d': 1 }}>De lunes a lunes<br />En el Club Mar del Plata, Golf Los Acantilados.</p>
+              <button className="primary end-more" id="go-down" onClick={goDown} style={{ '--d': 2 }}>Más información abajo ↓</button>
+              <button className="end-replay" id="replay" onClick={replay} style={{ '--d': 3 }}>Puttear de nuevo</button>
             </div>
           </section>
         
