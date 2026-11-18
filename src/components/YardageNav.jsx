@@ -32,6 +32,7 @@ export default function YardageNav() {
       end: 'bottom top',
       onToggle: (st) => el.classList.toggle('on', st.isActive),
       onRefresh: (st) => el.classList.toggle('on', st.isActive),
+      refreshPriority: -1,
     });
 
     SIGNS.forEach((s, i) => {
@@ -43,6 +44,7 @@ export default function YardageNav() {
         endTrigger: groupSecs[groupSecs.length - 1],
         start: 'top 50%',
         end: 'bottom 50%',
+        refreshPriority: -1, // measure after the pinned sections (putt, Clases) add their scroll space
         onToggle: (st) => {
           if (!st.isActive) return;
           links.forEach((a, j) => { a.classList.toggle('active', j === i); a.classList.toggle('passed', j < i); });

@@ -10,8 +10,9 @@ let lenis = null;
 export function startSmoothScroll() {
   if (lenis || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return () => {};
   lenis = new Lenis({
-    lerp: 0.085,          // lower = longer, softer glide to a stop
-    wheelMultiplier: 1,
+    lerp: 0.07,           // lower = longer, softer glide to a stop
+    wheelMultiplier: 0.6, // each wheel/trackpad movement travels 60% of the browser's normal distance,
+                          // so fast scrollers don't skip past the scroll scenes (putt, Clases)
     smoothWheel: true,
     anchors: true,        // in-page links (the yardage signs, "Conocé a Omar") glide too
   });

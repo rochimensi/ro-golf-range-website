@@ -8,8 +8,9 @@ import YardageNav from './components/YardageNav.jsx';
 import HeroMenu from './components/HeroMenu.jsx';
 import Canastos from './sections/Canastos.jsx';
 import Clases from './sections/Clases.jsx';
-import Academia from './sections/Academia.jsx';
-import Ensenanza from './sections/Ensenanza.jsx';
+import Golf from './sections/Golf.jsx';
+// Enseñanza moves to its own Academia page.
+// import Ensenanza from './sections/Ensenanza.jsx';
 import Omar from './sections/Omar.jsx';
 import Empresas from './sections/Empresas.jsx';
 import Galeria from './sections/Galeria.jsx';
@@ -62,8 +63,9 @@ export default function App() {
       <main id="v">
         <Canastos />
         <Clases />
-        <Academia />
-        <Ensenanza />
+        <Golf />
+        {/* Enseñanza moves to its own Academia page. */}
+        {/* <Ensenanza /> */}
         <Omar />
         <Empresas />
         <Galeria />

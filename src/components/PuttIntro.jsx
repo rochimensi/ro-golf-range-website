@@ -4,6 +4,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
 import { createPuttScene } from '../putt/scene.js';
 import { scrollToTarget } from '../smoothScroll.js';
+import { STACKED } from '../layout.js';
 
 // How long the putt lasts, in screen-heights of scroll. Two big, quick scrolls reach the pin.
 // (3.5 for the four-panel path: hero, access + bays, comfort, holed.)
@@ -121,7 +122,7 @@ export default function PuttIntro() {
       // more room for the headings, and the rest of the text stack has to end above the putter head, so on
       // short screens step the headline (and with it the Academia block) down until it does.
       const hint = text.querySelector('.hint');
-      if (window.matchMedia('(max-width: 760px)').matches) {
+      if (window.matchMedia(STACKED).matches) {
         Object.assign(hint.style, { position: 'absolute', right: '0', top: `${Math.round(window.innerHeight * 0.72 + 30 - text.offsetTop)}px` });
         const limit = window.innerHeight * 0.72 - 70;   // clears the putter head too
         while (px > 24 && text.offsetTop + text.offsetHeight > limit) setSize(px -= 2);
@@ -277,7 +278,7 @@ export default function PuttIntro() {
               <ul className="svc-list">
                 <li className="svc svc-1" style={{ '--d': 0 }}>
                   <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5a10 10 0 0 1 14 0" /><path d="M8.5 15.8a5 5 0 0 1 7 0" /><circle cx={12} cy={19} r={1} /><path d="M2 9a14.5 14.5 0 0 1 20 0" /></svg>
-                  <div><h3>Starlink</h3><p>Conexión para trabajar remoto.</p></div>
+                  <div><h3>Trabajo remoto</h3><p>Starlink para trabajar y entrenar.</p></div>
                 </li>
                 <li className="svc svc-2" style={{ '--d': 1 }}>
                   <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h13v5a6 6 0 0 1-6 6h-1a6 6 0 0 1-6-6z" /><path d="M17 11h1.5a2.5 2.5 0 0 1 0 5H17" /><path d="M8 3c0 1.5 1 1.5 1 3M12 3c0 1.5 1 1.5 1 3" /></svg>

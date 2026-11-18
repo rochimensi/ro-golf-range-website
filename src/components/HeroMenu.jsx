@@ -5,7 +5,7 @@ import { SIGNS } from './YardageNav.jsx';
 import { scrollToTarget, pauseScroll } from '../smoothScroll.js';
 
 // Two golf tees crossed into an X, heads up: the panel's close button (Figma 3246:2019).
-function CrossedTees() {
+export function CrossedTees() {
   return (
     <svg className="ct" viewBox="0 0 24 24" aria-hidden="true">
       <path className="ct-tee ct-a" d="M18.8709 0C19.6546 2.18614 21.1395 3.67106 23.3257 4.45477L21.7789 5.75408C21.1602 6.04282 20.4486 5.95001 19.6443 5.47566L7.1462 17.3551L2.22738 21.0983L5.97063 16.1795L17.85 3.68137C17.3757 2.87704 17.2829 2.16551 17.5716 1.5468L18.8709 0Z" />

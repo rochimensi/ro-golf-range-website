@@ -128,7 +128,7 @@
                             font-size:calc(var(--title-size) * .48); line-height:.8; letter-spacing:.04em; }
   .hero-academia .ha-big { font-size:calc(var(--title-size) * .77); line-height:.94; letter-spacing:.026em; margin-top:var(--space-4); }
   @keyframes heroIn { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:none; } }
-  @media (max-width:760px) {
+  @media (max-width:760px), (orientation:portrait) and (max-width:1100px) {
     .logo-badge { left:var(--space-4); top:clamp(16px, 4vh, 32px); width:clamp(80px, 14vh, 140px); }
     .hero-text { left:var(--space-4); right:var(--space-4); top:calc(clamp(16px, 4vh, 32px) + clamp(80px, 14vh, 140px) + clamp(8px, 1.8vh, 16px)); width:auto; }
     .hero-title { letter-spacing:0; }
@@ -176,7 +176,7 @@
   .feat-list svg { flex:0 0 32px; width:32px; height:32px; stroke:var(--brand-green); fill:none; stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round; }
   .feat-list .label { color:var(--brand-green); display:block; margin-bottom:2px; }
   .feat-list .txt { font-size:15px; line-height:22px; color:#4b5e4d; }
-  @media (max-width:760px) {
+  @media (max-width:760px), (orientation:portrait) and (max-width:1100px) {
     .card.feature { grid-template-columns:1fr; gap:var(--space-4); width:100%; max-width:calc(100vw - 2 * var(--space-4)); }
     .feature .intro-p { display:none; }
     .feat-list li { padding:var(--space-3) 0; }
@@ -281,6 +281,11 @@
   .end-text { left:calc(341 * var(--u)); top:calc(296 * var(--u)); width:calc(751 * var(--u)); font-size:calc(32 * var(--u)); line-height:calc(40 * var(--u));
               color:var(--brand-cream); text-shadow:0 2px 12px rgba(6,20,10,.45); }
   .end-more { left:calc(505 * var(--u)); top:calc(450 * var(--u)); }
+  /* pill, like the Clases level pills and the Golf "Ver" tags; gold like the "Ver" cursor */
+  .end-more.primary { border-radius:var(--radius-full); padding:12px 26px; font-size:13px; line-height:18px; letter-spacing:.14em;
+                      background:var(--gradient-gold); color:var(--brand-green); box-shadow:0 8px 24px rgba(6,20,10,.3);
+                      transition:filter .3s, box-shadow .3s; }
+  .end-more.primary:hover { background:var(--gradient-gold); filter:brightness(1.06); box-shadow:0 10px 30px rgba(6,20,10,.38); }
   /* "Puttear de nuevo" sits just right of the cup, which is drawn at 70% across and 72% down the screen */
   .end-replay { position:absolute; left:calc(70vw + 2.4 * clamp(10px, 2.4vmin, 21px) + 38px); top:calc(72vh - 21px);
                 display:inline-flex; gap:13px; align-items:center; padding:0; background:none; border:0; border-radius:0;
@@ -290,10 +295,10 @@
   .end-replay:focus-visible, .end-more:focus-visible { outline:2px solid var(--gold-light); outline-offset:4px; }
   @media (prefers-reduced-motion:reduce) { #track .board.cta > * { transition:none; } }
 
-  /* Phones: no board. The cards stack in the panel, between the menu button and the yardage chip. They hug
+  /* Phones and portrait tablets: no board. The cards stack in the panel, between the menu button and the yardage chip. They hug
      their content (capped so long text wraps) and sit staggered left/right like the desktop boards. Type is
      fluid: it follows the screen width but also shrinks on short screens, so a panel never overflows. */
-  @media (max-width:760px) {
+  @media (max-width:760px), (orientation:portrait) and (max-width:1100px) {
     .board-sec { --gap:clamp(6px, 1.3vh, 12px); --pad:clamp(12px, min(3.8vw, 2.1vh), 18px);
       --fs-body:clamp(13px, min(3.9vw, 2.15vh), 16px); --fs-head:clamp(17px, min(5.4vw, 3vh), 26px);
       padding:clamp(64px, 10vh, 84px) var(--space-4) calc(max(4vh, 18px) + 84px); }
@@ -334,6 +339,29 @@
     .end-more { grid-column:1 / -1; justify-self:start; }
     .end-replay { position:absolute; left:70vw; top:calc(72vh + 36px); transform:translateX(-50%); }
     #track .board.cta.show > .end-replay { transform:translateX(-50%); }
+  }
+
+  /* Portrait tablets (iPad): same stacked layout as phones, with bigger type and wider cards for the larger
+     screen. The phone values above stay as they are; these only raise the caps. */
+  @media (orientation:portrait) and (min-width:761px) and (max-width:1100px) {
+    .board-sec { --gap:clamp(10px, 1.4vh, 18px); --pad:clamp(18px, 2.4vh, 30px);
+      --fs-body:clamp(16px, min(2.5vw, 1.75vh), 21px); --fs-head:clamp(24px, min(4vw, 2.8vh), 36px);
+      padding:clamp(84px, 9vh, 112px) var(--space-8) calc(max(4vh, 18px) + 96px); }
+    .board > *, .board .svc { max-width:min(80%, 560px); }
+    .board .svc { max-width:min(84%, 560px); }
+    .b-acceso .big { font-size:clamp(40px, min(6.4vw, 4.4vh), 60px); }
+    .svc svg { width:30px; height:30px; }
+    .svc h3 { font-size:clamp(18px, min(3vw, 2.1vh), 26px); }
+    .al-name { font-size:clamp(22px, min(3.6vw, 2.5vh), 30px); }
+    .al-name.al-big { font-size:clamp(40px, min(6.4vw, 4.4vh), 60px); }
+    .board.cta .end-badge { width:clamp(72px, 11vw, 104px); }
+    .end-title { font-size:clamp(46px, min(8vw, 5.4vh), 72px); }
+    .end-more.primary { font-size:15px; padding:14px 30px; }
+    /* below the cup, which is drawn bigger here (radius 2.4 × clamp(10px, 2.4vmin, 21px), see the desktop rule) */
+    .end-replay { font-size:16px; top:calc(72vh + 2.4 * clamp(10px, 2.4vmin, 21px) + 16px); }
+    .hero-text .body-l, .hero-academia .ha-intro { font-size:clamp(16px, min(2.5vw, 1.75vh), 21px); }
+    .logo-badge { left:var(--space-8); }
+    .hero-text { left:var(--space-8); right:var(--space-8); }
   }
 
   /* Track card hover ("rule draw and stagger"): the gold rule stretches across the card, then the text in each
@@ -397,6 +425,13 @@
   .btn.gold { background:var(--accent); color:var(--on-accent); }
   .btn.gold:hover { background:var(--gradient-gold); }
   .btn.primary-green { background:var(--brand-green); color:var(--brand-cream); }
+  .btn.academia { position:relative; isolation:isolate; overflow:hidden; background:var(--brand-green); color:var(--brand-cream); transition:color .4s, transform .3s; }
+  .btn.academia::before { content:""; position:absolute; z-index:-1; top:-40%; bottom:-40%; left:0; width:145%;
+                          background:linear-gradient(115deg, var(--gold-deep) 0%, var(--gold-light) 46%, var(--gold-deep) 100%);
+                          transform:translateX(-120%) skewX(-18deg); transition:transform .55s cubic-bezier(.65,0,.2,1); }
+  .btn.academia:is(:hover, :focus-visible) { color:var(--brand-green); }
+  .btn.academia:is(:hover, :focus-visible)::before { transform:translateX(-6%) skewX(-18deg); }
+  @media (prefers-reduced-motion: reduce) { .btn.academia, .btn.academia::before { transition:none; } }
   .btn:focus-visible, .contact:focus-visible, #yardage a:focus-visible { outline:2px solid var(--focus-ring); outline-offset:2px; }
 
   /* reveal on scroll */
@@ -522,9 +557,45 @@
   .benefit strong { color:var(--gold-light); font-weight:600; }
 
   /* ---------- Clases ---------- */
+  /* Grid reveal scene (see Clases.jsx): fills the screen while pinned, content centered */
+  .clases { --n:16; overflow:hidden; min-height:100vh; min-height:100svh; display:flex; align-items:center; }
+  .clases > .wrap { z-index:1; width:100%; }
+  .clases-grid { position:absolute; inset:0; z-index:0; pointer-events:none; display:grid; grid-template-columns:repeat(var(--n), 1fr); }
+  /* the 1px shadow hides hairline seams between columns without changing their width */
+  .clases-col { position:relative; overflow:hidden; background:var(--brand-green); box-shadow:1px 0 0 var(--brand-green); will-change:transform; }
+  /* full-section layer inside each column, shifted so the columns together show one heading */
+  .clases-col-inner { position:absolute; top:0; height:100%; width:calc(var(--n) * 100%); left:calc(var(--i) * -100%); will-change:transform; }
+  /* big heading, centered in the first screen of the section, like the Canastos cover title */
+  .cl-cover { position:absolute; left:0; right:0; top:0; height:100vh; height:100svh; display:grid; place-items:center; padding-left:56px; pointer-events:none; }
+  .cl-cover-ink { z-index:0; }
+  .cl-title { display:block; overflow:hidden; font-family:var(--font-display); font-weight:400; text-transform:uppercase; font-size:clamp(56px, 15vw, 236px);
+              line-height:.9; letter-spacing:.04em; color:var(--brand-cream); white-space:nowrap; padding-bottom:.06em; }
+  .cl-cover-ink .cl-title { color:var(--brand-green); }
+  .cl-letter { display:inline-block; }
+  @media (max-width:760px) {
+    .clases { --n:8; }
+    .clases-col:nth-child(n+9) { display:none; }
+    .cl-cover { padding-left:0; }
+  }
+  @media (prefers-reduced-motion:reduce) { .clases-grid, .cl-cover { display:none; } }
+  /* Lesson video in the brand "leaf" shape (rounded top-left and bottom-right, like the .leaf badges),
+     with the gold frame following the same curve and a soft green vignette around the edges */
+  .clases-media { --leaf:clamp(56px, 8vw, 120px); border-radius:var(--leaf) 0 var(--leaf) 0; background:var(--brand-green); isolation:isolate; }
+  .clases-media video { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:50% 50%; display:block; }
+  .clases-media::before { content:""; position:absolute; inset:0; z-index:1; pointer-events:none; border-radius:inherit;
+                          box-shadow:inset 0 0 70px rgba(16,44,26,.45);
+                          background:linear-gradient(180deg, rgba(16,44,26,.18) 0%, rgba(16,44,26,0) 22%, rgba(16,44,26,0) 70%, rgba(16,44,26,.38) 100%); }
+  .clases-media::after { z-index:2; border-radius:calc(var(--leaf) - 16px) 0 calc(var(--leaf) - 16px) 0; border-width:2px; }
+  /* Title words rise out of a mask */
+  .clases-word-mask { display:inline-block; overflow:hidden; vertical-align:top; padding-bottom:.08em; margin-bottom:-.08em; }
+  .clases-word-mask:not(:last-child) { margin-right:.28em; }
+  .clases-word { display:inline-block; will-change:transform; }
   .split { display:grid; grid-template-columns:1.1fr .9fr; gap:var(--space-12); align-items:center; }
   .split .vh { margin-bottom:0; }
-  .levels { display:flex; flex-wrap:wrap; gap:var(--space-2); margin-top:var(--space-6); }
+  .clases-lead { display:flex; flex-direction:column; align-items:stretch; gap:24px; text-align:left; }
+  .levels { display:flex; flex-wrap:wrap; justify-content:flex-start; gap:var(--space-2); margin-top:var(--space-6); }
+  .clases-lead .levels { align-self:flex-start; margin-top:0; }
+  .clases-lead .btn { align-self:flex-start; }
   .levels span { font-family:var(--font-display); font-size:12px; letter-spacing:.14em; text-transform:uppercase; border:1px solid var(--border-control); border-color:#4b5e4d; border-radius:var(--radius-full); padding:6px 14px; }
   .levels span:last-child { background:var(--brand-green); color:var(--gold-light); border-color:var(--brand-green); }
   /* Figma 594:1241 — photo with a 3px gold frame inset 16px */
@@ -541,17 +612,54 @@
                            font-family:var(--font-display); font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--gold-deep); }
   .vs.cream .missing .missing-note { color:#4b5e4d; }
 
-  /* ---------- Academia ---------- */
-  .values { display:grid; grid-template-columns:repeat(3, 1fr); gap:var(--space-6); }
-  .value { background:var(--surface-alt); border-radius:var(--radius-md); padding:var(--space-6); }
-  .value:nth-child(3n+2) { --d:.08s; } .value:nth-child(3n+3) { --d:.16s; }
-  .value .label { margin:var(--space-4) 0 var(--space-2); }
-  .value p { font-size:15px; line-height:23px; color:var(--ink-muted); }
+  /* ---------- Golf ---------- */
+  /* Values as endless lines (ValuesMarquee.jsx): full width, alternating direction */
+  .vm { position:relative; }
+  .vm-list { list-style:none; border-top:1px solid rgba(16,44,26,.18); }
+  .vm-line { position:relative; overflow:hidden; border-bottom:1px solid rgba(16,44,26,.18); }
+  .vm-btn { all:unset; box-sizing:border-box; position:relative; display:block; width:100%; padding:clamp(8px, 1.2vw, 18px) 0; cursor:pointer; }
+  @media (hover:hover) and (pointer:fine) { .vm-btn { cursor:none; } }
+  .vm-btn:focus-visible { outline:2px solid var(--gold-deep); outline-offset:-4px; }
+  /* hovered line fills green from its middle */
+  .vm-btn::before { content:""; position:absolute; inset:0; background:var(--brand-green); transform:scaleY(0); transition:transform .5s cubic-bezier(.2,.8,.2,1); }
+  .vm-btn:hover::before, .vm-btn:focus-visible::before { transform:scaleY(1); }
+  .vm-track { position:relative; display:flex; width:max-content; will-change:transform;
+              font-family:var(--font-display); text-transform:uppercase; font-size:clamp(36px, 6.6vw, 104px); line-height:1; letter-spacing:.03em; }
+  .vm-half, .vm-item { display:flex; align-items:center; }
+  .vm-word { padding:0 .45em; color:var(--brand-green); transition:color .4s, opacity .4s, -webkit-text-stroke-color .4s; }
+  /* every other line in outline, for rhythm */
+  .vm-line:nth-child(even) .vm-word { color:transparent; -webkit-text-stroke:max(1px, .016em) var(--brand-green); }
+  .vm-btn:hover .vm-word, .vm-btn:focus-visible .vm-word { color:var(--brand-cream); -webkit-text-stroke-color:transparent; }
+  .vm-list:hover .vm-line:not(:hover) .vm-word { opacity:.35; }
+  /* the "Ver" button that trails the cursor (desktop) */
+  .vm-cursor { position:fixed; left:0; top:0; z-index:55; width:68px; height:68px; border-radius:50%; display:grid; place-items:center; pointer-events:none;
+               background:var(--gradient-gold); color:var(--brand-green); font-family:var(--font-display); font-size:14px; letter-spacing:.12em; text-transform:uppercase;
+               box-shadow:0 8px 24px rgba(16,44,26,.35); opacity:0; }
+  /* Floating value card */
+  .vc-overlay { position:fixed; inset:0; z-index:70; display:grid; place-items:center; padding:var(--space-6);
+                background:rgba(16,44,26,.55); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); }
+  .vc-card { --d:min(560px, calc(100vw - 32px), calc(100svh - 32px)); position:relative; width:var(--d); aspect-ratio:1; overflow:auto;
+             display:flex; flex-direction:column; justify-content:center; text-align:center;
+             padding:calc(var(--d) * .13) calc(var(--d) * .075);
+             background:var(--brand-green); color:var(--brand-cream); border-radius:50%; box-shadow:0 30px 80px rgba(0,0,0,.35);
+             scrollbar-width:none; }
+  .vc-card::-webkit-scrollbar { display:none; }
+  .vc-card .label { color:var(--gold-light); }
+  .vc-card .display-l { margin-top:0; margin-bottom:16px; padding-right:0; }
+  .vc-card p { font-size:17px; line-height:27px; color:var(--brand-cream); }
+  .vc-close { all:unset; position:absolute; top:8%; left:50%; right:auto; transform:translateX(-50%); z-index:1; width:44px; height:44px; display:grid; place-items:center; cursor:pointer; border-radius:50%; }
+  .vc-close svg.ct { width:26px; height:26px; }
+  .vc-close:focus-visible { outline:2px solid var(--focus-ring); outline-offset:2px; }
+  @media (hover:hover) {
+    .vc-close:hover .ct-a { transform:rotate(-90deg); }
+    .vc-close:hover .ct-b { transform:rotate(90deg); }
+    .vc-close:hover .ct-tee { fill:var(--gold-light); }
+  }
+
   /* Figma leaf badge: green block, rounded top-left and bottom-right */
   .leaf { display:inline-grid; place-items:center; width:58px; height:46px; border-radius:19px 0 19px 0; background:var(--brand-green);
           color:var(--brand-cream); font-family:var(--font-display); font-size:22px; letter-spacing:.04em; flex:0 0 auto; }
-  .vs.green .value .leaf { background:var(--gradient-gold); color:var(--brand-green); }
-  .quote { margin:var(--space-12) auto 0; max-width:820px; text-align:center; font-size:24px; line-height:34px; font-weight:500; color:var(--brand-cream); position:relative; padding-top:var(--space-8); }
+  .quote { margin:var(--space-12) auto 0; max-width:820px; text-align:center; font-size:24px; line-height:34px; font-weight:500; color:var(--brand-green); position:relative; padding-top:var(--space-8); }
   .quote::before { content:"“"; position:absolute; top:-18px; left:50%; transform:translateX(-50%); font-family:var(--font-display); font-size:72px; line-height:1; color:var(--gold-deep); }
 
   /* ---------- Enseñanza (Figma 639:739) ---------- */

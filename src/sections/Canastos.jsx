@@ -1,5 +1,6 @@
 import BasketArt from '../components/BasketArt.jsx';
 import BasketOrbit from '../components/BasketOrbit.jsx';
+import AutoplayVideo from '../components/AutoplayVideo.jsx';
 
 // How the basket cards are drawn: 'orbit' (number with spinning balls) or 'heap' (original basket art).
 const BASKET_STYLE = 'orbit';
@@ -12,18 +13,6 @@ const BASKETS = [
 
 const CLIPS = ['ball_and_tee', 'balls', 'divot'];
 
-// React doesn't reliably set the `muted` attribute, which iOS needs for autoplay.
-function startClip(el) {
-  if (!el) return;
-  el.muted = true;
-  el.defaultMuted = true;
-  if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) {
-    el.pause();
-    return;
-  }
-  el.play()?.catch(() => {});
-}
-
 export default function Canastos() {
   return (
     <section id="canastos" className="vs green has-cover" data-sec={30}>
@@ -31,19 +20,7 @@ export default function Canastos() {
         <div className="cv-grid">
           {CLIPS.map((name) => (
             <div key={name} className={`cv-tile cv-${name}`}>
-              <video
-                ref={startClip}
-                src={`video/${name}.mp4`}
-                poster={`video/${name}.jpg`}
-                autoPlay
-                muted
-                loop
-                playsInline
-                preload="auto"
-                disablePictureInPicture
-                aria-hidden="true"
-                tabIndex={-1}
-              />
+              <AutoplayVideo src={`video/${name}.mp4`} poster={`video/${name}.jpg`} preload="auto" aria-hidden="true" />
             </div>
           ))}
         </div>

@@ -1,3 +1,5 @@
+import { STACKED } from '../layout.js';
+
 // Canvas putter scene: grass, putter, ball, hole and flag.
 // Driven from outside: call render(progress 0..1, now) on every tick.
 export function createPuttScene(els) {
@@ -317,7 +319,7 @@ export function createPuttScene(els) {
       }
       // Phones: every panel is exactly one screen wide, so content runs edge to edge into the next one. Leave a
       // stretch of grass after the hero and after the first card panel.
-      if (secs.indexOf(sec) < 2 && window.matchMedia('(max-width: 760px)').matches) w += Math.round(W * 0.35);
+      if (secs.indexOf(sec) < 2 && window.matchMedia(STACKED).matches) w += Math.round(W * 0.35);
       x += w;
       lastLeft = sec.offsetLeft;
     }
