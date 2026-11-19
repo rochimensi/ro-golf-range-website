@@ -90,7 +90,7 @@ export default function Clases() {
                 <span>Principiantes</span><span>Intermedios</span><span>Avanzados</span><span>Alto rendimiento</span>
               </div>
               <p className="body-l">Se coordina el horario y la clase con reserva previa.</p>
-              <a className="btn academia" href="#contacto">Quiero tomar clases</a>
+              <a className="btn academia" href="https://wa.me/5491159841197?text=Hola%21%20Quisiera%20reservar%20una%20clase%20con%20Omar%20Peralta." target="_blank" rel="noopener noreferrer">Quiero tomar clases</a>
             </div>
           </header>
           <figure className="framed clases-media">

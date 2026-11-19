@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
-import { SIGNS } from './YardageNav.jsx';
+import { SIGNS, inRange } from './YardageNav.jsx';
 import { scrollToTarget, pauseScroll } from '../smoothScroll.js';
 
 // Two golf tees crossed into an X, heads up: the panel's close button (Figma 3246:2019).
@@ -33,7 +33,7 @@ export default function HeroMenu() {
     // phone case here failed on iPhone: at the very first check the phone breakpoint and the page height
     // weren't settled yet, so the button started hidden and stayed hidden until something re-measured.)
     const toggle = (st) => {
-      const past = !!st.isActive;
+      const past = inRange(st);   // real scroll position, not the possibly stale `isActive` (see YardageNav)
       el.classList.toggle('off', past);
       if (past && !phone.matches) setOpen(false);
     };
@@ -44,6 +44,7 @@ export default function HeroMenu() {
       end: 'bottom top',
       onToggle: toggle,
       onRefresh: toggle,
+      refreshPriority: -1, // measure after the pinned sections add their scroll space (as the yardage rail does)
     });
     // Rotating a tablet or resizing a window can cross the phone breakpoint.
     const onChange = () => toggle(st);

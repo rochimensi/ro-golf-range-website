@@ -298,7 +298,7 @@ export default function Empresas() {
           <ul className="emp-grid">
             {BRANDS.map((b) => <li key={b} className="emp-cell">{b}</li>)}
             <li className="emp-cell emp-cell-cta">
-              <a className="btn academia" href="#contacto">Quiero publicitar en R&amp;O Golf Range</a>
+              <a className="btn academia" href="https://wa.me/5491159841197?text=Hola%21%20Quisiera%20conversar%20sobre%20una%20propuesta%20de%20acci%C3%B3n%20comercial." target="_blank" rel="noopener noreferrer">Quiero publicitar en R&amp;O Golf Range</a>
             </li>
           </ul>
         </div>
@@ -327,7 +327,7 @@ export default function Empresas() {
                 ))}
               </dl>
               <p className="gt-note">Sin experiencia previa, cualquier rango de edades. Práctica techada si llueve.</p>
-              <a className="btn academia gt-cta" href="#contacto">Reservá tu Golf Pass</a>
+              <a className="btn academia gt-cta" href="https://wa.me/5491159841197?text=Hola%21%20Quisiera%20consultar%20sobre%20el%20Golf%20Pass%20Empresas." target="_blank" rel="noopener noreferrer">Reservá tu Golf Pass</a>
             </div>
             <div className="gt-side right"><span className="gt-up">Nº 0001 · Mar del Plata</span></div>
           </article>

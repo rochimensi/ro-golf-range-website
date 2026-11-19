@@ -14,6 +14,9 @@ export const SIGNS = [
   { yd: 300, id: 'contacto', label: 'Contacto' },
 ];
 
+// Is the page currently scrolled between a trigger's start and end?
+export const inRange = (st) => { const y = st.scroll(); return y >= st.start && y <= st.end; };
+
 export default function YardageNav() {
   const nav = useRef(null);
 
@@ -30,8 +33,10 @@ export default function YardageNav() {
       endTrigger: document.getElementById('v'),
       start: 'top bottom',
       end: 'bottom top',
-      onToggle: (st) => el.classList.toggle('on', st.isActive),
-      onRefresh: (st) => el.classList.toggle('on', st.isActive),
+      // compare the real scroll position: during a refresh `isActive` still holds the previous answer, so a
+      // first measurement taken before the putt had its full height could leave the rail on over the intro
+      onToggle: (st) => el.classList.toggle('on', inRange(st)),
+      onRefresh: (st) => el.classList.toggle('on', inRange(st)),
       refreshPriority: -1,
     });
 

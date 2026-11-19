@@ -6,6 +6,7 @@ import { startSmoothScroll } from './smoothScroll.js';
 import PuttIntro from './components/PuttIntro.jsx';
 import YardageNav from './components/YardageNav.jsx';
 import HeroMenu from './components/HeroMenu.jsx';
+import WhatsAppButton from './components/WhatsAppButton.jsx';
 import Canastos from './sections/Canastos.jsx';
 import Clases from './sections/Clases.jsx';
 import Golf from './sections/Golf.jsx';
@@ -71,6 +72,7 @@ export default function App() {
       <PuttIntro />
       <YardageNav />
       <HeroMenu />
+      <WhatsAppButton />
       <main id="v">
         <Canastos />
         <Clases />

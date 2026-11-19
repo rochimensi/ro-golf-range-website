@@ -69,6 +69,12 @@ export default function Canastos() {
             <h3 className="heading-3">SportClub</h3>
             <p>Los socios de SportClub tienen <strong>un canasto sin cargo</strong> todas las semanas.</p>
           </article>
+          {/* the gated neighbourhoods next to the club; full width, no logo */}
+          <article className="benefit benefit-wide" data-reveal>
+            <div className="label">Beneficio BAarrios cerrados</div>
+            <h3 className="heading-3">Vecinos al driving</h3>
+            <p>Si sos residente de <b>Rumencó</b>, <b>Rumencó Joven</b>, <b>Las Prunas</b>, <b>Arenas del Sur</b>, <b>Arenas Chico</b>, <b>Casonas del Haras</b> o <b>Haras Santa María del Mar</b>, comunicate con nosotros para armar <strong>clases grupales sin cargo</strong>.</p>
+          </article>
         </div>
       </div>
     </section>
