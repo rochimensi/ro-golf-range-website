@@ -40,25 +40,24 @@ export default function Clases() {
     // 2. Grid full: the heading drops away.
     tl.to('.cl-cover-ink .cl-letter', { yPercent: 110, opacity: 0, duration: 0.2, ease: 'power2.in', stagger: { amount: 0.12 } }, 1.05);
 
-    // 3. Content comes in.
-    const c = 1.4;
-    tl.from('.clases-word', { yPercent: 110, duration: 0.25, ease, stagger: 0.04 }, c + 0.08)
-      .from('.clases .rule', { scaleX: 0, transformOrigin: 'left center', duration: 0.2, ease: 'power2.inOut' }, c + 0.3)
-      .from('.clases .body-l', { y: 20, opacity: 0, duration: 0.2, ease }, c + 0.38)
-      .from('.clases .levels span', { y: 12, scale: 0.85, opacity: 0, duration: 0.15, ease: 'back.out(2)', stagger: 0.05 }, c + 0.5)
-      .from('.clases .btn', { opacity: 0, duration: 0.2, ease }, c + 0.62)
+    // 3. Content comes in, quickly, and the section unpins as soon as it's all shown
+    //    (no hold at the end, so there's no dead scroll before the page moves on).
+    const c = 1.3;
+    tl.from('.clases-word', { yPercent: 110, duration: 0.2, ease, stagger: 0.03 }, c + 0.05)
+      .from('.clases .rule', { scaleX: 0, transformOrigin: 'left center', duration: 0.15, ease: 'power2.inOut' }, c + 0.15)
+      .from('.clases .body-l', { y: 20, opacity: 0, duration: 0.15, ease }, c + 0.2)
+      .from('.clases .levels span', { y: 12, scale: 0.85, opacity: 0, duration: 0.12, ease: 'back.out(2)', stagger: 0.04 }, c + 0.25)
+      .from('.clases .btn', { opacity: 0, duration: 0.15, ease }, c + 0.35)
       // Video uncovers top to bottom, echoing the columns, while it settles from a slight zoom.
-      .from('.clases .framed', { clipPath: 'inset(0% 0% 100% 0%)', duration: 0.45, ease: 'power2.inOut' }, c + 0.1)
-      .from('.clases .framed video', { scale: 1.18, duration: 0.6, ease }, c + 0.1);
-
-    // 4. Short hold with everything shown before the section scrolls on.
-    tl.to({}, { duration: 0.25 });
+      .from('.clases .framed', { clipPath: 'inset(0% 0% 100% 0%)', duration: 0.35, ease: 'power2.inOut' }, c + 0.05)
+      .from('.clases .framed video', { scale: 1.18, duration: 0.45, ease }, c + 0.05);
 
     ScrollTrigger.create({
       animation: tl,
       trigger: root.current,
       start: 'top top',
-      end: () => `+=${tl.duration() * window.innerHeight}`,
+      // 0.85 screens of scroll per timeline unit
+      end: () => `+=${tl.duration() * window.innerHeight * 0.85}`,
       pin: true,
       scrub: 0.4,
       invalidateOnRefresh: true,

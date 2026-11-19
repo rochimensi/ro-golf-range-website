@@ -6,9 +6,9 @@ import { useGSAP } from '@gsap/react';
 // the signs as you scroll; the current sign lights up gold. Click a sign to jump there.
 export const SIGNS = [
   { yd: 30, id: 'canastos', label: 'Canastos' },
-  { yd: 50, id: 'clases', label: 'Clases' },
+  { yd: 50, id: 'clases', label: 'Clases y Academia' },
   { yd: 100, id: 'omar', label: 'Omar Peralta' },
-  { yd: 150, id: 'empresas', label: 'Empresas' },
+  { yd: 150, id: 'empresas', label: 'Acciones Comerciales' },
   { yd: 200, id: 'galeria', label: 'Galería' },
   { yd: 250, id: 'nosotros', label: 'Nosotros' },
   { yd: 300, id: 'contacto', label: 'Contacto' },

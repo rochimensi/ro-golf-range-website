@@ -15,8 +15,7 @@ export default function Golf() {
     <section id="golf" className="vs cream" data-sec={50}>
       <div className="wrap">
         <header className="vh center" data-reveal>
-          <div className="label">Golf</div>
-          <h2 className="display-l">Una escuela de vida</h2>
+          <h2 className="display-l">El GOLF es una escuela de vida</h2>
           <div className="rule mx" />
           <p className="body-l">Los valores y enseñanzas que te acompañarán a lo largo de la vida.</p>
         </header>

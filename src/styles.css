@@ -621,16 +621,14 @@
   .vm-btn { all:unset; box-sizing:border-box; position:relative; display:block; width:100%; padding:clamp(8px, 1.2vw, 18px) 0; cursor:pointer; }
   @media (hover:hover) and (pointer:fine) { .vm-btn { cursor:none; } }
   .vm-btn:focus-visible { outline:2px solid var(--gold-deep); outline-offset:-4px; }
-  /* hovered line fills green from its middle */
-  .vm-btn::before { content:""; position:absolute; inset:0; background:var(--brand-green); transform:scaleY(0); transition:transform .5s cubic-bezier(.2,.8,.2,1); }
-  .vm-btn:hover::before, .vm-btn:focus-visible::before { transform:scaleY(1); }
   .vm-track { position:relative; display:flex; width:max-content; will-change:transform;
               font-family:var(--font-display); text-transform:uppercase; font-size:clamp(36px, 6.6vw, 104px); line-height:1; letter-spacing:.03em; }
   .vm-half, .vm-item { display:flex; align-items:center; }
   .vm-word { padding:0 .45em; color:var(--brand-green); transition:color .4s, opacity .4s, -webkit-text-stroke-color .4s; }
   /* every other line in outline, for rhythm */
   .vm-line:nth-child(even) .vm-word { color:transparent; -webkit-text-stroke:max(1px, .016em) var(--brand-green); }
-  .vm-btn:hover .vm-word, .vm-btn:focus-visible .vm-word { color:var(--brand-cream); -webkit-text-stroke-color:transparent; }
+  /* hovered line: no background fill; outline words fill in solid green, the other lines dim */
+  .vm-btn:hover .vm-word, .vm-btn:focus-visible .vm-word { color:var(--brand-green); -webkit-text-stroke-color:transparent; }
   .vm-list:hover .vm-line:not(:hover) .vm-word { opacity:.35; }
   /* the "Ver" button that trails the cursor (desktop) */
   .vm-cursor { position:fixed; left:0; top:0; z-index:55; width:68px; height:68px; border-radius:50%; display:grid; place-items:center; pointer-events:none;
@@ -727,10 +725,107 @@
   .omar-photo.captioned { min-height:420px; }
   .cap-cream { position:absolute; left:0; right:0; bottom:0; background:var(--brand-cream); color:var(--brand-green); font-style:italic; font-size:14px; line-height:19px; padding:var(--space-2) var(--space-4); z-index:2; }
 
-  /* ---------- Empresas ---------- */
-  .corp { display:grid; grid-template-columns:1fr auto; gap:var(--space-8); align-items:end; border:3px solid var(--brand-green); padding:var(--space-12); position:relative; }
-  .corp::after { content:""; position:absolute; inset:8px; border:1px solid var(--gold-deep); pointer-events:none; }
-  .corp .vh, .corp > div { max-width:680px; }
+  /* ---------- Empresas · Acciones comerciales (canvas option C) ---------- */
+  .emp { padding-top:0; padding-bottom:calc(var(--space-16) * 1.75); }
+  /* pinned grid scene (reuses the Clases grid + cover styles) */
+  .emp-scene { padding:var(--space-16) 0 var(--space-8); }
+  .emp-scene-in { position:relative; z-index:1; width:100%; }
+  .emp-cover { grid-template-rows:auto auto; align-content:center; justify-items:center; }
+  .emp-cover .cl-title { font-size:clamp(40px, 9.6vw, 150px); }
+  .emp-title-line { display:block; }
+  .emp-title .clases-word-mask:not(:last-child) { margin-right:.24em; }
+  .emp-lead { display:grid; grid-template-columns:auto minmax(0, 1fr); gap:var(--space-8) var(--space-16); align-items:end; }
+  .emp-title { align-self:start; font-family:var(--font-display); font-weight:400; font-size:clamp(44px, 4.6vw, 64px); line-height:1; letter-spacing:.04em; text-transform:uppercase; }
+  .emp-lead-text { display:flex; flex-direction:column; align-items:flex-start; gap:20px; }
+  .emp-pills { list-style:none; display:flex; flex-wrap:wrap; gap:var(--space-2); }
+  .emp-pills li { padding:var(--space-2) var(--space-4); border-radius:var(--radius-full); border:1px solid #4b5e4d; font-size:14px; font-weight:500; }
+
+  /* reel: full-bleed horizontal scroll, first card lined up with .wrap content (rail on the left) */
+  .emp-reel { list-style:none; margin-top:56px; display:flex; gap:20px; overflow-x:auto; overscroll-behavior-x:contain; -webkit-overflow-scrolling:touch; touch-action:pan-x pan-y;
+              padding:0 var(--space-8) var(--space-6) max(150px, calc((100% - 1160px) / 2 + 150px)); scroll-padding-left:max(150px, calc((100% - 1160px) / 2 + 150px));
+              scrollbar-width:none; }
+  .emp-reel::-webkit-scrollbar { display:none; }
+  .emp-card { flex:0 0 240px; transition:transform .35s cubic-bezier(.2,.8,.2,1); }
+  .emp-card:hover { transform:translateY(-6px); }
+  .emp-card figure { margin:0; }
+  .emp-media { position:relative; aspect-ratio:9 / 16; border-radius:var(--radius-md); overflow:hidden; background:#ede8da; }
+  .emp-media video, .emp-media img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; }
+  .emp-card figcaption { margin-top:var(--space-3); display:flex; flex-direction:column; gap:2px; }
+  .emp-format { font-family:var(--font-display); font-size:16px; letter-spacing:.08em; text-transform:uppercase; transition:color .3s; }
+  .emp-card:hover .emp-format { color:#4b5e4d; }
+  .emp-brand { font-size:14px; line-height:20px; color:#4b5e4d; }
+
+  .emp-brands { margin-top:72px; display:flex; flex-direction:column; align-items:center; gap:20px; text-align:center; }
+  .emp-brands > .label { margin-bottom:var(--space-6); }
+  /* brand grid: tic-tac-toe lines (inside only), gold dashed; the CTA takes the cells left in the last row */
+  .emp-grid { --line:1px dashed var(--gold-deep); list-style:none; width:100%; display:grid; grid-template-columns:repeat(4, minmax(0, 1fr)); }
+  .emp-cell { display:flex; align-items:center; justify-content:center; text-align:center; min-height:120px; padding:var(--space-4) 20px;
+              font-family:var(--font-display); font-size:18px; line-height:1.2; letter-spacing:.08em; text-transform:uppercase;
+              border-right:var(--line); border-bottom:var(--line); transition:background-color .3s, color .3s; }
+  .emp-cell:nth-child(4n) { border-right:0; }
+  .emp-cell:nth-child(n+9) { border-bottom:0; }
+  .emp-cell:not(.emp-cell-cta):hover { background:var(--brand-green); color:var(--gold-light); }
+  .emp-cell.emp-cell-cta { grid-column:span 3; border-right:0; border-bottom:0; }
+  .emp-tb { margin-top:calc(var(--space-16) + 80px); max-width:1070px; margin-bottom:var(--space-12); }
+  .emp-tb .display-l { margin-top:var(--space-2); }
+  .vs.cream .emp-q { max-width:826px; margin:0 auto var(--space-3); font-size:24px; line-height:32px; font-weight:600; }
+
+  /* Golf Pass: ticket drawn as a sketch (green lines on cream, no fill), scalloped edges, tilted; straightens on hover */
+  .gt { position:relative; display:grid; grid-template-columns:72px minmax(0, 1fr) 72px; width:100%; max-width:960px; padding:24px 40px;
+        color:var(--brand-green); transform:rotate(-2deg); transition:transform .5s cubic-bezier(.2,.8,.2,1); }
+  /* outline: one SVG path with the scalloped sides, drawn left → top → right → bottom when the ticket scrolls in (see Empresas.jsx) */
+  .gt-outline { position:absolute; inset:0; width:100%; height:100%; overflow:visible; pointer-events:none; }
+  .gt-outline path { fill:none; stroke:var(--brand-green); stroke-width:2; stroke-linejoin:round; }
+  /* inner frame and content fade in as the outline finishes */
+  .gt::before, .gt-side, .gt-main { opacity:0; transition:opacity .7s ease; }
+  .gt-main { transform:translateY(10px); transition:opacity .7s ease, transform .7s cubic-bezier(.2,.8,.2,1); }
+  .gt.gt-done::before, .gt.gt-done .gt-side, .gt.gt-done .gt-main { opacity:1; transform:none; }
+  .gt-side, .gt-main { position:relative; z-index:1; }
+  .gt::before { content:""; position:absolute; z-index:1; inset:14px 30px; border:1.5px solid var(--brand-green); outline:1px solid rgba(16,44,26,.45); outline-offset:-8px; pointer-events:none; }
+  .gt:hover { transform:rotate(-.6deg) scale(1.015); }
+  .gt-side { display:flex; align-items:center; justify-content:center; border-right:2px dashed rgba(16,44,26,.55); }
+  .gt-side.right { border-right:0; border-left:2px dashed rgba(16,44,26,.55); }
+  .gt-up { writing-mode:vertical-rl; transform:rotate(180deg); font-family:var(--font-display); font-size:15px; letter-spacing:.3em; text-transform:uppercase; white-space:nowrap; }
+  .gt-main { padding:36px 32px; display:flex; flex-direction:column; align-items:center; text-align:center; gap:10px; }
+  .gt-logo { width:60px; height:60px; border-radius:var(--radius-full); box-shadow:0 0 0 2px var(--brand-green); }
+  .gt-kicker { font-family:var(--font-display); font-size:14px; letter-spacing:.32em; text-transform:uppercase; }
+  .gt-title { margin-top:4px; font-family:var(--font-display); font-weight:400; font-size:clamp(64px, 7.2vw, 104px); line-height:.9; letter-spacing:.03em; text-transform:uppercase; }
+  .gt-sub { display:flex; align-items:center; gap:14px; font-family:var(--font-display); font-size:15px; letter-spacing:.2em; text-transform:uppercase; }
+  .gt-sub span { width:56px; height:2px; background:var(--gradient-gold-rule); }
+  .gt-row { margin-top:var(--space-4); width:100%; display:grid; grid-template-columns:repeat(4, minmax(0, 1fr)); border-top:1px solid; border-bottom:1px solid; border-image:var(--gradient-gold-rule) 1; }
+  .gt-row > div { padding:var(--space-4) var(--space-3); }
+  /* gold gradient lines, like the site's gold rules (vertical ones run top to bottom) */
+  .gt-row > div + div { border-left:1px solid; border-image:linear-gradient(180deg, var(--gold-deep) 0%, var(--gold-light) 50%, var(--gold-deep) 100%) 1; }
+  .gt-row dt { font-family:var(--font-display); font-size:12px; letter-spacing:.16em; text-transform:uppercase; }
+  .gt-row dd { margin-top:4px; font-size:16px; line-height:22px; font-weight:600; }
+  .vs.cream .gt-note { margin-top:var(--space-3); font-size:16px; line-height:24px; }
+  /* same .btn.academia as the rest of the site; on the gold ticket a green outline keeps its shape once the gold sweep fills it */
+  .gt-cta { margin-top:var(--space-3); }
+  .gt-cta:is(:hover, :focus-visible) { box-shadow:inset 0 0 0 1px var(--brand-green); }
+  @media (prefers-reduced-motion: reduce) { .gt, .emp-card, .emp-cell { transition:none; } }
+  @media (max-width:900px) {
+    .emp-lead { grid-template-columns:1fr; }
+    .emp-grid { grid-template-columns:repeat(3, minmax(0, 1fr)); }
+    .emp-cell { min-height:96px; font-size:12px; letter-spacing:.03em; padding:var(--space-3) 6px; }
+    .emp-cell:nth-child(4n) { border-right:var(--line); }
+    .emp-cell:nth-child(n+9) { border-bottom:var(--line); }
+    .emp-cell:nth-child(3n) { border-right:0; }
+    .emp-cell.emp-cell-cta { grid-column:1 / -1; border-bottom:0; padding-top:var(--space-6); }
+    .emp-cell-cta .btn { white-space:normal; text-align:center; justify-content:center; }
+    .gt { grid-template-columns:minmax(0, 1fr); padding:24px; transform:rotate(-1deg); }
+    .gt::before { inset:12px 22px; }
+    .gt-side { display:none; }
+    .gt-main { padding:28px 16px; }
+    .gt-row { grid-template-columns:1fr 1fr; }
+    .gt-row > div:nth-child(3) { border-left:0; }
+    .gt-row > div:nth-child(n+3) { border-top:1px solid; border-image:var(--gradient-gold-rule) 1; }
+  }
+  @media (max-width:760px) {
+    .emp-reel { padding:0 var(--space-4) var(--space-6); scroll-padding-left:var(--space-4); }
+    .emp-card { flex-basis:170px; }
+    .emp-scene { padding-top:var(--space-12); }
+      .gt-sub span { width:24px; }
+  }
 
   /* ---------- Galería (vertical collage) ---------- */
   @property --s { syntax:'<number>'; inherits:true; initial-value:1.12; }

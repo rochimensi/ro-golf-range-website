@@ -41,7 +41,18 @@ export default function App() {
           revealIO.unobserve(e.target);
         });
     }, { rootMargin: '0px 0px -12% 0px' });
-    root.current.querySelectorAll('[data-reveal], .ph').forEach((el) => revealIO.observe(el));
+    const REVEAL = '[data-reveal], .ph';
+    root.current.querySelectorAll(REVEAL).forEach((el) => revealIO.observe(el));
+    // Elements added later (a section re-rendered by hot reload while editing, or content that mounts
+    // after load) would otherwise stay hidden at opacity 0: watch for them too.
+    const revealMO = new MutationObserver((muts) => {
+      muts.forEach((m) => m.addedNodes.forEach((n) => {
+        if (n.nodeType !== 1) return;
+        if (n.matches(REVEAL) && !n.classList.contains('in')) revealIO.observe(n);
+        n.querySelectorAll(REVEAL).forEach((el) => { if (!el.classList.contains('in')) revealIO.observe(el); });
+      }));
+    });
+    revealMO.observe(root.current, { childList: true, subtree: true });
 
     // Photos not supplied yet (e.g. the Figma images) show a labelled placeholder instead.
     const markMissing = (img) => img.parentElement.classList.add('missing');
@@ -52,7 +63,7 @@ export default function App() {
 
     // Images change section heights as they load: recompute trigger positions.
     window.addEventListener('load', () => ScrollTrigger.refresh());
-    return () => { stopSmooth(); revealIO.disconnect(); };
+    return () => { stopSmooth(); revealIO.disconnect(); revealMO.disconnect(); };
   }, { scope: root });
 
   return (
