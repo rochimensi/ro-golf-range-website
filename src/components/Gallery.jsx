@@ -1,42 +1,61 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { pauseScroll } from '../smoothScroll.js';
 
-// Photos: aspect ratio = width / height. Videos are 9:16 slots: drop the files in public/video/ to fill them.
+// Photos only: aspect ratio = width / height.
 const ITEMS = [
   { src: 'img/g01.jpg', alt: 'Baldes listos para practicar', ar: 0.75 },
-  { src: 'img/g02.jpg', alt: 'Bahías techadas', ar: 0.75 },
-  { video: 'video/v01.mp4', alt: 'Video del range' },
   { src: 'img/g03.jpg', alt: 'Un café entre baldes', ar: 0.75 },
-  { src: 'img/g04.jpg', alt: 'Tarde de práctica en el range', ar: 0.75 },
   { src: 'img/g05.jpg', alt: 'Lavandas junto al range', ar: 0.75 },
   { src: 'img/g06.jpg', alt: 'Entrenamiento con ayudas', ar: 0.455 },
-  { video: 'video/v02.mp4', alt: 'Video del range' },
   { src: 'img/g07.jpg', alt: 'Atardecer en las bahías', ar: 0.75 },
-  { src: 'img/g08.jpg', alt: 'Práctica en las bahías', ar: 0.75 },
   { src: 'img/g09.jpg', alt: 'Ejercicios en el césped', ar: 0.8 },
-  { src: 'img/g10.jpg', alt: 'Un rincón entre los pinos', ar: 0.5625 },
-  { video: 'video/v03.mp4', alt: 'Video del range' },
   { src: 'img/g11.jpg', alt: 'Flores en las bahías', ar: 0.75 },
-  { src: 'img/g12.jpg', alt: 'Estacionamiento privado', ar: 0.62, pos: '50% 72%' },
+  { src: 'img/g13.jpg', alt: 'Grupo de golfistas en el range', ar: 0.5625 },
+  { src: 'img/g14.jpg', alt: 'Clase con los más chicos', ar: 0.75 },
+  { src: 'img/g15.jpg', alt: 'Gatera interior con vista al range', ar: 0.8 },
+  { src: 'img/g16.jpg', alt: 'Una tarde de práctica bajo las bahías techadas', ar: 0.75 },
+  { src: 'img/g17.jpg', alt: 'Atardecer sobre las gateras', ar: 1.7778 },
+  { src: 'img/g18.jpg', alt: 'Clínica de chicos en el range', ar: 0.6442 },
+  { src: 'img/g19.jpg', alt: 'Malvones bajo el techo de las gateras', ar: 0.5625 },
 ];
-const FX = ['up', 'iris', 'left', 'split', 'drop'];
+const FX = ['up', 'left', 'split', 'drop'];
 
-function VideoTile({ item, fx }) {
-  const [missing, setMissing] = useState(false);
+// One tile. The file is only requested when the tile comes within about half a screen of view, and the
+// tile is revealed (its clip-path wipe, see .ph[data-fx]) once it is both on screen and fully loaded, so
+// an empty frame never wipes in.
+function Photo({ item, fx, delay, onOpen }) {
+  const ref = useRef(null);
+  const [src, setSrc] = useState(null);
+  const [loaded, setLoaded] = useState(false);
+  const [seen, setSeen] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    const load = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) { setSrc(item.src); load.disconnect(); }
+    }, { rootMargin: '0px 0px 50% 0px' });
+    const view = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) { setSeen(true); view.disconnect(); }
+    }, { rootMargin: '0px 0px -10% 0px' });
+    load.observe(el);
+    view.observe(el);
+    return () => { load.disconnect(); view.disconnect(); };
+  }, [item.src]);
+
   return (
-    <div className={`ph video${missing ? ' missing' : ''}`} style={{ '--ar': 9 / 16 }} data-fx={fx}>
-      {!missing && (
-        <video src={item.video} muted loop playsInline autoPlay preload="metadata" aria-label={item.alt}
-               onError={() => setMissing(true)} />
+    <button ref={ref} className={`ph${seen && loaded ? ' in' : ''}`} data-fx={fx}
+            style={{ '--ar': item.ar, transitionDelay: `${delay}ms` }}
+            aria-label={`Ver foto: ${item.alt}`} onClick={onOpen}>
+      {src && (
+        <img src={src} alt={item.alt} decoding="async" draggable="false" onLoad={() => setLoaded(true)}
+             style={item.pos ? { objectPosition: item.pos } : undefined} />
       )}
-      {missing && <span className="play" aria-hidden="true">▶</span>}
-      <span className="missing-note">Video 9:16 · próximamente</span>
-    </div>
+    </button>
   );
 }
 
 export default function Gallery() {
-  const photos = ITEMS.filter((it) => it.src);
+  const photos = ITEMS;
   const [open, setOpen] = useState(-1);
   const show = useCallback((i) => setOpen((i + photos.length) % photos.length), [photos.length]);
 
@@ -52,21 +71,13 @@ export default function Gallery() {
     return () => { removeEventListener('keydown', onKey); pauseScroll(false); };
   }, [open, show]);
 
-  let pi = -1;
   return (
     <>
       <div className="gal">
-        {ITEMS.map((it, i) => {
-          const fx = FX[i % FX.length];
-          if (it.video) return <VideoTile key={i} item={it} fx={fx} />;
-          pi += 1;
-          const idx = pi;
-          return (
-            <button key={i} className="ph" style={{ '--ar': it.ar }} data-fx={fx} aria-label={`Ver foto: ${it.alt}`} onClick={() => setOpen(idx)}>
-              <img src={it.src} alt={it.alt} loading="lazy" decoding="async" draggable="false" style={it.pos ? { objectPosition: it.pos } : undefined} />
-            </button>
-          );
-        })}
+        {ITEMS.map((it, i) => (
+          // a small stagger across each row of three, so tiles revealed together don't all wipe at once
+          <Photo key={it.src} item={it} fx={FX[i % FX.length]} delay={(i % 3) * 90} onOpen={() => setOpen(i)} />
+        ))}
       </div>
 
       <div id="lb" className={open >= 0 ? 'open' : ''} role="dialog" aria-modal="true" aria-label="Galería" aria-hidden={open < 0}

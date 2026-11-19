@@ -41,7 +41,7 @@ export default function App() {
           revealIO.unobserve(e.target);
         });
     }, { rootMargin: '0px 0px -12% 0px' });
-    const REVEAL = '[data-reveal], .ph';
+    const REVEAL = '[data-reveal]';   // gallery photos reveal themselves once loaded (Gallery.jsx)
     root.current.querySelectorAll(REVEAL).forEach((el) => revealIO.observe(el));
     // Elements added later (a section re-rendered by hot reload while editing, or content that mounts
     // after load) would otherwise stay hidden at opacity 0: watch for them too.
