@@ -1,6 +1,6 @@
 export default function Instagram() {
   return (
-    <section id="instagram" className="vs cream" data-sec={200}>
+    <section id="instagram" className="vs cream" data-sec={250}>
       <div className="wrap">
         <div className="ig" data-reveal>
           <svg className="ig-ico" viewBox="0 0 24 24" aria-hidden="true"><rect x={3} y={3} width={18} height={18} rx={5} /><circle cx={12} cy={12} r={4} /><circle cx="17.3" cy="6.7" r={1} fill="currentColor" stroke="none" /></svg>

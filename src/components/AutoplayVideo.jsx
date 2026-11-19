@@ -5,7 +5,9 @@ import { useEffect, useRef } from 'react';
 // - iOS Low Power Mode and Android data savers block autoplay until the visitor touches the page:
 //   the clip retries on the first touch.
 // - It plays while on screen and pauses off screen (saves battery and data).
-export default function AutoplayVideo(props) {
+// - `lazy`: the file isn't requested at all until the clip comes within about half a screen of view
+//   (only the poster shows until then).
+export default function AutoplayVideo({ lazy = false, src, ...props }) {
   const ref = useRef(null);
 
   useEffect(() => {
@@ -16,13 +18,14 @@ export default function AutoplayVideo(props) {
     el.setAttribute('muted', '');
     el.setAttribute('playsinline', '');
 
-    let onScreen = true;
-    const tryPlay = () => { if (onScreen && el.paused) el.play()?.catch(() => {}); };
+    let onScreen = !lazy;
+    const tryPlay = () => { if (onScreen && el.paused && el.getAttribute('src')) el.play()?.catch(() => {}); };
 
     const io = new IntersectionObserver(([e]) => {
       onScreen = e.isIntersecting;
+      if (onScreen && lazy && !el.getAttribute('src')) el.src = src;
       if (onScreen) tryPlay(); else el.pause();
-    }, { rootMargin: '200px 0px' });
+    }, { rootMargin: lazy ? '50% 0px' : '200px 0px' });
     io.observe(el);
 
     const kick = () => tryPlay();
@@ -40,7 +43,10 @@ export default function AutoplayVideo(props) {
       el.removeEventListener('playing', started);
       el.removeEventListener('canplay', tryPlay);
     };
-  }, []);
+  }, [lazy, src]);
 
-  return <video ref={ref} autoPlay muted loop playsInline disablePictureInPicture tabIndex={-1} {...props} />;
+  return (
+    <video ref={ref} autoPlay muted loop playsInline disablePictureInPicture tabIndex={-1} {...props}
+      src={lazy ? undefined : src} preload={lazy ? 'none' : props.preload} />
+  );
 }

@@ -79,10 +79,10 @@ export default function App() {
         {/* <Ensenanza /> */}
         <Omar />
         <Empresas />
-        <Galeria />
-        <Instagram />
         <Nosotros />
         <Transformacion />
+        <Galeria />
+        <Instagram />
         <Contacto />
         <Footer />
       </main>

@@ -9,8 +9,8 @@ export const SIGNS = [
   { yd: 50, id: 'clases', label: 'Clases y Academia' },
   { yd: 100, id: 'omar', label: 'Omar Peralta' },
   { yd: 150, id: 'empresas', label: 'Acciones Comerciales' },
-  { yd: 200, id: 'galeria', label: 'Galería' },
-  { yd: 250, id: 'nosotros', label: 'Nosotros' },
+  { yd: 200, id: 'nosotros', label: 'Nosotros' },
+  { yd: 250, id: 'galeria', label: 'Galería' },
   { yd: 300, id: 'contacto', label: 'Contacto' },
 ];
 

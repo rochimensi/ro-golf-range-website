@@ -29,10 +29,13 @@ export default function HeroMenu() {
   useGSAP(() => {
     const el = root.current;
     const phone = window.matchMedia(PHONE);
+    // `off` only marks "past the hero"; on phones the CSS keeps the button visible anyway. (Deciding the
+    // phone case here failed on iPhone: at the very first check the phone breakpoint and the page height
+    // weren't settled yet, so the button started hidden and stayed hidden until something re-measured.)
     const toggle = (st) => {
-      const hide = st.isActive && !phone.matches;
-      el.classList.toggle('off', hide);
-      if (hide) setOpen(false);
+      const past = !!st.isActive;
+      el.classList.toggle('off', past);
+      if (past && !phone.matches) setOpen(false);
     };
     const st = ScrollTrigger.create({
       trigger: document.getElementById('canastos'),

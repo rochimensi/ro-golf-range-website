@@ -1,34 +1,59 @@
+import { useRef } from 'react';
+import gsap from 'gsap';
+import { useGSAP } from '@gsap/react';
+import ScrollHighlight from '../components/ScrollHighlight.jsx';
+
+// Two treatments of the R&O monogram, to compare (pick one, then drop the other):
+//   ?nosotros=logo   (default) the logo's emblem as a faint watermark behind the founders
+//   ?nosotros=letras the founder cards carry a giant R and O, in the logo's serif and gold
+const VARIANT = typeof location !== 'undefined' && new URLSearchParams(location.search).get('nosotros') === 'letras'
+  ? 'letras' : 'logo';
+
 export default function Nosotros() {
+  const root = useRef(null);
+
+  // Title: the letters of SOBRE rise out of a mask one by one, then R&O pops in, in the logo's gold.
+  useGSAP(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    gsap.timeline({ scrollTrigger: { trigger: '.nos-title', start: 'top 85%', once: true } })
+      .from('.nos-title .nos-ch', { yPercent: 115, duration: 0.7, ease: 'power3.out', stagger: 0.045 })
+      .from('.nos-title .nos-ro', { scale: 0.4, autoAlpha: 0, duration: 0.7, ease: 'back.out(2.2)' }, '-=0.35');
+  }, { scope: root });
+
   return (
-    <section id="nosotros" className="vs green" data-sec={250}>
+    <section id="nosotros" ref={root} className={`vs green nos-${VARIANT}`} data-sec={200}>
       <div className="wrap">
-        <header className="vh" data-reveal>
-          <div className="label">250 yd · Nosotros</div>
-          <h2 className="display-l">Apasionados por el golf y la innovación</h2>
-          <div className="rule" />
+        <header className="vh center">
+          <h2 className="display-xl nos-title" aria-label="Sobre R&O">
+            <span className="nos-mask" aria-hidden="true">
+              {[...'SOBRE'].map((ch, i) => <span key={i} className="nos-ch">{ch}</span>)}
+            </span>{' '}
+            <span className="nos-ro" aria-hidden="true">R&amp;O</span>
+          </h2>
         </header>
         <div className="about">
-          <div className="about-text" data-reveal>
-            <p className="body-l">En R&amp;O Golf Range somos apasionados por el golf y la innovación.</p>
-            <p>Nacimos en diciembre de 2024 dentro del Club Mar del Plata, Golf Los Acantilados, con el objetivo de transformar la práctica de este deporte en la ciudad y sus alrededores.</p>
-            <p>Detrás de este proyecto están la Ingeniera Rosario Mensi y el profesional de golf de la PGA Omar Peralta. Rosario aporta su visión tecnológica para ofrecer un servicio automatizado y eficiente. Omar, con una vida dedicada al golf desde su infancia temprana, es jugador profesional hace 33 años. Coach Assistant, y Caddie en el PGA Tour y en el European Tour durante más de 20 años. Su experiencia y conocimiento del juego son fundamentales para hacer de R&amp;O Golf Range un espacio de práctica de primer nivel y brindar el mejor asesoramiento y atención al público de diferentes perfiles.</p>
+        <div className="founders">
+            {VARIANT === 'logo' && <img className="nos-mark" src="img/logo-mark.png" alt="" aria-hidden="true" />}
+            <article className="founder" data-reveal><span className="mono" aria-hidden="true">R</span><div><h3 className="heading-3">Ing. Rosario Mensi</h3><p className="caption">Visión tecnológica · Servicio, automatizaciones y eficiencia</p></div></article>
+            <article className="founder" data-reveal><span className="mono" aria-hidden="true">O</span><div><h3 className="heading-3">Omar Peralta</h3><p className="caption">Profesional de golf PGA · Coach Assistant y Caddie</p></div></article>
+            <div className="since" data-reveal><b>Dic 2024</b><span className="label">EST. Los Acantilados</span></div>
           </div>
-          <div className="founders">
-            <article className="founder" data-reveal><span className="mono">R</span><div><h3 className="heading-3">Ing. Rosario Mensi</h3><p className="caption">Visión tecnológica · servicio automatizado y eficiente</p></div></article>
-            <article className="founder" data-reveal><span className="mono">O</span><div><h3 className="heading-3">Omar Peralta</h3><p className="caption">Profesional de golf PGA · Coach Assistant y Caddie</p></div></article>
-            <div className="since" data-reveal><b>Dic 2024</b><span className="label">Nacimos en Los Acantilados</span></div>
-          </div>
+          {/* same word-by-word scroll highlight as the quote in Golf, one sweep through all four paragraphs */}
+          <ScrollHighlight className="about-text" text={[
+            { className: 'body-l', text: 'En R&O Golf Range somos apasionados por el golf y la innovación.' },
+            { text: 'Nacimos en diciembre de 2024 dentro del Club Mar del Plata, Golf Los Acantilados, con el objetivo de transformar la práctica de este deporte en la ciudad y sus alrededores.' },
+            { text: 'Detrás de este proyecto están los 2 fundadores: la Ingeniera Rosario Mensi y el profesional de golf Omar Peralta.' },
+            { text: 'Desde Mar del Plata, trabajamos para posicionarnos a nivel nacional y demostrar que la evolución del golf empieza aquí.' },
+          ]} />
         </div>
         <div className="mv">
           <article className="mv-card" data-reveal>
             <div className="label">Visión</div>
-            <p className="body-l">Queremos redefinir la práctica de este deporte, en un ambiente inclusivo que invite a jugadores de todos los niveles a mejorar su juego y disfrutar. Aspiramos a ser el espacio elegido tanto por profesionales en búsqueda de perfeccionamiento como por quienes desean dar sus primeros golpes en un entorno amigable y motivador.</p>
-            <p>Desde Mar del Plata, trabajamos para posicionarnos a nivel nacional y demostrar que la evolución del golf empieza aquí.</p>
+            <p className="body-l">Redefinir la práctica en un espacio inclusivo para mejorar y disfrutar, desde el primer golpe al perfeccionamiento.</p>
           </article>
           <article className="mv-card" data-reveal>
             <div className="label">Misión</div>
-            <p className="body-l">Nuestra misión es acercar a más personas al mundo del golf con una experiencia moderna, accesible y de alto nivel.</p>
-            <p>Queremos que más personas descubran la pasión por el golf en un ambiente de excelencia, aprendizaje y diversión.</p>
+            <p className="body-l">Acercar a más personas al golf, con una experiencia moderna, accesible y de alto nivel.</p>
           </article>
         </div>
       </div>

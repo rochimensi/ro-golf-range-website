@@ -4,7 +4,17 @@ import { useGSAP } from '@gsap/react';
 
 // Text whose words brighten one after another as you scroll: each word starts at 40% opacity
 // and reaches 100% as the passage moves up the screen. Reduced motion shows it at full opacity.
-export default function ScrollHighlight({ as: Tag = 'p', text, className = '' }) {
+// `text` is one string, or a list of paragraphs ({ text, className }) that light up as one passage.
+const Words = ({ text }) => {
+  const words = text.trim().split(/\s+/);
+  return words.map((w, i) => (
+    <span key={i} aria-hidden="true">
+      <span className="hw">{w}</span>{i < words.length - 1 ? ' ' : ''}
+    </span>
+  ));
+};
+
+export default function ScrollHighlight({ as, text, className = '' }) {
   const ref = useRef(null);
 
   useGSAP(() => {
@@ -18,14 +28,16 @@ export default function ScrollHighlight({ as: Tag = 'p', text, className = '' })
     });
   }, { scope: ref });
 
-  const words = text.trim().split(/\s+/);
-  return (
-    <Tag ref={ref} className={className} aria-label={text}>
-      {words.map((w, i) => (
-        <span key={i} aria-hidden="true">
-          <span className="hw">{w}</span>{i < words.length - 1 ? ' ' : ''}
-        </span>
-      ))}
-    </Tag>
-  );
+  if (Array.isArray(text)) {
+    const Tag = as || 'div';
+    return (
+      <Tag ref={ref} className={className}>
+        {text.map((p, i) => (
+          <p key={i} className={p.className} aria-label={p.text}><Words text={p.text} /></p>
+        ))}
+      </Tag>
+    );
+  }
+  const Tag = as || 'p';
+  return <Tag ref={ref} className={className} aria-label={text}><Words text={text} /></Tag>;
 }
