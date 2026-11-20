@@ -25,11 +25,14 @@ export function createPuttScene(els) {
   let worldW = 0, lastLeft = 0;
   // Swing timing is set in screen-heights of scroll (not % of the page), so it feels the same however long the page is
   // swing timing in screen-heights of scroll; the pin lasts scrollScreens screen-heights
-  const P_BACK = swingVH.back / scrollScreens, P_HIT = swingVH.hit / scrollScreens, P_FOLLOW = swingVH.follow / scrollScreens;
+  // (phones get a shorter pin, so the page can change it with setScreens)
+  let P_BACK, P_HIT, P_FOLLOW;
+  function setScreens(s) { P_BACK = swingVH.back / s; P_HIT = swingVH.hit / s; P_FOLLOW = swingVH.follow / s; }
+  setScreens(scrollScreens);
   const P_HOLE = 0.93;   // scroll progress when ball reaches the cup
   const PUTT_YD = 20;
 
-  let W = 0, H = 0, dpr = 1, grassPattern = null;
+  let W = 0, H = 0, dpr = 1, grassPattern = null, grassDpr = 0;
 
   // ---------- helpers ----------
   const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
@@ -293,7 +296,9 @@ export function createPuttScene(els) {
     dpr = Math.min(window.devicePixelRatio || 1, 2);
     W = stage.clientWidth; H = stage.clientHeight;
     cvs.width = Math.round(W * dpr); cvs.height = Math.round(H * dpr);
-    grassPattern = makeGrass();
+    // The grass tile doesn't depend on the screen size, only on the pixel density, so it's built once. (It was
+    // rebuilt on every ScrollTrigger refresh, ~6 times while the page loads, and each build froze the headline.)
+    if (!grassPattern || grassDpr !== dpr) { grassPattern = makeGrass(); grassDpr = dpr; }
     layout();
   }
 
@@ -430,5 +435,8 @@ export function createPuttScene(els) {
     return camX;   // where the camera is, so the page can react to which panel is on screen
   }
 
-  return { render, resize, layout };
+  // how far the camera pans sideways over the whole putt, in px
+  const travel = () => Math.max(0, worldW - W);
+
+  return { render, resize, layout, setScreens, travel };
 }

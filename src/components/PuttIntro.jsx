@@ -9,6 +9,11 @@ import { STACKED } from '../layout.js';
 // How long the putt lasts, in screen-heights of scroll. Two big, quick scrolls reach the pin.
 // (3.5 for the four-panel path: hero, access + bays, comfort, holed.)
 const SCREENS = 3.5;
+// Phones: the panels are narrow but the screen is tall, so a fixed 3.5 screens moved the putt only ~0.5px sideways
+// per px of swipe and felt sluggish. There the pin follows the sideways distance instead (about 1:1, a little
+// extra so the cards can be read), never shorter than the putter swing needs.
+const PHONE_RATIO = 1.6;   // 1.1 felt too fast on an iPhone, the old fixed 3.5 screens too slow (≈2.0 here)
+const PHONE_MIN_SCREENS = 1.6;
 
 // Each glyph reels through these digits, in a random order, then lands on the real character.
 const SPIN_DIGITS = ['5', '1', '0', '2', '3', '7'];
@@ -85,15 +90,22 @@ export default function PuttIntro() {
 
     // GSAP pins the stage and scrubs a 0→1 progress value; scrub smoothing gives the ball its glide.
     const state = { p: 0 };
+    const screens = () => {
+      if (!window.matchMedia(STACKED).matches) return SCREENS;
+      const s = (scene.travel() * PHONE_RATIO) / window.innerHeight;
+      return Math.min(SCREENS, Math.max(PHONE_MIN_SCREENS, s));
+    };
+    // touch screens scroll natively, so a long catch-up reads as lag: the putt stops soon after the finger does
+    const touch = window.matchMedia('(pointer: coarse)').matches;
     gsap.to(state, {
       p: 1,
       ease: 'none',
       scrollTrigger: {
         trigger: el,
         start: 'top top',
-        end: () => '+=' + window.innerHeight * SCREENS,
+        end: () => { const s = screens(); scene.setScreens(s); return '+=' + window.innerHeight * s; },
         pin: true,
-        scrub: reduce ? true : 1.4,
+        scrub: reduce ? true : touch ? 0.6 : 1.4,
         invalidateOnRefresh: true,
         onRefreshInit: () => scene.resize(),
       },
@@ -215,7 +227,7 @@ export default function PuttIntro() {
         const left = b.parentElement.offsetLeft - camX;   // panel's left edge on screen
         // phones (stacked, left-aligned content): wait until the panel is mostly in, so the entrance plays where
         // you can see it (starting earlier, it finished while the content was still off the right edge)
-        const at = b.dataset.stacked === '1' ? 0.3 : 0.5;
+        const at = b.dataset.stacked === '1' ? 0.55 : 0.5;
         if (left < W * at) b.classList.add('in');
         else if (left > W * 0.95) b.classList.remove('in');
       });
@@ -316,7 +328,7 @@ export default function PuttIntro() {
               <h2 className="end-title" style={{ '--d': 0 }}>Abierto todo el año</h2>
               <img className="end-badge" src="/img/club-mar-del-plata.webp" alt="Club Mar del Plata" width={121} height={120} style={{ '--d': 1 }} />
               <p className="end-text" style={{ '--d': 1 }}>De lunes a lunes<br />En el Club Mar del Plata, Golf Los Acantilados.</p>
-              <button className="primary end-more" id="go-down" onClick={goDown} style={{ '--d': 2 }}>Más información abajo ↓</button>
+              <button className="btn academia end-more" id="go-down" onClick={goDown} style={{ '--d': 2 }}>Más información abajo ↓</button>
               <button className="end-replay" id="replay" onClick={replay} style={{ '--d': 3 }}>Puttear de nuevo</button>
             </div>
           </section>

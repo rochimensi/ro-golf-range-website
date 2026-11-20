@@ -319,11 +319,12 @@
   .end-text { left:calc(341 * var(--u)); top:calc(296 * var(--u)); width:calc(751 * var(--u)); font-size:calc(32 * var(--u)); line-height:calc(40 * var(--u));
               color:var(--brand-cream); text-shadow:0 2px 12px rgba(6,20,10,.45); }
   .end-more { left:calc(505 * var(--u)); top:calc(450 * var(--u)); }
-  /* pill, like the Clases level pills and the Golf "Ver" tags; gold like the "Ver" cursor */
-  .end-more.primary { border-radius:var(--radius-full); padding:12px 26px; font-size:13px; line-height:18px; letter-spacing:.14em;
-                      background:var(--gradient-gold); color:var(--brand-green); box-shadow:0 8px 24px rgba(6,20,10,.3);
-                      transition:filter .3s, box-shadow .3s; }
-  .end-more.primary:hover { background:var(--gradient-gold); filter:brightness(1.06); box-shadow:0 10px 30px rgba(6,20,10,.38); }
+  /* the site's main button (.btn.academia: green, gold sweep on hover). On the grass it gets the thin gold outline
+     it has on green sections, plus a soft shadow. .btn.academia sets position:relative, so the board's absolute
+     placement is restated (phones lay the closing panel out as a grid, where it's static again). */
+  .board > .end-more.btn { position:absolute; box-shadow:inset 0 0 0 1px var(--gold-deep), 0 8px 24px rgba(6,20,10,.3); }
+  /* the panel's entrance owns opacity/transform; keep the button's colour change too */
+  #track .board.cta > .end-more { transition:opacity .6s cubic-bezier(.33,1,.68,1), transform .6s cubic-bezier(.33,1,.68,1), color .4s; }
   /* "Puttear de nuevo" sits just right of the cup, which is drawn at 70% across and 72% down the screen */
   .end-replay { position:absolute; left:calc(70vw + 2.4 * clamp(10px, 2.4vmin, 21px) + 38px); top:calc(72vh - 21px);
                 display:inline-flex; gap:13px; align-items:center; padding:0; background:none; border:0; border-radius:0;
@@ -378,15 +379,15 @@
 
     /* Phones: a stronger, Academia-style entrance (the 16px fade was easy to miss while the panel slides).
        Each block rises further, one after another, and its big headline wipes up from a mask. */
-    #track .board > :not(.svc-list):not(.cta *), #track .board .svc { transform:translateY(36px);
-      transition:opacity .8s cubic-bezier(.2,.8,.2,1), transform .9s cubic-bezier(.2,.8,.2,1); }
-    #track .board.in > :not(.svc-list), #track .board.in .svc { transition-delay:calc(var(--d, 0) * .14s); }
+    #track .board > :not(.svc-list):not(.cta *), #track .board .svc { transform:translateY(28px);
+      transition:opacity .5s cubic-bezier(.2,.8,.2,1), transform .55s cubic-bezier(.2,.8,.2,1); }
+    #track .board.in > :not(.svc-list), #track .board.in .svc { transition-delay:calc(var(--d, 0) * .08s); }
     #track .board:not(.cta) :is(.b-acceso .big, .ftype h2, .svc h3, .al-name) { clip-path:inset(-20% -6% 100% -6%);
-      transition:clip-path .9s cubic-bezier(.7,0,.2,1); }
+      transition:clip-path .55s cubic-bezier(.7,0,.2,1); }
     #track .board.in :is(.b-acceso .big, .ftype h2, .svc h3, .al-name) { clip-path:inset(-20% -6% -20% -6%);
-      transition-delay:calc(var(--d, 0) * .14s + .08s); }
-    #track .board.in .al-name.al-big { transition-delay:calc(var(--d, 0) * .14s + .18s); }
-    #track .board.in .al-name.al-ol { transition-delay:calc(var(--d, 0) * .14s + .28s); }
+      transition-delay:calc(var(--d, 0) * .08s + .04s); }
+    #track .board.in .al-name.al-big { transition-delay:calc(var(--d, 0) * .08s + .09s); }
+    #track .board.in .al-name.al-ol { transition-delay:calc(var(--d, 0) * .08s + .14s); }
     @media (prefers-reduced-motion:reduce) {
       #track .board:not(.cta) :is(.b-acceso .big, .ftype h2, .svc h3, .al-name) { clip-path:none; transition:none; }
       #track .board > :not(.svc-list), #track .board .svc { transform:none; transition:none; }
@@ -399,6 +400,7 @@
     .end-title { grid-column:1 / -1; font-size:clamp(28px, min(9.6vw, 5.4vh), 46px); line-height:1; white-space:normal; }
     .end-text { font-size:var(--fs-body); line-height:1.4; align-self:center; }
     .end-more { grid-column:1 / -1; justify-self:start; margin-top:clamp(4px, 1.4vh, 14px); }
+    .board > .end-more.btn { position:relative; left:auto; top:auto; }
     .end-replay { position:absolute; left:70vw; top:calc(72vh + 36px); transform:translateX(-50%); }
     #track .board.cta.show > .end-replay { transform:translateX(-50%); }
   }
@@ -420,7 +422,6 @@
     .al-name.al-big { font-size:clamp(110px, min(17vw, 11vh), 160px); }
     .board.cta .end-badge { width:clamp(72px, 11vw, 104px); }
     .end-title { font-size:clamp(46px, min(8vw, 5.4vh), 72px); }
-    .end-more.primary { font-size:15px; padding:14px 30px; }
     /* below the cup, which is drawn bigger here (radius 2.4 × clamp(10px, 2.4vmin, 21px), see the desktop rule) */
     .end-replay { font-size:16px; top:calc(72vh + 2.4 * clamp(10px, 2.4vmin, 21px) + 16px); }
     .hero-text .body-l, .hero-academia .ha-intro { font-size:clamp(16px, min(2.5vw, 1.75vh), 21px); }
