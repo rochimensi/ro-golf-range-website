@@ -55,7 +55,7 @@ export default function Canastos() {
         <div className="benefits">
           <article className="benefit" data-reveal>
             <div className="benefit-logo round">
-              <img src="/img/logo-acantilados.png" alt="Club Mar del Plata" width="200" height="200" loading="lazy" />
+              <img src="/img/logo-acantilados.webp" alt="Club Mar del Plata" width="200" height="200" loading="lazy" />
             </div>
             <div className="label">Beneficio socios</div>
             <h3 className="heading-3">Club Mar del Plata · Golf Los Acantilados</h3>
@@ -63,7 +63,7 @@ export default function Canastos() {
           </article>
           <article className="benefit" data-reveal>
             <div className="benefit-logo plain">
-              <img src="/img/logo-sportclub-white.png" alt="SportClub" width="560" height="107" loading="lazy" />
+              <img src="/img/logo-sportclub-white.webp" alt="SportClub" width="560" height="107" loading="lazy" />
             </div>
             <div className="label">Beneficio socios</div>
             <h3 className="heading-3">SportClub</h3>

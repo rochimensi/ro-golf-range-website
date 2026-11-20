@@ -132,7 +132,7 @@ const SHAPES = {
 
 // Shapes taken from an image instead of drawn in code: a PNG with opaque lines on a transparent
 // background (public/img/icons/). The dots sample its opaque pixels, so the icon comes out exactly.
-const IMAGE_SHAPES = { mind: '/img/icons/mind.png', grip: '/img/icons/grip.png' };
+const IMAGE_SHAPES = { mind: '/img/icons/mind.webp', grip: '/img/icons/grip.webp' };
 const imgCache = {};
 function loadImage(src) {
   if (!imgCache[src]) {

@@ -20,13 +20,13 @@ const STATS = [
     n: 35,
     sr: 'Más de 35 años como profesional de golf (PGA Argentina).',
     caption: 'años como profesional de golf',
-    logos: [['/img/logos/pga-argentina.png', 'PGA Argentina', 0.75]],
+    logos: [['/img/logos/pga-argentina.webp', 'PGA Argentina', 0.75]],
   },
   {
     n: 20,
     sr: 'Más de 20 años como Coach Assistant y Caddie en el PGA Tour y el DP World Tour.',
     caption: 'años como Coach Assistant y Caddie en el PGA Tour y el DP World Tour',
-    logos: [['/img/logos/pga-tour.svg', 'PGA Tour', 0.78], ['/img/logos/dp-world-tour.png', 'DP World Tour', 1]],
+    logos: [['/img/logos/pga-tour.svg', 'PGA Tour', 0.78], ['/img/logos/dp-world-tour.webp', 'DP World Tour', 1]],
   },
 ];
 

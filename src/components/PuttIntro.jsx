@@ -314,7 +314,7 @@ export default function PuttIntro() {
           <section className="sec board-sec end-sec">
             <div className="board cta" id="cta">
               <h2 className="end-title" style={{ '--d': 0 }}>Abierto todo el año</h2>
-              <img className="end-badge" src="/img/club-mar-del-plata.png" alt="Club Mar del Plata" width={121} height={120} style={{ '--d': 1 }} />
+              <img className="end-badge" src="/img/club-mar-del-plata.webp" alt="Club Mar del Plata" width={121} height={120} style={{ '--d': 1 }} />
               <p className="end-text" style={{ '--d': 1 }}>De lunes a lunes<br />En el Club Mar del Plata, Golf Los Acantilados.</p>
               <button className="primary end-more" id="go-down" onClick={goDown} style={{ '--d': 2 }}>Más información abajo ↓</button>
               <button className="end-replay" id="replay" onClick={replay} style={{ '--d': 3 }}>Puttear de nuevo</button>

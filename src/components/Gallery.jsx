@@ -3,20 +3,20 @@ import { pauseScroll } from '../smoothScroll.js';
 
 // Photos only: aspect ratio = width / height.
 const ITEMS = [
-  { src: '/img/g01.jpg', alt: 'Baldes listos para practicar', ar: 0.75 },
-  { src: '/img/g03.jpg', alt: 'Un café entre baldes', ar: 0.75 },
+  { src: '/img/g01.webp', alt: 'Baldes listos para practicar', ar: 0.75 },
+  { src: '/img/g03.webp', alt: 'Un café entre baldes', ar: 0.75 },
   { src: '/img/g05.jpg', alt: 'Lavandas junto al range', ar: 0.75 },
   { src: '/img/g06.jpg', alt: 'Entrenamiento con ayudas', ar: 0.455 },
-  { src: '/img/g07.jpg', alt: 'Atardecer en las bahías', ar: 0.75 },
+  { src: '/img/g07.webp', alt: 'Atardecer en las bahías', ar: 0.75 },
   { src: '/img/g09.jpg', alt: 'Ejercicios en el césped', ar: 0.8 },
-  { src: '/img/g11.jpg', alt: 'Flores en las bahías', ar: 0.75 },
-  { src: '/img/g13.jpg', alt: 'Grupo de golfistas en el range', ar: 0.5625 },
-  { src: '/img/g14.jpg', alt: 'Clase con los más chicos', ar: 0.75 },
-  { src: '/img/g15.jpg', alt: 'Gatera interior con vista al range', ar: 0.8 },
-  { src: '/img/g16.jpg', alt: 'Una tarde de práctica bajo las bahías techadas', ar: 0.75 },
-  { src: '/img/g17.jpg', alt: 'Atardecer sobre las gateras', ar: 1.7778 },
-  { src: '/img/g18.jpg', alt: 'Clínica de chicos en el range', ar: 0.6442 },
-  { src: '/img/g19.jpg', alt: 'Malvones bajo el techo de las gateras', ar: 0.5625 },
+  { src: '/img/g11.webp', alt: 'Flores en las bahías', ar: 0.75 },
+  { src: '/img/g13.webp', alt: 'Grupo de golfistas en el range', ar: 0.5625 },
+  { src: '/img/g14.webp', alt: 'Clase con los más chicos', ar: 0.75 },
+  { src: '/img/g15.webp', alt: 'Gatera interior con vista al range', ar: 0.8 },
+  { src: '/img/g16.webp', alt: 'Una tarde de práctica bajo las bahías techadas', ar: 0.75 },
+  { src: '/img/g17.webp', alt: 'Atardecer sobre las gateras', ar: 1.7778 },
+  { src: '/img/g18.webp', alt: 'Clínica de chicos en el range', ar: 0.6442 },
+  { src: '/img/g19.webp', alt: 'Malvones bajo el techo de las gateras', ar: 0.5625 },
 ];
 const FX = ['up', 'left', 'split', 'drop'];
 
