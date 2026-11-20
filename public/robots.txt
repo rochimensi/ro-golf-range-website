@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://rogolfrange.com.ar/sitemap.xml
+Sitemap: https://rogolfrange.com/sitemap.xml

@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react';
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
-const SITE = 'https://rogolfrange.com.ar';
+const SITE = 'https://rogolfrange.com';
 
 // Pages with an address of their own (see src/route.js). The build writes dist/<path>/index.html for each,
 // with its own title, description, canonical and share (Open Graph) tags, so any static host serves /academia and /omar-peralta
