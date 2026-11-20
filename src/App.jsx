@@ -1,25 +1,11 @@
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
-import { startSmoothScroll } from './smoothScroll.js';
-import PuttIntro from './components/PuttIntro.jsx';
-import YardageNav from './components/YardageNav.jsx';
-import HeroMenu from './components/HeroMenu.jsx';
-import WhatsAppButton from './components/WhatsAppButton.jsx';
-import Canastos from './sections/Canastos.jsx';
-import Clases from './sections/Clases.jsx';
-import Golf from './sections/Golf.jsx';
-// Enseñanza moves to its own Academia page.
-// import Ensenanza from './sections/Ensenanza.jsx';
-import Omar from './sections/Omar.jsx';
-import Empresas from './sections/Empresas.jsx';
-import Galeria from './sections/Galeria.jsx';
-import Instagram from './sections/Instagram.jsx';
-import Nosotros from './sections/Nosotros.jsx';
-import Transformacion from './sections/Transformacion.jsx';
-import Contacto from './sections/Contacto.jsx';
-import Footer from './sections/Footer.jsx';
+import Home from './Home.jsx';
+import Academia from './pages/Academia.jsx';
+import OmarBio from './pages/OmarBio.jsx';
+import { currentRoute, ROUTE_EVENT } from './route.js';
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 // Never restore the previous scroll position on reload: every visit starts on the hero (see main.jsx).
@@ -27,67 +13,27 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
 ScrollTrigger.clearScrollMemory('manual');
 if (import.meta.env.DEV || location.search.includes('debug')) window.ScrollTrigger = ScrollTrigger;
 
+// The home page plus two pages: Academia (#academia) and Omar's biography (#acerca-de-omar), see route.js.
 export default function App() {
-  const root = useRef(null);
+  const [route, setRoute] = useState(currentRoute);
+  const prev = useRef(null);
 
-  useGSAP(() => {
-    const stopSmooth = startSmoothScroll();
+  useEffect(() => {
+    const sync = () => setRoute((r) => { prev.current = r; return currentRoute(); });
+    const evts = ['popstate', 'hashchange', ROUTE_EVENT];
+    evts.forEach((e) => window.addEventListener(e, sync));
+    return () => evts.forEach((e) => window.removeEventListener(e, sync));
+  }, []);
 
-    // Reveal content as it scrolls into view (CSS handles the motion). An IntersectionObserver also
-    // catches elements already on screen after a jump (anchor links, reloading partway down the page).
-    const revealIO = new IntersectionObserver((entries) => {
-      entries.filter((e) => e.isIntersecting)
-        .forEach((e, i) => {
-          setTimeout(() => e.target.classList.add('in'), i * 70);
-          revealIO.unobserve(e.target);
-        });
-    }, { rootMargin: '0px 0px -12% 0px' });
-    const REVEAL = '[data-reveal]';   // gallery photos reveal themselves once loaded (Gallery.jsx)
-    root.current.querySelectorAll(REVEAL).forEach((el) => revealIO.observe(el));
-    // Elements added later (a section re-rendered by hot reload while editing, or content that mounts
-    // after load) would otherwise stay hidden at opacity 0: watch for them too.
-    const revealMO = new MutationObserver((muts) => {
-      muts.forEach((m) => m.addedNodes.forEach((n) => {
-        if (n.nodeType !== 1) return;
-        if (n.matches(REVEAL) && !n.classList.contains('in')) revealIO.observe(n);
-        n.querySelectorAll(REVEAL).forEach((el) => { if (!el.classList.contains('in')) revealIO.observe(el); });
-      }));
-    });
-    revealMO.observe(root.current, { childList: true, subtree: true });
+  useEffect(() => {
+    document.title = {
+      academia: 'Academia Omar Peralta · R&O Golf Range · Mar del Plata',
+      omar: 'Omar Peralta · Biografía · R&O Golf Range',
+    }[route] || 'R&O Golf Range · Los Acantilados · Mar del Plata';
+  }, [route]);
 
-    // Photos not supplied yet (e.g. the Figma images) show a labelled placeholder instead.
-    const markMissing = (img) => img.parentElement.classList.add('missing');
-    root.current.querySelectorAll('img[data-fallback]').forEach((img) => {
-      if (img.complete && img.naturalWidth === 0) markMissing(img);
-      else img.addEventListener('error', () => markMissing(img), { once: true });
-    });
-
-    // Images change section heights as they load: recompute trigger positions.
-    window.addEventListener('load', () => ScrollTrigger.refresh());
-    return () => { stopSmooth(); revealIO.disconnect(); revealMO.disconnect(); };
-  }, { scope: root });
-
-  return (
-    <div ref={root}>
-      <PuttIntro />
-      <YardageNav />
-      <HeroMenu />
-      <WhatsAppButton />
-      <main id="v">
-        <Canastos />
-        <Clases />
-        <Golf />
-        {/* Enseñanza moves to its own Academia page. */}
-        {/* <Ensenanza /> */}
-        <Omar />
-        <Empresas />
-        <Nosotros />
-        <Transformacion />
-        <Galeria />
-        <Instagram />
-        <Contacto />
-        <Footer />
-      </main>
-    </div>
-  );
+  if (route === 'academia') return <Academia key="academia" />;
+  if (route === 'omar') return <OmarBio key="omar" />;
+  // back from one of the pages → land where the visitor left the home page
+  return <Home key="home" returnTo={prev.current != null && prev.current !== 'home'} />;
 }

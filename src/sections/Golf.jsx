@@ -1,3 +1,4 @@
+import { linkTo } from '../route.js';
 import ScrollHighlight from '../components/ScrollHighlight.jsx';
 import ValuesMarquee from '../components/ValuesMarquee.jsx';
 
@@ -29,7 +30,7 @@ export default function Golf() {
           text="Son pocas las academias que reúnen a un profesional con tanta versatilidad y experiencia para que todos puedan dar sus primeros pasos en el Golf, o se acerquen a perfeccionarse y dar un salto en su nivel deportivo."
         />
         <div className="center-btn" data-reveal>
-          <a className="btn academia" href="#omar">Ver Academia Omar Peralta</a>
+          <a className="btn academia" {...linkTo('academia')}>Ver Academia Omar Peralta</a>
         </div>
       </div>
     </section>

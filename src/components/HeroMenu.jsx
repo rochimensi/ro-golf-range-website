@@ -3,6 +3,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
 import { SIGNS, inRange } from './YardageNav.jsx';
 import { scrollToTarget, pauseScroll } from '../smoothScroll.js';
+import { linkTo } from '../route.js';
 
 // Two golf tees crossed into an X, heads up: the panel's close button (Figma 3246:2019).
 export function CrossedTees() {
@@ -116,6 +117,10 @@ export default function HeroMenu() {
             ))}
           </ul>
         </nav>
+        {/* The Academia is its own page, so it gets its own button under the sections */}
+        <a className="btn academia hm-academia" style={{ '--i': SIGNS.length }} {...linkTo('academia')}>
+          Academia Omar Peralta <span className="hm-ac-arrow" aria-hidden="true">→</span>
+        </a>
       </div>
     </div>
   );

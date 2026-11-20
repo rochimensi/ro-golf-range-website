@@ -496,7 +496,7 @@
   }
 
   /* the sections, spread evenly over 75% of the panel's height */
-  .hm-panel ul { list-style:none; margin:0; padding:0; height:75vh; height:75dvh; display:flex; flex-direction:column; justify-content:space-between; }
+  .hm-panel ul { list-style:none; margin:0; padding:0; height:64vh; height:64dvh; display:flex; flex-direction:column; justify-content:space-between; }
   .hm-panel li { opacity:0; transform:translateX(40px); transition:opacity .3s, transform .5s cubic-bezier(.2,.8,.2,1); }
   #hero-menu.open .hm-panel li { opacity:1; transform:none; transition-delay:calc(.25s + var(--i) * .05s); }
   .hm-panel a { display:inline-flex; align-items:center; gap:clamp(16px, 2vw, 28px); text-decoration:none; color:var(--brand-cream);
@@ -518,14 +518,28 @@
   .hm-panel a:is(:hover, :focus-visible) span { color:var(--gold-light); transform:translateX(10px); }
   .hm-panel a:is(:hover, :focus-visible) span::after { transform:scaleX(1); transition-delay:.08s; }
 
+  /* Academia: separate page, so its own CTA under the sections: the site's .btn.academia (gold sweep on hover),
+     a size up, with the gold outline it has on green sections */
+  .hm-panel a.hm-academia { display:inline-flex; align-self:flex-start; gap:var(--space-3); margin-top:clamp(28px, 5vh, 48px);
+                            padding:18px 30px; font-size:clamp(15px, 1.25vw, 17px); letter-spacing:.14em;
+                            box-shadow:inset 0 0 0 1px var(--gold-deep);
+                            opacity:0; transform:translateX(40px); transition:opacity .3s, transform .5s cubic-bezier(.2,.8,.2,1), color .4s; }
+  #hero-menu.open .hm-panel a.hm-academia { opacity:1; transform:none; transition-delay:calc(.25s + var(--i) * .05s), calc(.25s + var(--i) * .05s), 0s; }
+  .hm-panel a.hm-academia .hm-ac-arrow { padding:0; font-family:var(--font-sans); transition:transform .35s cubic-bezier(.2,.8,.2,1); }
+  .hm-panel a.hm-academia .hm-ac-arrow::after { display:none; }
+  .hm-panel a.hm-academia:is(:hover, :focus-visible) .hm-ac-arrow { color:var(--brand-green); transform:translateX(6px); }
+
   @media (prefers-reduced-motion:reduce) {
-    #hero-menu svg *, .hm-panel, .hm-panel li, .hm-panel a b, .hm-panel a b::after, .hm-panel a span, .hm-panel a span::after { transition-duration:0s !important; transition-delay:0s !important; }
+    #hero-menu svg *, .hm-panel, .hm-panel li, .hm-panel a.hm-academia, .hm-panel a b, .hm-panel a b::after, .hm-panel a span, .hm-panel a span::after { transition-duration:0s !important; transition-delay:0s !important; }
   }
   @media (max-width:760px) {
     #hero-menu { top:var(--space-3); right:var(--space-3); }
     .hm-btn { width:52px; height:52px; }
     .hm-close { top:var(--space-3); right:var(--space-3); width:48px; height:48px; }
-    .hm-panel { border-left:0; }
+    .hm-panel { border-left:0; justify-content:flex-start; overflow-y:auto; overscroll-behavior:contain;
+                padding-top:calc(var(--space-3) + 64px); padding-bottom:var(--space-8); }
+    .hm-panel ul { height:auto; gap:clamp(14px, 3.4dvh, 30px); }
+    .hm-panel a.hm-academia { align-self:stretch; justify-content:center; padding:16px 18px; font-size:14px; letter-spacing:.12em; margin-top:clamp(24px, 4dvh, 40px); }
   }
 
   /* ---------- Yardage indicator ---------- */
@@ -1123,3 +1137,51 @@
 .ball-pick strong { color:var(--gold-light); font-weight:600; }
 @media (max-width:640px) { .ball-pick { margin-top:var(--space-6); } .ball-pick-logo { width:160px; } }
 @media (min-width:641px) and (max-width:760px) { .cv-grid { padding-left:clamp(8px, 1.2vw, 18px); } .cv-title { left:0; } }
+
+/* ---------- Academia tab: right edge, vertically centred, always on (home page) ---------- */
+#ac-tab { position:fixed; right:0; top:50%; z-index:34; display:flex; flex-direction:column; align-items:center; gap:10px;
+          padding:16px 9px 18px 10px; text-decoration:none; background:var(--brand-green); color:var(--gold-light);
+          border:1px solid var(--gold-deep); border-right:0; border-radius:var(--radius-md) 0 0 var(--radius-md);
+          box-shadow:-6px 8px 20px -10px rgba(6,20,10,.6);
+          transform:translate(100%, -50%); visibility:hidden;
+          transition:transform .6s cubic-bezier(.2,.8,.2,1), visibility 0s .6s, background .35s, color .35s, padding .35s cubic-bezier(.2,.8,.2,1), border-color .35s; }
+/* off-screen over the putt intro; slides in with the yardage rail (see AcademiaTab.jsx) */
+#ac-tab.on { transform:translate(0, -50%); visibility:visible;
+             transition:transform .6s cubic-bezier(.2,.8,.2,1), visibility 0s, background .35s, color .35s, padding .35s cubic-bezier(.2,.8,.2,1), border-color .35s; }
+#ac-tab .act-txt { writing-mode:vertical-rl; transform:rotate(180deg); font-family:var(--font-display); font-size:12px; letter-spacing:.22em; text-transform:uppercase; line-height:1; }
+#ac-tab:is(:hover, :focus-visible) { background:var(--gradient-gold); color:var(--brand-green); border-color:transparent; padding-right:15px; }
+#ac-tab:focus-visible { outline:2px solid var(--gold-light); outline-offset:3px; }
+/* phones: no side tab (the Academia is in the menu, which stays on for the whole page there) */
+@media (max-width:760px) { #ac-tab { display:none; } }
+@media (prefers-reduced-motion:reduce) { #ac-tab, #ac-tab.on { transition:visibility 0s; } }
+
+/* ---------- Particle icons (components/ParticleShape.jsx) ---------- */
+.pshape { position:absolute; inset:0; }
+.pshape canvas { display:block; width:100%; height:100%; touch-action:pan-y; }
+
+/* ---------- Line sketches that draw themselves (components/LineSketch.jsx) ---------- */
+.lsketch { position:absolute; inset:0; display:grid; place-items:center; padding:8%; }
+.lsketch svg { width:100%; height:100%; overflow:visible; }
+.lsketch path { fill:none; stroke:var(--gold-light); stroke-width:2.4; stroke-linecap:round; stroke-linejoin:round;
+                stroke-dasharray:1; stroke-dashoffset:1; transition:stroke-dashoffset .35s ease; }
+.lsketch.on path { stroke-dashoffset:0; transition:stroke-dashoffset .9s cubic-bezier(.6,0,.3,1); transition-delay:calc(var(--i) * .14s + .15s); }
+.lsketch path.thin { stroke-width:1.4; opacity:.55; }
+.lsketch path.accent { stroke:var(--brand-cream); }
+.lsketch path.bold { stroke-width:5; }
+/* gears start turning once the head is drawn */
+.lsketch-spin { transform-box:view-box; }
+.lsketch.on .gear-a { animation:lsSpin 14s linear infinite; animation-delay:1.3s; }
+.lsketch.on .gear-b { animation:lsSpin 8.4s linear infinite reverse; animation-delay:1.3s; }
+@keyframes lsSpin { to { transform:rotate(360deg); } }
+@media (prefers-reduced-motion:reduce) {
+  .lsketch path { stroke-dashoffset:0; transition:none; }
+  .lsketch-spin { animation:none !important; }
+}
+/* outlined figure (the golfer): thick hidden strokes whose contour the filter draws */
+.lsketch-ink { flood-color:var(--gold-light); }
+.lsketch path.o-torso { stroke-width:40; }
+.lsketch path.o-shoulders { stroke-width:20; }
+.lsketch path.o-leg { stroke-width:20; }
+.lsketch path.o-arm { stroke-width:14; }
+.lsketch path.o-foot { stroke-width:12; }
+.lsketch path.o-head { stroke-width:38; }

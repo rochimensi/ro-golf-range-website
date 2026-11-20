@@ -1,0 +1,282 @@
+/* ================= "Acerca de Omar" (#acerca-de-omar): biography as a newspaper edition =================
+   Cream paper, green ink, hairline rules, serif body (Cormorant Garamond) for the long text,
+   Bakbak for headlines. Mobile-first (pages stack); the horizontal edition is in the media query below. */
+.ob { --ink:var(--brand-green); --paper:var(--brand-cream); --hair:rgba(16,44,26,.22); --bar:62px;
+      --serif:"Cormorant Garamond", Georgia, "Times New Roman", serif;
+      background:var(--paper); color:var(--ink); }
+.ob p { color:var(--ink); }
+
+/* ---------- top bar ---------- */
+.ob-bar { position:fixed; inset:0 0 auto 0; z-index:50; height:var(--bar); display:flex; align-items:center; justify-content:space-between; gap:var(--space-6);
+          padding:0 clamp(16px, 4vw, 48px); background:var(--brand-green); border-bottom:1px solid var(--gold-deep); }
+.ob-back { display:inline-flex; align-items:center; gap:var(--space-3); color:var(--brand-cream); text-decoration:none;
+           font-family:var(--font-display); font-size:12px; letter-spacing:.14em; text-transform:uppercase; }
+.ob-back img { border-radius:50%; display:block; }
+.ob-back > span:first-child { font-size:18px; transition:transform .3s; }
+.ob-back:hover { color:var(--gold-light); }
+.ob-back:hover > span:first-child { transform:translateX(-4px); }
+.ob-bar-title { margin:0 auto; font-family:var(--font-display); font-size:15px; letter-spacing:.16em; text-transform:uppercase; }
+.ob .ob-bar-title { color:var(--brand-cream); }
+.ob-bar-title span { color:var(--gold-light); }
+.ob-bar-cta { padding:9px 16px; font-size:12px; box-shadow:inset 0 0 0 1px var(--gold-deep); }
+
+/* ---------- stage (mobile: a plain column of pages) ---------- */
+.ob-stage { padding:calc(var(--bar) + 32px) clamp(18px, 5vw, 40px) 72px; }
+.ob-folio, .ob-hint { display:none; }
+.ob-page { position:relative; padding-bottom:56px; margin-bottom:56px; border-bottom:1px solid var(--ink); }
+.ob-page:last-child { border-bottom:0; margin-bottom:0; }
+.ob-page[data-reveal] { opacity:1; transform:none; }   /* the page itself doesn't move; its parts do (.in) */
+
+/* running head: two rules that draw in */
+.ob-rh { display:flex; justify-content:space-between; gap:var(--space-4); padding:10px 0 9px; margin-bottom:28px;
+         font-family:var(--font-sans); font-size:12px; font-weight:600; letter-spacing:.18em; text-transform:uppercase;
+         background:linear-gradient(var(--ink), var(--ink)) left top / 0% 2px no-repeat,
+                    linear-gradient(var(--ink), var(--ink)) left bottom / 0% 1px no-repeat;
+         transition:background-size 1.2s cubic-bezier(.6,0,.2,1); }
+.ob-page.in .ob-rh { background-size:100% 2px, 100% 1px; }
+.ob-rh span:nth-child(2) { color:#4b5e4d; }
+
+/* rules, fades, photos */
+.ob-hr { display:block; height:1px; background:var(--ink); transform:scaleX(0); transform-origin:left; transition:transform 1.1s cubic-bezier(.6,0,.2,1) .2s; }
+.ob-page.in .ob-hr { transform:none; }
+.ob-fx { opacity:0; transform:translateY(16px); transition:opacity .8s ease, transform .8s cubic-bezier(.2,.8,.2,1); transition-delay:var(--d, 0s); }
+.ob-page.in .ob-fx { opacity:1; transform:none; }
+
+.ob-photo { margin:0; }
+.ob-photo-frame { position:relative; overflow:hidden; background:#ece5d4; aspect-ratio:4/5; }
+.ob-photo img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block;
+                filter:saturate(.92) contrast(1.03) sepia(.06);
+                clip-path:inset(0 0 100% 0); transform:scale(1.08);
+                transition:clip-path 1.2s cubic-bezier(.7,0,.2,1) .25s, transform 1.6s cubic-bezier(.2,.8,.2,1) .25s, filter .5s; }
+.ob-page.in .ob-photo img { clip-path:inset(0 0 0 0); transform:none; }
+.ob-photo:hover img { filter:none; }
+.ob-p2-photo img { object-position:40% 20%; }
+.ob-p4-photo img { object-position:50% 12%; }
+.ob-p4-straka img { object-position:45% 30%; }
+.ob-p4-daly img { object-position:50% 45%; }
+.ob-p4-straka, .ob-p4-group { margin-top:28px; }
+.ob-p4-group .ob-photo-frame { aspect-ratio:575/516; }
+/* Laguna 2014: keep both faces and the trophy in the crop */
+.ob-ph-laguna img { object-position:50% 40%; }
+/* Wentworth 2024: Omar marking the ball, Zanotti reading the putt, the flag between them */
+.ob-ph-bmw img { object-position:50% 38%; }
+.ob-photo-missing { display:none; }
+.ob-photo.ob-missing .ob-photo-frame { background:repeating-linear-gradient(135deg, rgba(16,44,26,.06) 0 12px, transparent 12px 24px), #ece5d4; outline:1px solid var(--hair); }
+.ob-photo.ob-missing img { display:none; }
+.ob-photo.ob-missing .ob-photo-missing { display:grid; place-items:center; position:absolute; inset:0; padding:var(--space-4); text-align:center;
+  font-family:var(--font-display); font-size:10px; letter-spacing:.14em; line-height:1.8; text-transform:uppercase; color:#4b5e4d; }
+.ob-cap { margin-top:10px; padding-top:8px; border-top:1px solid var(--hair); font-family:var(--serif); font-style:italic; font-size:20px; line-height:1.3; color:#33493a; }
+
+/* type */
+.ob-h1 { font-family:var(--font-display); font-weight:400; text-transform:uppercase; letter-spacing:.01em; line-height:.86; font-size:clamp(56px, 15vw, 110px); }
+.ob-h2 { font-family:var(--font-display); font-weight:400; text-transform:uppercase; letter-spacing:.02em; line-height:.95; font-size:clamp(38px, 9vw, 56px); margin:4px 0 16px; }
+.ob-sec { margin-bottom:24px; }
+.ob-sec-n { font-family:var(--serif); font-style:italic; font-size:26px; color:#4b5e4d; }
+.ob-body { font-family:var(--serif); font-weight:500; font-size:23px; line-height:1.45; }
+.ob-lead { font-family:var(--serif); font-weight:500; font-size:26px; line-height:1.38; }
+.ob-body b, .ob-lead b { font-family:var(--font-display); font-weight:400; font-size:.8em; letter-spacing:.06em; }
+.ob-drop { float:left; font-family:var(--font-display); font-weight:400; font-size:3.6em; line-height:.8; padding:.08em .1em 0 0; margin-top:.02em; }
+.ob-note { font-family:var(--serif); font-style:italic; font-size:22px; color:#33493a; margin-top:14px; }
+
+/* portada */
+.ob-mast { display:flex; align-items:flex-end; justify-content:space-between; gap:var(--space-4); }
+.ob-pga { width:clamp(64px, 16vw, 96px); height:auto; flex:none; }
+.ob-dek { display:flex; flex-wrap:wrap; align-items:baseline; justify-content:space-between; gap:6px 24px; margin:18px 0 26px; padding:10px 0;
+          border-top:1px solid var(--ink); border-bottom:1px solid var(--ink); }
+.ob-dek-title { font-family:var(--serif); font-style:italic; font-weight:500; font-size:34px; line-height:1; }
+.ob-dek-roles { font-family:var(--font-sans); font-size:12.5px; font-weight:600; letter-spacing:.16em; text-transform:uppercase; }
+.ob-cols { display:grid; gap:24px; }
+.ob-stats { display:grid; grid-template-columns:repeat(3, 1fr); margin-top:28px; border-top:2px solid var(--ink); }
+.ob-stats > div { padding:14px 14px 0 0; }
+.ob-stats > div + div { padding-left:14px; border-left:1px solid var(--hair); }
+.ob-stats dt { font-family:var(--font-display); font-size:clamp(34px, 9vw, 54px); line-height:1; }
+/* tour logo badges beside the +20, popping in one after the other */
+.ob-stats dt { display:flex; align-items:center; gap:14px; }
+.ob-badges { display:inline-flex; }
+.ob-badge { display:grid; place-items:center; width:clamp(40px, 10vw, 52px); aspect-ratio:1; border-radius:50%; background:#fff;
+            box-shadow:0 0 0 1px var(--hair), 0 6px 14px -8px rgba(16,44,26,.45); transform:scale(0); transition:transform .6s cubic-bezier(.3,1.5,.5,1);
+            transition-delay:calc(.9s + var(--i) * .15s); }
+.ob-badge + .ob-badge { margin-left:-10px; }
+.ob-badge img { display:block; object-fit:contain; }
+.ob-page.in .ob-badge { transform:none; }
+.ob-stats dd { margin:6px 0 0; font-family:var(--font-sans); font-size:14px; line-height:1.35; letter-spacing:.04em; color:#33493a; }
+
+/* pull quote */
+.ob-pull { margin:0; padding:18px 0; border-top:2px solid var(--ink); border-bottom:1px solid var(--ink); }
+.ob-pull p { font-family:var(--serif); font-style:italic; font-weight:500; font-size:34px; line-height:1.1; }
+.ob-p2-more { margin-top:22px; }
+.ob-pull cite { display:block; margin-top:14px; font-style:normal; font-family:var(--font-sans); font-size:12.5px; font-weight:600; letter-spacing:.14em; text-transform:uppercase; color:#4b5e4d; }
+
+/* continents: ruled list, alternating solid / outline (like the values on the home page) */
+.ob-continents { list-style:none; margin:22px 0 0; border-top:1px solid var(--ink); }
+.ob-continents li { font-family:var(--font-display); text-transform:uppercase; font-size:clamp(40px, 11vw, 64px); line-height:1.1; padding:4px 0 2px; border-bottom:1px solid var(--hair); }
+.ob-continents li:nth-child(even) { color:transparent; -webkit-text-stroke:1.2px var(--ink); }
+
+/* players table */
+.ob-table { width:100%; border-collapse:collapse; margin:0; font-size:16px; }
+.ob-table th { text-align:left; padding:0 10px 8px 0; font-family:var(--font-sans); font-size:12px; font-weight:700; letter-spacing:.18em; text-transform:uppercase; border-bottom:2px solid var(--ink); }
+.ob-table td { padding:8px 10px 7px 0; border-bottom:1px solid var(--hair); font-family:var(--serif); font-size:23px; line-height:1.2; vertical-align:baseline; }
+.ob-table td:first-child { font-weight:700; }
+.ob-table td:nth-child(2) { font-family:var(--font-sans); font-size:13.5px; letter-spacing:.08em; text-transform:uppercase; color:#33493a; white-space:nowrap; }
+.ob-table td:last-child { font-style:italic; color:#33493a; text-align:left; font-family:var(--serif); letter-spacing:0; }
+.ob-table tbody tr { transition:background .25s; }
+.ob-table tbody tr:hover { background:rgba(201,170,96,.14); }
+.ob-p4-photo { margin:22px 0; }
+
+/* timeline */
+.ob-timeline { list-style:none; display:grid; gap:36px; position:relative; }
+.ob-year { font-family:var(--font-display); font-size:56px; line-height:1; }
+.ob-year small { font-size:.6em; vertical-align:middle; color:var(--gold-deep); }
+.ob-place { font-family:var(--font-sans); font-size:12.5px; font-weight:600; letter-spacing:.18em; text-transform:uppercase; margin:6px 0 14px; padding-bottom:10px; border-bottom:1px solid var(--ink); }
+.ob-timeline .ob-body { margin-top:12px; font-size:22px; }
+
+/* la presión: quote page */
+.ob-pq-kicker { font-family:var(--font-sans); font-size:12.5px; font-weight:600; letter-spacing:.18em; text-transform:uppercase; color:#4b5e4d; margin-bottom:18px; }
+.ob-pq-quote { position:relative; margin:0 0 26px; }
+.ob-pq-mark { position:absolute; left:-.08em; top:-.32em; font-family:var(--serif); font-size:160px; line-height:1; color:var(--gold-deep); opacity:.55; pointer-events:none; }
+.ob-pq-quote p { position:relative; font-family:var(--serif); font-style:italic; font-weight:500; font-size:clamp(34px, 8vw, 46px); line-height:1.12; letter-spacing:-.005em; }
+.ob-pq-quote cite { display:block; margin-top:20px; font-style:normal; font-family:var(--font-display); font-size:15px; letter-spacing:.18em; text-transform:uppercase; }
+.ob-pq-quote cite::before { content:"— "; color:var(--gold-deep); }
+.ob-pq-body { margin-top:24px; }
+.ob-pq-photo { margin-top:28px; }
+.ob-pq-photo img { object-position:50% 25%; }
+.ob-pq-celli img { object-position:62% 25%; }
+.ob-p3-muthaiga img { object-position:55% 40%; }
+.ob-p3-madrid img { object-position:50% 60%; }
+.ob-p6-photo img { object-position:62% 58%; }
+
+/* hoy */
+.ob-p6 .ob-lead { max-width:760px; }
+.ob-p6-next { margin-top:22px; max-width:900px; }
+.ob-end { margin-top:30px; }
+.ob-cta { display:flex; flex-wrap:wrap; align-items:center; gap:var(--space-6); margin-top:26px; }
+.ob-link { color:var(--ink); font-weight:600; text-decoration:none; border-bottom:1px solid var(--hair); padding-bottom:2px; }
+.ob-link:hover { border-color:var(--gold-deep); }
+.ob-fin { margin-top:28px; font-size:14px; }
+.ob .foot { padding-left:clamp(18px, 5vw, 48px); }
+
+@media (max-width:640px) {
+  .ob-bar-title { display:none; }
+  .ob-body { font-size:22px; } .ob-lead { font-size:24px; }
+  .ob-back-txt { display:none; }
+  .ob-bar-cta { margin-left:auto; }
+  .ob-rh span:first-child { display:none; }
+  .ob-stats dd { font-size:13px; }
+}
+@media (min-width:641px) and (max-width:899px) {
+  .ob-cols, .ob-split, .ob-p4-grid { grid-template-columns:1fr 1fr; display:grid; gap:28px; }
+  .ob-timeline { grid-template-columns:1fr 1fr; }
+}
+
+/* =================== Desktop: horizontal edition ===================
+   Everything below is in design px at an 820 px page height; OmarBio.jsx scales the track (--s) to fit
+   the screen and slides it sideways as you scroll. */
+@media (min-width:900px) and (prefers-reduced-motion:no-preference) {
+  .ob-stage { position:relative; height:100vh; height:100svh; overflow:hidden; padding:calc(var(--bar) + 22px) 0 46px; }
+  .ob-mover { position:relative; margin-left:5vw; height:100%; will-change:transform; }
+  .ob-track { display:flex; height:820px; width:max-content; transform:scale(var(--s, 1)); transform-origin:0 0; }
+  .ob-page { height:820px; flex:none; margin:0; padding:0 46px; border-bottom:0; border-left:1px solid var(--hair); }
+  .ob-page:first-child { border-left:0; padding-left:0; }
+  .ob-page:last-child { padding-right:5vw; }
+  .ob-rh { margin-bottom:26px; font-size:13px; }
+
+  .ob-h1 { font-size:156px; }
+  .ob-h2 { font-size:64px; }
+  .ob-pga { width:112px; }
+
+  /* column rules between text columns, drawn top-down when the page arrives */
+  .ob-col { position:relative; }
+  .ob-col + .ob-col::before { content:""; position:absolute; left:-23px; top:4px; bottom:4px; width:1px; background:var(--hair);
+                              transform:scaleY(0); transform-origin:top; transition:transform 1.1s cubic-bezier(.6,0,.2,1) .4s; }
+  .ob-page.in .ob-col + .ob-col::before { transform:none; }
+  .ob-cols { grid-auto-flow:column; gap:46px; }
+
+  /* 1 · portada (width 1180) */
+  .ob-p1 { width:1520px; }
+  .ob-p1-cols { grid-template-columns:1.55fr 1fr; }
+  .ob-lead { font-size:34px; line-height:1.34; }
+  .ob-body { font-size:28px; line-height:1.42; }
+  .ob-stats { margin-top:34px; }
+  .ob-stats dt { font-size:64px; }
+  .ob-badge { width:62px; }
+  .ob-badge + .ob-badge { margin-left:-12px; }
+  .ob-stats dd { font-size:16px; }
+  .ob-hint { display:block; position:absolute; right:46px; bottom:0; font-family:var(--font-display); font-size:13px; letter-spacing:.2em; text-transform:uppercase; color:#4b5e4d; }
+  .ob-hint span { display:inline-block; animation:nudge 1.6s ease-in-out infinite; }
+
+  /* 2 · los orígenes (1240) and 3 · el camino (1220): photo + text */
+  .ob-p2 { width:1640px; }
+  .ob-p3 { width:2040px; }
+  .ob-p3 .ob-split.rev { grid-template-columns:1fr 440px 420px; }
+  .ob-split { display:grid; grid-template-columns:430px 1fr; gap:46px; height:740px; }
+  .ob-split.rev { grid-template-columns:1fr 420px; }
+  .ob-split .ob-photo { height:100%; display:flex; flex-direction:column; }
+  .ob-split .ob-photo-frame { flex:1; min-height:0; aspect-ratio:auto; }
+  .ob-split-text { display:flex; flex-direction:column; }
+  .ob-p2 .ob-cols { grid-template-columns:1.1fr 1fr; align-items:start; }
+  .ob-p2 .ob-body { font-size:30px; }
+  .ob-pull p { font-size:52px; }
+  .ob-p3-text { font-size:32px; max-width:900px; }
+  .ob-continents li { font-size:74px; line-height:1.02; }
+
+  /* 5 · la presión (1500): big quote + photo */
+  .ob-pq { width:2060px; }
+  .ob-pq .ob-split.rev { grid-template-columns:1fr 440px 470px; }
+  .ob-pq-text { display:flex; flex-direction:column; justify-content:center; padding-right:20px; }
+  .ob-pq-mark { font-size:260px; }
+  .ob-pq-quote p { font-size:72px; line-height:1.06; }
+  .ob-pq-quote cite { font-size:18px; }
+  .ob-pq-body { font-size:35px; max-width:880px; }
+  .ob-pq-kicker { font-size:14px; }
+  .ob-pq-photo { margin-top:0; display:flex; flex-direction:column; }
+  .ob-pq-photo .ob-photo-frame { flex:1; min-height:0; }
+
+  /* 4 · junto a los grandes (1400) */
+  .ob-p4 { width:3170px; }
+  .ob-p4-grid { display:grid; grid-template-columns:440px 1fr 560px 430px 344px; gap:46px; height:740px; }
+  .ob-p4-side { display:flex; flex-direction:column; }
+  .ob-p4-photo { flex:1; min-height:0; margin:22px 0 0; display:flex; flex-direction:column; }
+  .ob-p4-photo .ob-photo-frame { flex:1; min-height:0; aspect-ratio:auto; }
+  .ob-p4-straka { display:flex; flex-direction:column; height:740px; margin-top:0; }
+  /* group photo: natural shape, bottom-aligned so its caption lines up with the tall photos' captions */
+  .ob-p4-group { align-self:end; margin-top:0; }
+  .ob-p4-straka .ob-photo-frame { flex:1; min-height:0; aspect-ratio:auto; }
+  .ob-table td { padding:7px 16px 6px 0; font-size:27px; }
+  .ob-table th { font-size:13px; }
+  .ob-table td:nth-child(2) { font-size:14px; }
+  .ob-note { font-size:25px; }
+
+  /* 5 · grandes escenarios (1600): four columns on a line */
+  .ob-p5 { width:2240px; }
+  .ob-p5 .ob-sec { margin-bottom:18px; }
+  .ob-timeline { grid-template-columns:repeat(4, 1fr); gap:34px; }
+  .ob-timeline li { position:relative; }
+  .ob-timeline li + li::before { content:""; position:absolute; left:-17px; top:0; bottom:0; width:1px; background:var(--hair); }
+  .ob-year { font-size:64px; }
+  .ob-timeline .ob-photo-frame { aspect-ratio:auto; height:230px; }
+  .ob-timeline .ob-body { font-size:26px; line-height:1.34; }
+  .ob-cap { font-size:23px; }
+  .ob-place { font-size:13.5px; }
+
+  /* 6 · hoy (1060) */
+  .ob-p6 { width:1720px; }
+  .ob-p6 .ob-split.rev { grid-template-columns:1fr 440px; }
+  .ob-p6 .ob-lead { font-size:37px; line-height:1.32; max-width:1120px; }
+  .ob-p6-next { font-size:35px; line-height:1.32; max-width:1060px; }
+  .ob-p6 .ob-cta .btn { padding:16px 28px; font-size:15px; }
+
+  /* folio strip under the edition */
+  .ob-folio { display:flex; align-items:center; gap:var(--space-4); position:absolute; left:5vw; right:5vw; bottom:14px;
+              font-family:var(--font-sans); font-size:12.5px; font-weight:600; letter-spacing:.16em; text-transform:uppercase; color:#4b5e4d; }
+  .ob-folio b { color:var(--ink); }
+  .ob-folio-bar { position:relative; flex:1; height:1px; background:var(--hair); }
+  .ob-folio-bar i { position:absolute; inset:0; background:var(--ink); transform-origin:left; transform:scaleX(0); }
+  .ob-folio-name { min-width:180px; text-align:right; color:var(--ink); }
+}
+@media (prefers-reduced-motion:reduce) {
+  .ob-badge { transform:none; transition:none; }
+  .ob-fx, .ob-hr, .ob-rh, .ob-photo img { transition:none; }
+  .ob-fx { opacity:1; transform:none; } .ob-hr { transform:none; }
+  .ob-rh { background-size:100% 2px, 100% 1px; }
+  .ob-photo img { clip-path:none; transform:none; }
+}
