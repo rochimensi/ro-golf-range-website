@@ -14,9 +14,11 @@ npm run dev      # local dev server
 npm run build    # static site in dist/
 ```
 
-## Media to add
+## Media
 
-- `public/img/figma/` — photos from the Figma brochure pages: `omar-caddie.jpg`, `omar-swing.jpg`, `pga.png`, `omar-tour.jpg`, `omar-links.jpg`, `omar-bmw.jpg`, `olympics.jpg`, `worldcup.jpg`, `laguna.jpg`. Until a file exists, its slot shows a labelled placeholder.
-- `public/video/` — gallery videos (9:16): `v01.mp4`, `v02.mp4`, `v03.mp4`.
+All media is in place; nothing is pending.
 
-`legacy-prototype.html` is the earlier single-file prototype, kept for reference.
+- `public/video/` — muted loop clips, each with a `.jpg` poster of the same name (`public/video/empresas/` for the sponsor formats).
+- `public/img/` — photos and logos; `public/img/figma/` holds the photos exported from the Figma brochure pages.
+- Sections without photos use rendered graphics (`src/components/ParticleShape.jsx`, `LineSketch.jsx`).
+- Photo/video slots are listed in `MEDIA` (`src/pages/Academia.jsx`) and `PH` (`src/pages/OmarBio.jsx`). To swap one, replace the file under `public/` with the same name or change the path there; a missing file shows a labelled placeholder.
