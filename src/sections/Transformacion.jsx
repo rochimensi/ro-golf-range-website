@@ -8,7 +8,7 @@ const STEPS = [
   { id: 'transformacion_1', title: 'Oportunidades de mejora', text: 'Así lucía el driving range de Los Acantilados anteriormente.' },
   { id: 'transformacion_2', title: 'Césped mejorado', text: 'Recuperamos el césped de todo el campo de práctica.' },
   { id: 'transformacion_3', title: 'Estacionamiento', text: 'Eliminamos la necesidad de caminar 400 metros para llegar al range.' },
-  { id: 'transformacion_4', title: 'Alfombras y pelotas nuevas', text: 'Adquisición de 10 nuevas Real Feel Golf Mats Country Elite, las mejores del mercado profesional, y pelotas de range TaylorMade.' },
+  { id: 'transformacion_4', title: 'Alfombras y pelotas nuevas', text: 'Adquisición de 10 nuevas Real Feel Golf Mats Country Club Elite, las mejores del mercado profesional, y pelotas de range TaylorMade.' },
   { id: 'transformacion_5', title: 'Cafetería', text: <>Con el nuevo módulo de <a href="https://steelbox.com.ar/" target="_blank" rel="noopener noreferrer">Steel Box</a>, podemos brindar el servicio de cafetería para que la sesión de práctica sea más completa.</> },
 ];
 

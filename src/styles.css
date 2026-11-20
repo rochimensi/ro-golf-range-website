@@ -229,39 +229,77 @@
   .board .card { max-width:none; border-radius:calc(8 * var(--u)); }
 
   /* panel 1: Acceso sin cargo */
-  .b-acceso { left:calc(198 * var(--u)); top:calc(64 * var(--u)); width:calc(769 * var(--u)); padding:calc(32 * var(--u));
-              grid-template-columns:auto 1fr; gap:0 calc(31 * var(--u)); }
-  .b-acceso .big { font-size:calc(64 * var(--u)); line-height:1; }
-  .b-acceso .feat-list li { padding:calc(16 * var(--u)) 0; border-bottom:1px dashed #d1d0c1; }
-  .b-acceso .feat-list li:first-child { padding-top:0; }
-  .b-acceso .feat-list .txt { font-size:calc(18 * var(--u)); line-height:calc(28 * var(--u)); }
+  .b-acceso { left:calc(160 * var(--u)); top:calc(56 * var(--u)); width:calc(1110 * var(--u));
+              grid-template-columns:auto 1fr; gap:0 calc(48 * var(--u)); }
+  /* Academia-style type on the grass (canvas option C): "ACCESO" cream, "SIN CARGO" gold, copy beside it.
+     No card: a soft dark-green shade behind keeps it readable over the grass. */
+  .b-acceso { display:grid; isolation:isolate; padding:0; background:none; border:0; color:var(--brand-cream); align-items:end; }
+  .b-acceso .big { font-size:calc(120 * var(--u)); line-height:.86; letter-spacing:.02em; color:var(--brand-cream); }
+  .b-acceso .spin-line { display:flex; }
+  /* gold on each glyph (a gradient clipped to a parent doesn't follow the moving reels) */
+  .b-acceso .spin-line + .spin-line .slot-reel span,
+  .b-acceso h2:not(.spin-head) .spin-line + .spin-line { background:var(--gradient-gold); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .b-acceso .slot { height:.86em; line-height:.86; }
+  .b-acceso .slot-reel span { height:.86em; line-height:.86; }
+  .b-acceso .feat-list { position:relative; isolation:isolate; padding-bottom:calc(10 * var(--u)); }
+  /* a light, tight shade only behind the copy on the right (same as the outlined lines below) */
+  .b-acceso .feat-list::before { content:""; position:absolute; z-index:-1; inset:-30% -12%; pointer-events:none;
+    background:radial-gradient(closest-side, rgba(16,44,26,.55) 0%, rgba(16,44,26,.32) 60%, rgba(16,44,26,0) 100%); }
+  .b-acceso .feat-list li { padding:0 0 calc(14 * var(--u)); border:0; }
+  .b-acceso .feat-list li:last-child { padding-bottom:0; }
+  .b-acceso .acc-rule .rule { display:block; margin:0 0 calc(4 * var(--u)); width:calc(120 * var(--u)); }
+  .b-acceso .feat-list .txt { font-size:calc(18 * var(--u)); line-height:calc(28 * var(--u)); color:var(--brand-cream); text-shadow:0 1px 8px rgba(16,44,26,.8); }
 
   /* dark cards: title + line of copy */
   .bcard { display:flex; flex-direction:column; gap:calc(16 * var(--u)); padding:calc(26 * var(--u)) calc(24 * var(--u));
            background:var(--brand-green); border-color:transparent; color:var(--brand-cream); }
   .bcard h2 { font-family:var(--font-display); font-weight:400; font-size:calc(40 * var(--u)); line-height:calc(44 * var(--u)); letter-spacing:0; text-transform:uppercase; }
   .bcard p { font-size:calc(18 * var(--u)); line-height:calc(28 * var(--u)); color:var(--brand-cream); }
-  .b-techada { left:calc(589 * var(--u)); top:calc(280 * var(--u)); width:calc(781 * var(--u)); }
-  .b-cesped { left:calc(361 * var(--u)); top:calc(431 * var(--u)); width:calc(651 * var(--u)); }
+  /* panel 1 features as type on the grass (canvas option C): two columns under the Acceso heading */
+  .ftype { display:flex; flex-direction:column; gap:calc(14 * var(--u)); isolation:isolate; color:var(--brand-cream); }
+  .ftype h2 { display:flex; flex-direction:column; margin:0; font-family:var(--font-display); font-weight:400; text-transform:uppercase;
+    font-size:calc(58 * var(--u)); line-height:.92; letter-spacing:.02em; }
+  .ftype h2 > span { white-space:nowrap; }
+  .ftype .ol { position:relative; isolation:isolate; color:transparent; -webkit-text-stroke:1.5px var(--gold-light); }
+  /* a light, tight shade only behind the outlined line, so the thin strokes read on the grass */
+  .ftype .ol::before { content:""; position:absolute; z-index:-1; inset:-35% -10%; pointer-events:none;
+    background:radial-gradient(closest-side, rgba(16,44,26,.55) 0%, rgba(16,44,26,.32) 60%, rgba(16,44,26,0) 100%); }
+  .ftype .rule { display:block; margin:0; width:calc(72 * var(--u)); }
+  .ftype p { font-size:calc(18 * var(--u)); line-height:calc(28 * var(--u)); color:var(--brand-cream); text-shadow:0 1px 8px rgba(16,44,26,.8); }
+  .b-techada { left:calc(400 * var(--u)); top:calc(340 * var(--u)); width:calc(480 * var(--u)); }
+  .b-cesped { left:calc(936 * var(--u)); top:calc(340 * var(--u)); width:calc(400 * var(--u)); }
 
   /* panel 2: comfort services */
-  .svc-list { inset:0; list-style:none; padding:0; }
-  .svc { position:absolute; display:flex; align-items:flex-start; gap:calc(16 * var(--u)); padding:calc(24 * var(--u));
-         background:var(--brand-cream); color:var(--brand-green); border-radius:calc(8 * var(--u)); }
-  .svc svg { flex:none; width:calc(30 * var(--u)); height:calc(30 * var(--u)); stroke:var(--brand-green); fill:none; stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round; }
-  .svc h3 { font-family:var(--font-display); font-weight:400; font-size:calc(32 * var(--u)); line-height:calc(32 * var(--u)); letter-spacing:calc(1.82 * var(--u));
-            text-transform:uppercase; margin:0 0 calc(10 * var(--u)); white-space:nowrap; }
-  .svc p { font-size:calc(18 * var(--u)); line-height:calc(28 * var(--u)); margin:0; color:var(--brand-green); }
-  .svc-1 { left:calc(117 * var(--u)); top:calc(107 * var(--u)); width:calc(401 * var(--u)); }
-  .svc-2 { left:calc(157 * var(--u)); top:calc(255 * var(--u)); width:calc(422 * var(--u)); }
-  .svc-3 { left:calc(187 * var(--u)); top:calc(401 * var(--u)); width:calc(563 * var(--u)); }
+  /* Big-word list straight on the grass (canvas option C). Rows: word | copy, dashed gold lines between. */
+  .svc-list { left:calc(100 * var(--u)); top:calc(100 * var(--u)); width:calc(700 * var(--u)); list-style:none; padding:0;
+    border-top:1px dashed rgba(201,170,96,.6); }
+  .svc { display:grid; grid-template-columns:calc(380 * var(--u)) 1fr; align-items:center; gap:calc(28 * var(--u));
+    padding:calc(18 * var(--u)) 0; border-bottom:1px dashed rgba(201,170,96,.6); color:var(--brand-cream); }
+  .svc h3 { position:relative; isolation:isolate; justify-self:start; margin:0; font-family:var(--font-display); font-weight:400; text-transform:uppercase;
+    font-size:calc(68 * var(--u)); line-height:.9; letter-spacing:.02em; white-space:nowrap; }
+  .svc h3.ol { color:transparent; -webkit-text-stroke:1.5px var(--gold-light); }
+  .svc p { position:relative; isolation:isolate; font-size:calc(18 * var(--u)); line-height:calc(28 * var(--u)); margin:0; color:var(--brand-cream);
+    text-shadow:0 1px 8px rgba(16,44,26,.8); }
+  .svc p b { color:var(--gold-light); font-weight:600; }
+  /* the same light, tight shade as panel 1: only behind the outlined word and the copy */
+  .svc h3.ol::before, .svc p::before { content:""; position:absolute; z-index:-1; inset:-30% -10%; pointer-events:none;
+    background:radial-gradient(closest-side, rgba(16,44,26,.55) 0%, rgba(16,44,26,.32) 60%, rgba(16,44,26,0) 100%); }
 
   /* club rental */
-  .b-alquiler { left:calc(837 * var(--u)); top:calc(135 * var(--u)); width:calc(480 * var(--u)); min-height:calc(286 * var(--u)); padding:calc(24 * var(--u)); }
-  .b-alquiler .al-intro { font-size:calc(18 * var(--u)); line-height:calc(28 * var(--u)); }
-  .b-alquiler h2 { display:flex; flex-direction:column; gap:calc(16 * var(--u)); font-size:inherit; line-height:inherit; }
-  .al-name { display:block; font-family:var(--font-display); font-size:calc(40 * var(--u)); line-height:calc(32 * var(--u)); letter-spacing:calc(1.66 * var(--u)); }
-  .al-name.al-big { font-size:calc(64 * var(--u)); line-height:calc(60 * var(--u)); }
+  /* club rental as type on the grass (canvas option C) */
+  .b-alquiler { left:calc(860 * var(--u)); top:calc(110 * var(--u)); width:calc(530 * var(--u)); display:flex; flex-direction:column;
+    gap:calc(14 * var(--u)); color:var(--brand-cream); }
+  .b-alquiler .al-intro { position:relative; isolation:isolate; align-self:flex-start; font-size:calc(18 * var(--u)); line-height:calc(28 * var(--u));
+    color:var(--brand-cream); text-shadow:0 1px 8px rgba(16,44,26,.8); }
+  .b-alquiler .rule { display:block; margin:0; width:calc(120 * var(--u)); }
+  .b-alquiler h2 { display:flex; flex-direction:column; align-items:flex-start; gap:calc(4 * var(--u)); margin:0; font-size:inherit; line-height:inherit; }
+  .al-name { display:block; font-family:var(--font-display); font-weight:400; text-transform:uppercase; white-space:nowrap;
+    font-size:calc(44 * var(--u)); line-height:1; letter-spacing:.02em; }
+  .al-name.al-big { font-size:calc(170 * var(--u)); line-height:.84; }
+  .al-name.al-ol { position:relative; isolation:isolate; color:transparent; -webkit-text-stroke:1.5px var(--gold-light); }
+  /* same light, tight shade as the other panels: only behind the copy and the outlined line */
+  .b-alquiler .al-intro::before, .al-name.al-ol::before { content:""; position:absolute; z-index:-1; inset:-30% -10%; pointer-events:none;
+    background:radial-gradient(closest-side, rgba(16,44,26,.55) 0%, rgba(16,44,26,.32) 60%, rgba(16,44,26,0) 100%); }
 
   /* reveal (same motion as the hero's Academia block): fade in while rising 16px, staggered by --d */
   #track .board > :not(.svc-list), #track .board .svc { opacity:0; transform:translateY(16px);
@@ -307,36 +345,60 @@
     .board > *, .board .svc { position:static; min-height:0; width:fit-content; max-width:min(86%, 340px); }
     .board .card { border-radius:var(--radius-md); }
     /* stagger */
-    .board .b-techada, .board .b-alquiler { align-self:flex-end; }
-    .board .b-cesped { margin-left:5%; }
+    .board .b-techada, .board .b-cesped { gap:calc(var(--gap) * .7); margin-top:calc(var(--gap) * .6); }
+    /* panel 1 starts at the top (under the menu button) instead of centred, with clear air before the features */
+    .board:has(> .b-acceso) { justify-content:flex-start; }
+    .board-sec:has(.b-acceso) { padding-top:clamp(56px, 8vh, 72px); }
+    .board .b-techada { margin-top:clamp(28px, 5vh, 48px); }
+    .board .b-cesped { margin-left:12%; }
+    .ftype h2 { font-size:clamp(26px, min(8.4vw, 4.6vh), 40px); }
+    .ftype .rule { width:56px; }
+    .ftype p { font-size:var(--fs-body); line-height:1.45; }
 
-    .board .b-acceso { display:flex; flex-direction:column; align-items:flex-start; gap:var(--gap); padding:var(--pad); }
-    .b-acceso .big { font-size:clamp(26px, min(8.4vw, 4.6vh), 40px); }
-    .b-acceso .feat-list li { padding:calc(var(--gap) * .8) 0; }
+    .board .b-acceso { display:flex; flex-direction:column; align-items:flex-start; gap:calc(var(--gap) * 1.4); padding:0; max-width:100%; }
+    .b-acceso .big { font-size:clamp(44px, min(15vw, 8vh), 72px); }
+    .b-acceso .feat-list { max-width:min(86%, 340px); padding-bottom:0; }
+    .b-acceso .feat-list li { padding:0 0 calc(var(--gap) * .7); }
+    .b-acceso .acc-rule .rule { width:72px; }
     .b-acceso .feat-list .txt { font-size:var(--fs-body); line-height:1.45; }
     .bcard { padding:var(--pad); gap:calc(var(--gap) * .6); }
     .bcard h2 { font-size:var(--fs-head); line-height:1.12; }
     .bcard p { font-size:var(--fs-body); line-height:1.45; }
 
-    .board .svc-list { display:flex; flex-direction:column; align-items:flex-start; gap:var(--gap); width:100%; max-width:none; }
-    .board .svc { max-width:min(88%, 340px); padding:var(--pad); gap:calc(var(--pad) * .8); border-radius:var(--radius-md); }
-    .board .svc-2 { margin-left:6%; }
-    .board .svc-3 { margin-left:12%; }
-    .svc svg { width:clamp(18px, 5.4vw, 24px); height:clamp(18px, 5.4vw, 24px); }
-    .svc h3 { font-size:clamp(14px, min(4.3vw, 2.4vh), 18px); line-height:1.1; letter-spacing:.06em; margin-bottom:2px; white-space:normal; }
-    .svc p { font-size:var(--fs-body); line-height:1.45; }
-    .b-alquiler { padding:var(--pad); }
+    .board .svc-list { display:flex; flex-direction:column; align-items:stretch; width:100%; max-width:none; }
+    .board .svc { max-width:none; width:auto; grid-template-columns:1fr; gap:calc(var(--gap) * .5); padding:var(--gap) 0; }
+    .svc h3 { font-size:clamp(30px, min(10vw, 5.4vh), 48px); }
+    .svc p { font-size:var(--fs-body); line-height:1.45; max-width:340px; }
     .b-alquiler .al-intro { font-size:var(--fs-body); line-height:1.45; }
     .b-alquiler h2 { gap:calc(var(--gap) * .5); }
-    .al-name { font-size:clamp(16px, min(5vw, 2.8vh), 22px); line-height:1.05; letter-spacing:.04em; }
-    .al-name.al-big { font-size:clamp(26px, min(8.4vw, 4.6vh), 40px); line-height:.95; }
+    .board .b-alquiler { align-self:flex-start; max-width:100%; margin-top:var(--gap); gap:calc(var(--gap) * .7); }
+    .b-alquiler .rule { width:72px; }
+    .al-name { font-size:clamp(20px, min(6.4vw, 3.4vh), 28px); }
+    .al-name.al-big { font-size:clamp(64px, min(22vw, 11vh), 110px); }
 
-    .board.cta { display:grid; grid-template-columns:auto 1fr; gap:var(--space-3); align-content:start; justify-content:stretch; }
+    /* Phones: a stronger, Academia-style entrance (the 16px fade was easy to miss while the panel slides).
+       Each block rises further, one after another, and its big headline wipes up from a mask. */
+    #track .board > :not(.svc-list):not(.cta *), #track .board .svc { transform:translateY(36px);
+      transition:opacity .8s cubic-bezier(.2,.8,.2,1), transform .9s cubic-bezier(.2,.8,.2,1); }
+    #track .board.in > :not(.svc-list), #track .board.in .svc { transition-delay:calc(var(--d, 0) * .14s); }
+    #track .board:not(.cta) :is(.b-acceso .big, .ftype h2, .svc h3, .al-name) { clip-path:inset(-20% -6% 100% -6%);
+      transition:clip-path .9s cubic-bezier(.7,0,.2,1); }
+    #track .board.in :is(.b-acceso .big, .ftype h2, .svc h3, .al-name) { clip-path:inset(-20% -6% -20% -6%);
+      transition-delay:calc(var(--d, 0) * .14s + .08s); }
+    #track .board.in .al-name.al-big { transition-delay:calc(var(--d, 0) * .14s + .18s); }
+    #track .board.in .al-name.al-ol { transition-delay:calc(var(--d, 0) * .14s + .28s); }
+    @media (prefers-reduced-motion:reduce) {
+      #track .board:not(.cta) :is(.b-acceso .big, .ftype h2, .svc h3, .al-name) { clip-path:none; transition:none; }
+      #track .board > :not(.svc-list), #track .board .svc { transform:none; transition:none; }
+    }
+
+    /* more air between heading, badge + copy and the CTA (was 12px everywhere); scales down on short screens */
+    .board.cta { display:grid; grid-template-columns:auto 1fr; gap:clamp(20px, 3.6vh, 36px) var(--space-4); align-content:start; justify-content:stretch; }
     .board.cta > * { max-width:none; width:auto; }
     .board.cta .end-badge { width:clamp(52px, 16vw, 72px); height:auto; }
     .end-title { grid-column:1 / -1; font-size:clamp(28px, min(9.6vw, 5.4vh), 46px); line-height:1; white-space:normal; }
     .end-text { font-size:var(--fs-body); line-height:1.4; align-self:center; }
-    .end-more { grid-column:1 / -1; justify-self:start; }
+    .end-more { grid-column:1 / -1; justify-self:start; margin-top:clamp(4px, 1.4vh, 14px); }
     .end-replay { position:absolute; left:70vw; top:calc(72vh + 36px); transform:translateX(-50%); }
     #track .board.cta.show > .end-replay { transform:translateX(-50%); }
   }
@@ -348,12 +410,14 @@
       --fs-body:clamp(16px, min(2.5vw, 1.75vh), 21px); --fs-head:clamp(24px, min(4vw, 2.8vh), 36px);
       padding:clamp(84px, 9vh, 112px) var(--space-8) calc(max(4vh, 18px) + 96px); }
     .board > *, .board .svc { max-width:min(80%, 560px); }
-    .board .svc { max-width:min(84%, 560px); }
-    .b-acceso .big { font-size:clamp(40px, min(6.4vw, 4.4vh), 60px); }
-    .svc svg { width:30px; height:30px; }
-    .svc h3 { font-size:clamp(18px, min(3vw, 2.1vh), 26px); }
-    .al-name { font-size:clamp(22px, min(3.6vw, 2.5vh), 30px); }
-    .al-name.al-big { font-size:clamp(40px, min(6.4vw, 4.4vh), 60px); }
+    .board .svc-list { max-width:min(84%, 640px); }
+    .board .svc { max-width:none; }
+    .b-acceso .big { font-size:clamp(64px, min(11vw, 7vh), 110px); }
+    .ftype h2 { font-size:clamp(40px, min(6.4vw, 4.4vh), 60px); }
+    .svc h3 { font-size:clamp(48px, min(8vw, 5.4vh), 72px); }
+    .svc p { max-width:520px; }
+    .al-name { font-size:clamp(28px, min(4.4vw, 3vh), 40px); }
+    .al-name.al-big { font-size:clamp(110px, min(17vw, 11vh), 160px); }
     .board.cta .end-badge { width:clamp(72px, 11vw, 104px); }
     .end-title { font-size:clamp(46px, min(8vw, 5.4vh), 72px); }
     .end-more.primary { font-size:15px; padding:14px 30px; }
