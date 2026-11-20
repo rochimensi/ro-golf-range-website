@@ -4,7 +4,7 @@ export default function Footer() {
       <img src="/img/logo.jpg" alt="" width={72} height={72} />
       <div>
         <p className="label">R&amp;O Golf Range · Los Acantilados</p>
-        <p className="caption">Abierto todo el año, de lunes a lunes · Mar del Plata, Argentina</p>
+        <p className="caption">Abierto todo el año, de lunes a lunes de 8 a 18 h · Mar del Plata, Argentina</p>
       </div>
     </footer>
   );

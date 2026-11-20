@@ -1079,8 +1079,6 @@
   .contact:nth-child(2) { --d:.1s; } .contact:nth-child(3) { --d:.2s; }
   .contact svg { width:32px; height:32px; fill:none; stroke:var(--gold-light); stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round; color:var(--gold-light); margin-bottom:var(--space-2); }
   .contact:hover { border-color:var(--gold-deep); background:var(--surface-alt); transform:translateY(-3px); }
-  .contact[aria-disabled="true"] { cursor:default; }
-  .contact[aria-disabled="true"] .c-val { color:var(--ink-muted); font-style:italic; }
   .c-val { font-size:16px; }
   .location { display:grid; grid-template-columns:1.2fr 1fr; gap:var(--space-12); margin-top:var(--space-16); align-items:center; }
   .map svg { width:100%; height:auto; display:block; border:1px solid var(--gold-deep); border-radius:var(--radius-md); }

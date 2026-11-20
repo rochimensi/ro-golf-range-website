@@ -234,7 +234,7 @@ export default function PuttIntro() {
       <div id="track">
               <section className="sec hero-sec">
             <div className="hero">
-              <h1 className="sr-only">R&amp;O Golf Range · Los Acantilados</h1>
+              <h1 className="sr-only">R&amp;O Golf Range · Driving range y Academia de Golf Omar Peralta en Mar del Plata · Los Acantilados</h1>
               <div className="logo-badge"><img className="logo" src="/img/logo.jpg" alt="R&O Golf Range · Los Acantilados" width={640} height={641} /></div>
               <div className="hero-text">
                 <h2 className="display-xl hero-title" aria-label="El nuevo driving de Mar del Plata">

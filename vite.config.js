@@ -6,7 +6,7 @@ import { resolve } from 'node:path';
 const SITE = 'https://rogolfrange.com.ar';
 
 // Pages with an address of their own (see src/route.js). The build writes dist/<path>/index.html for each,
-// with its own title, description and canonical, so any static host serves /academia and /omar-peralta
+// with its own title, description, canonical and share (Open Graph) tags, so any static host serves /academia and /omar-peralta
 // without rewrite rules, and Google sees the right tags before any JavaScript runs.
 const PAGES = {
   academia: {
@@ -30,7 +30,10 @@ function pageEntries() {
         const page = html
           .replace(/<title>[^<]*<\/title>/, `<title>${title}</title>`)
           .replace(/(<meta name="description" content=")[^"]*/, `$1${description}`)
-          .replace(/(<link rel="canonical" href=")[^"]*/, `$1${SITE}/${path}`);
+          .replace(/(<link rel="canonical" href=")[^"]*/, `$1${SITE}/${path}`)
+          .replace(/(<meta property="og:title" content=")[^"]*/, `$1${title}`)
+          .replace(/(<meta property="og:description" content=")[^"]*/, `$1${description}`)
+          .replace(/(<meta property="og:url" content=")[^"]*/, `$1${SITE}/${path}`);
         mkdirSync(resolve(dist, path), { recursive: true });
         writeFileSync(resolve(dist, path, 'index.html'), page);
       }

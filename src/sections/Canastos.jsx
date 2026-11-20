@@ -20,7 +20,7 @@ export default function Canastos() {
         <div className="cv-grid">
           {CLIPS.map((name) => (
             <div key={name} className={`cv-tile cv-${name}`}>
-              <AutoplayVideo src={`/video/${name}.mp4`} poster={`/video/${name}.jpg`} preload="auto" aria-hidden="true" />
+              <AutoplayVideo lazy src={`/video/${name}.mp4`} poster={`/video/${name}.jpg`} aria-hidden="true" />
             </div>
           ))}
         </div>

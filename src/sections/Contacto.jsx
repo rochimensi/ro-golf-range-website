@@ -14,7 +14,7 @@ export default function Contacto() {
             <svg viewBox="0 0 24 24" aria-hidden="true"><rect x={3} y={3} width={18} height={18} rx={5} /><circle cx={12} cy={12} r={4} /><circle cx="17.3" cy="6.7" r={1} fill="currentColor" stroke="none" /></svg>
             <span className="label">Instagram</span><span className="c-val">Mensaje directo a @ro.golfrange</span>
           </a>
-          <a className="contact" data-reveal href="#contacto" aria-disabled="true">
+          <a className="contact" data-reveal href="mailto:rogolfrange@gmail.com">
             <svg viewBox="0 0 24 24" aria-hidden="true"><rect x={3} y={5} width={18} height={14} rx={2} /><path d="m3 7 9 6 9-6" /></svg>
             <span className="label">Email</span><span className="c-val">rogolfrange@gmail.com</span>
           </a>
@@ -69,7 +69,7 @@ export default function Contacto() {
             <div className="label">Ubicación</div>
             <h3 className="heading-2">Club Mar del Plata · “Golf Los Acantilados”</h3>
             <p className="body-l">R&amp;O Golf Range y la Academia Omar Peralta se encuentran dentro del Club Mar del Plata “Golf Los Acantilados”, C.34 y C. 493, Mar del Plata, Argentina.</p>
-            <p className="hours"><span className="label">Abierto todo el año</span><br />De lunes a lunes</p>
+            <p className="hours"><span className="label">Abierto todo el año</span><br />De lunes a lunes, de 8 a 18 h</p>
             <a className="btn gold" href="https://www.google.com/maps/search/?api=1&query=R%26O+Golf+Range+-+Academia+Omar+Peralta" target="_blank" rel="noopener">Cómo llegar ↗</a>
           </div>
         </div>
