@@ -17,19 +17,11 @@ const WA_LINK = `${WHATSAPP}?text=${encodeURIComponent('Hola! Quiero conversar c
 /*
   MEDIA — every photo/video slot on the page. To use your own, drop the file at public/<src> (same name)
   or change the path here. A slot whose file doesn't exist yet shows a striped placeholder with its path.
+  (The other sections use ParticleShape graphics instead of photos.)
   Videos: muted loop, 720 px wide is plenty (same treatment as the home page clips).
 */
 const MEDIA = {
   hero:    { type: 'video', src: 'video/academia-hero.mp4', poster: 'video/academia-hero.jpg', label: 'Video principal · vertical 4:5' },
-  tecnica: { type: 'video', src: 'video/clases.mp4', poster: 'video/clases.jpg', label: 'Técnica · vertical 4:5' },
-  juego:   { type: 'video', src: 'video/academia/juego.mp4', poster: 'video/academia/juego.jpg', label: 'El juego · video vertical 4:5' },
-  campo:   { type: 'image', src: 'img/academia/campo.jpg', alt: 'Jugadores en el campo', label: 'El campo · foto vertical 4:5' },
-  mente:   { type: 'image', src: 'img/academia/mente-cuerpo.jpg', alt: 'Preparación física y mental', label: 'Mente y cuerpo · foto vertical 4:5' },
-  college: { type: 'video', src: 'video/academia/college.mp4', poster: 'video/academia/college.jpg', label: 'College Placement · video horizontal 16:10' },
-  of1:     { type: 'image', src: 'img/academia/coaching.jpg', alt: 'Omar en una clase individual', label: 'Coaching 1:1 · foto 4:5' },
-  of2:     { type: 'image', src: 'img/academia/estudio.jpg', alt: 'Estudio y entrenamiento', label: 'Estudio + golf · foto 4:5' },
-  of3:     { type: 'video', src: 'video/academia/torneo.mp4', poster: 'video/academia/torneo.jpg', label: 'Torneos · video 4:5' },
-  of4:     { type: 'image', src: 'img/academia/universidad.jpg', alt: 'Campus universitario', label: 'Universidades · foto 4:5' },
   cta:     { type: 'image', src: 'img/academia-hoy.jpg', alt: 'Edificio de la Academia Omar Peralta en R&O Golf Range', label: 'Academia · foto 4:5' },
 };
 
@@ -60,10 +52,10 @@ const CHAPTER_SHAPES = { tecnica: 'grip', juego: 'flag', campo: 'rules', mente: 
 const OFFER_SHAPES = ['oneone', 'book', 'trophy', 'globe'];
 
 const OFFERS = [
-  { m: 'of1', stop: 'Coaching 1:1', t: 'Coaching profesional individual', s: '1:1', d: 'Trabajo personalizado, uno a uno, con Omar.' },
-  { m: 'of2', stop: 'Estudio + golf', t: 'Seguimiento académico y deportivo integrado', d: 'Diseñado para armonizar los estudios académicos con el entrenamiento deportivo.' },
-  { m: 'of3', stop: 'Torneos', t: 'Torneos nacionales y clasificaciones juveniles', d: 'Participación en el circuito competitivo, con planificación de cada torneo.' },
-  { m: 'of4', stop: 'Universidades', t: 'Orientación estratégica', d: 'Para apoyar las solicitudes a universidades en el extranjero.' },
+  { stop: 'Coaching 1:1', t: 'Coaching profesional individual', s: '1:1', d: 'Trabajo personalizado, uno a uno, con Omar.' },
+  { stop: 'Estudio + golf', t: 'Seguimiento académico y deportivo integrado', d: 'Diseñado para armonizar los estudios académicos con el entrenamiento deportivo.' },
+  { stop: 'Torneos', t: 'Torneos nacionales y clasificaciones juveniles', d: 'Participación en el circuito competitivo, con planificación de cada torneo.' },
+  { stop: 'Universidades', t: 'Orientación estratégica', d: 'Para apoyar las solicitudes a universidades en el extranjero.' },
 ];
 
 const AGES = Array.from({ length: 11 }, (_, i) => 8 + i);
