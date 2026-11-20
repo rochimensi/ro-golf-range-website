@@ -23,7 +23,14 @@ const unlockAll = () => {
   if (!blocked || navigator.userActivation?.isActive === false) return;
   clips.forEach((unlock) => unlock());
 };
-if (typeof window !== 'undefined') gestures.forEach((g) => window.addEventListener(g, unlockAll, { passive: true }));
+// Attached by the first clip that mounts, not when this file loads: the build prerenders the pages in Node,
+// where `window` is only a stand-in without addEventListener.
+let listening = false;
+function listenForTaps() {
+  if (listening) return;
+  listening = true;
+  gestures.forEach((g) => window.addEventListener(g, unlockAll, { passive: true }));
+}
 
 export default function AutoplayVideo({ lazy = false, src, ...props }) {
   const ref = useRef(null);
@@ -60,6 +67,7 @@ export default function AutoplayVideo({ lazy = false, src, ...props }) {
       }).catch(() => {});
     };
     clips.add(unlock);
+    listenForTaps();
     el.addEventListener('canplay', tryPlay);
     tryPlay();
 
