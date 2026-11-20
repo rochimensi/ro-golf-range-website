@@ -20,7 +20,7 @@ export default function Canastos() {
         <div className="cv-grid">
           {CLIPS.map((name) => (
             <div key={name} className={`cv-tile cv-${name}`}>
-              <AutoplayVideo src={`video/${name}.mp4`} poster={`video/${name}.jpg`} preload="auto" aria-hidden="true" />
+              <AutoplayVideo src={`/video/${name}.mp4`} poster={`/video/${name}.jpg`} preload="auto" aria-hidden="true" />
             </div>
           ))}
         </div>
@@ -30,7 +30,7 @@ export default function Canastos() {
       <header className="vh" data-reveal>
         <h2 className="display-l">Practica a tu ritmo</h2>
         <div className="ball-pick">
-          <img className="ball-pick-logo" src="img/logo-taylormade.svg" alt="TaylorMade" width="1024" height="207" />
+          <img className="ball-pick-logo" src="/img/logo-taylormade.svg" alt="TaylorMade" width="1024" height="207" />
           <p className="body-l">
             <strong>TaylorMade Range Balls.</strong> Pelota de golf de alto rendimiento y primera calidad con construcción sólida de dos piezas, compresión de 90. Esta es nuestra pelota elegida.
           </p>
@@ -55,7 +55,7 @@ export default function Canastos() {
         <div className="benefits">
           <article className="benefit" data-reveal>
             <div className="benefit-logo round">
-              <img src="img/logo-acantilados.png" alt="Club Mar del Plata" width="200" height="200" />
+              <img src="/img/logo-acantilados.png" alt="Club Mar del Plata" width="200" height="200" />
             </div>
             <div className="label">Beneficio socios</div>
             <h3 className="heading-3">Club Mar del Plata · Golf Los Acantilados</h3>
@@ -63,7 +63,7 @@ export default function Canastos() {
           </article>
           <article className="benefit" data-reveal>
             <div className="benefit-logo plain">
-              <img src="img/logo-sportclub-white.png" alt="SportClub" width="560" height="107" />
+              <img src="/img/logo-sportclub-white.png" alt="SportClub" width="560" height="107" />
             </div>
             <div className="label">Beneficio socios</div>
             <h3 className="heading-3">SportClub</h3>

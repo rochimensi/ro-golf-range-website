@@ -15,7 +15,7 @@ const FORMATS = [
   { video: 'callaway', format: 'Fly banners', brand: 'Callaway' },
   { video: 'taylormade', format: 'Gazebo y stand', brand: 'TaylorMade' },
   { video: 'remax', format: 'Inflables', brand: 'RE/MAX' },
-  { image: 'img/empresas-carteles.jpg', format: 'Carteles en gateras', brand: 'Giometti Propiedades' },
+  { image: '/img/empresas-carteles.jpg', format: 'Carteles en gateras', brand: 'Giometti Propiedades' },
   { video: 'restinga', format: 'Carteles en campo de juego', brand: 'Restinga' },
   { video: 'calej', format: 'Sampling productos', brand: 'Cosmetóloga Cristina Fernandez · Calej' },
   { video: 'macro', format: 'Mobiliario', brand: 'Macro' },
@@ -276,7 +276,7 @@ export default function Empresas() {
             <figure>
               <div className="emp-media">
                 {video ? (
-                  <AutoplayVideo src={`video/empresas/${video}.mp4`} poster={`video/empresas/${video}.jpg`} preload="metadata" aria-label={`${format} · ${brand}`} />
+                  <AutoplayVideo src={`/video/empresas/${video}.mp4`} poster={`/video/empresas/${video}.jpg`} preload="metadata" aria-label={`${format} · ${brand}`} />
                 ) : (
                   <img src={image} alt={`${format} · ${brand}`} loading="lazy" />
                 )}
@@ -317,7 +317,7 @@ export default function Empresas() {
             <svg className="gt-outline" aria-hidden="true" preserveAspectRatio="none"><path ref={ticketLine} /></svg>
             <div className="gt-side"><span className="gt-up">Admite a todo tu equipo</span></div>
             <div className="gt-main">
-              <img className="gt-logo" src="img/logo.jpg" alt="R&amp;O Golf Range" width="60" height="60" />
+              <img className="gt-logo" src="/img/logo.jpg" alt="R&amp;O Golf Range" width="60" height="60" />
               <div className="gt-kicker">R&amp;O Golf Range · Empresas</div>
               <h4 className="gt-title">Golf Pass</h4>
               <div className="gt-sub"><span aria-hidden="true" />Jornada de team building<span aria-hidden="true" /></div>

@@ -21,8 +21,8 @@ const WA_LINK = `${WHATSAPP}?text=${encodeURIComponent('Hola! Quiero conversar c
   Videos: muted loop, 720 px wide is plenty (same treatment as the home page clips).
 */
 const MEDIA = {
-  hero:    { type: 'video', src: 'video/academia-hero.mp4', poster: 'video/academia-hero.jpg', label: 'Video principal · vertical 4:5' },
-  cta:     { type: 'image', src: 'img/academia-hoy.jpg', alt: 'Edificio de la Academia Omar Peralta en R&O Golf Range', label: 'Academia · foto 4:5' },
+  hero:    { type: 'video', src: '/video/academia-hero.mp4', poster: '/video/academia-hero.jpg', label: 'Video principal · vertical 4:5' },
+  cta:     { type: 'image', src: '/img/academia-hoy.jpg', alt: 'Edificio de la Academia Omar Peralta en R&O Golf Range', label: 'Academia · foto 4:5' },
 };
 
 const CHAPTERS = [
@@ -248,7 +248,7 @@ export default function Academia() {
       <header className="ac-bar">
         <a className="ac-back" {...linkTo('home')} aria-label="Volver a R&O Golf Range">
           <span aria-hidden="true">←</span>
-          <img src="img/logo.jpg" alt="" width="36" height="36" />
+          <img src="/img/logo.jpg" alt="" width="36" height="36" />
           <span className="ac-bar-name">Academia Omar Peralta</span>
         </a>
         <nav className="ac-bar-nav" aria-label="Secciones">
@@ -265,7 +265,7 @@ export default function Academia() {
           <div className="ac-top">
             <a className="ac-back" {...linkTo('home')}>
               <span aria-hidden="true">←</span>
-              <img src="img/logo.jpg" alt="" width="44" height="44" />
+              <img src="/img/logo.jpg" alt="" width="44" height="44" />
               <span>Volver al range</span>
             </a>
           </div>

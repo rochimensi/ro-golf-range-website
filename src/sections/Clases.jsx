@@ -94,7 +94,7 @@ export default function Clases() {
             </div>
           </header>
           <figure className="framed clases-media">
-            <AutoplayVideo src="video/clases.mp4" poster="video/clases.jpg" preload="metadata" aria-label="Omar Peralta dando clases en el driving" />
+            <AutoplayVideo src="/video/clases.mp4" poster="/video/clases.jpg" preload="metadata" aria-label="Omar Peralta dando clases en el driving" />
           </figure>
         </div>
       </div>

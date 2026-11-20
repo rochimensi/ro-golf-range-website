@@ -118,7 +118,7 @@ export default function Transformacion() {
               <li key={id} className={`tl-row${i % 2 ? ' rev' : ''}`}>
                 <span className="tl-node" aria-hidden="true"></span>
                 <figure className="tl-media">
-                  <AutoplayVideo lazy src={`video/${id}.mp4`} poster={`video/${id}.jpg`} aria-label={title} />
+                  <AutoplayVideo lazy src={`/video/${id}.mp4`} poster={`/video/${id}.jpg`} aria-label={title} />
                 </figure>
                 <div className="tl-copy">
                   <span className="tl-n">{String(i + 1).padStart(2, '0')}</span>

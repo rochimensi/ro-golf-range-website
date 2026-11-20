@@ -13,7 +13,7 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
 ScrollTrigger.clearScrollMemory('manual');
 if (import.meta.env.DEV || location.search.includes('debug')) window.ScrollTrigger = ScrollTrigger;
 
-// The home page plus two pages: Academia (#academia) and Omar's biography (#acerca-de-omar), see route.js.
+// The home page plus two pages: Academia (/academia) and Omar's biography (/omar-peralta), see route.js.
 export default function App() {
   const [route, setRoute] = useState(currentRoute);
   const prev = useRef(null);

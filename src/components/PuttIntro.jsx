@@ -235,7 +235,7 @@ export default function PuttIntro() {
               <section className="sec hero-sec">
             <div className="hero">
               <h1 className="sr-only">R&amp;O Golf Range · Los Acantilados</h1>
-              <div className="logo-badge"><img className="logo" src="img/logo.jpg" alt="R&O Golf Range · Los Acantilados" width={640} height={641} /></div>
+              <div className="logo-badge"><img className="logo" src="/img/logo.jpg" alt="R&O Golf Range · Los Acantilados" width={640} height={641} /></div>
               <div className="hero-text">
                 <h2 className="display-xl hero-title" aria-label="El nuevo driving de Mar del Plata">
                   {/* line 1 drops in letter by letter, line 2 pops in whole, line 3 rises word by word */}
@@ -314,7 +314,7 @@ export default function PuttIntro() {
           <section className="sec board-sec end-sec">
             <div className="board cta" id="cta">
               <h2 className="end-title" style={{ '--d': 0 }}>Abierto todo el año</h2>
-              <img className="end-badge" src="img/club-mar-del-plata.png" alt="Club Mar del Plata" width={121} height={120} style={{ '--d': 1 }} />
+              <img className="end-badge" src="/img/club-mar-del-plata.png" alt="Club Mar del Plata" width={121} height={120} style={{ '--d': 1 }} />
               <p className="end-text" style={{ '--d': 1 }}>De lunes a lunes<br />En el Club Mar del Plata, Golf Los Acantilados.</p>
               <button className="primary end-more" id="go-down" onClick={goDown} style={{ '--d': 2 }}>Más información abajo ↓</button>
               <button className="end-replay" id="replay" onClick={replay} style={{ '--d': 3 }}>Puttear de nuevo</button>

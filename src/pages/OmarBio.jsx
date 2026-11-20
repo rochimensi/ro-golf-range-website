@@ -17,20 +17,20 @@ import './omarbio.css';
   A missing file shows a striped placeholder that names it.
 */
 const PH = {
-  young:     { src: 'img/omar-joven.jpg', layer: '(foto restaurada)', alt: 'Omar Peralta de joven, terminando un swing' },
-  academiaHoy: { src: 'img/academia-hoy.jpg', layer: '(foto del dueño)', alt: 'Edificio de la Academia Omar Peralta con el logo de R&O Golf Range' },
-  tour:      { src: 'img/figma/omar-tour.jpg', layer: 'IMG_7569', alt: 'Omar Peralta y Fabrizio Zanotti de espaldas, mirando el skyline de Madrid desde el campo' },
-  muthaiga:  { src: 'img/omar-muthaiga.jpg', layer: '(foto del dueño)', alt: 'Omar Peralta en el putting green del Muthaiga Golf Club, Nairobi' },
-  masters:   { src: 'img/masters.jpg', layer: '(foto del dueño)', alt: 'Omar Peralta con gorras de The Masters 2022 en Augusta National' },
-  straka:    { src: 'img/omar-straka.jpg', layer: '(foto del dueño)', alt: 'Omar Peralta y Sepp Straka junto al trofeo' },
-  argentinos:{ src: 'img/omar-argentinos.jpg', layer: '(foto del dueño)', alt: 'Omar Peralta con Rafa Echenique, Nelson Ledesma y Fabián Gómez en una cancha' },
-  daly:      { src: 'img/omar-daly.jpg', layer: '(foto del dueño)', alt: 'Omar Peralta y John Daly en el putting green' },
-  celli:     { src: 'img/omar-celli.jpg', layer: '(foto del dueño)', alt: 'Omar Peralta, con la libreta de yardas, junto a Filippo Celli en el tee' },
-  trevino:   { src: 'img/omar-trevino.jpg', layer: '(foto del dueño)', alt: 'Omar Peralta y Lee Trevino en un torneo' },
-  mickelson: { src: 'img/omar-mickelson.jpg', layer: '(foto del dueño)', alt: 'Omar Peralta y Phil Mickelson en un green de práctica' },
-  laguna:    { src: 'img/figma/laguna.jpg', layer: '603688_10152426…_n', alt: 'Felipe Aguilar y Omar Peralta con el trofeo en Singapur' },
-  bmw:       { src: 'img/figma/omar-bmw.jpg', layer: 'IMG_4717', alt: 'Fabrizio Zanotti y Omar Peralta en Wentworth' },
-  olympics:  { src: 'img/figma/olympics.jpg', layer: '1587134220471 1', alt: 'Tee de salida con los aros olímpicos' },
+  young:     { src: '/img/omar-joven.jpg', layer: '(foto restaurada)', alt: 'Omar Peralta de joven, terminando un swing' },
+  academiaHoy: { src: '/img/academia-hoy.jpg', layer: '(foto del dueño)', alt: 'Edificio de la Academia Omar Peralta con el logo de R&O Golf Range' },
+  tour:      { src: '/img/figma/omar-tour.jpg', layer: 'IMG_7569', alt: 'Omar Peralta y Fabrizio Zanotti de espaldas, mirando el skyline de Madrid desde el campo' },
+  muthaiga:  { src: '/img/omar-muthaiga.jpg', layer: '(foto del dueño)', alt: 'Omar Peralta en el putting green del Muthaiga Golf Club, Nairobi' },
+  masters:   { src: '/img/masters.jpg', layer: '(foto del dueño)', alt: 'Omar Peralta con gorras de The Masters 2022 en Augusta National' },
+  straka:    { src: '/img/omar-straka.jpg', layer: '(foto del dueño)', alt: 'Omar Peralta y Sepp Straka junto al trofeo' },
+  argentinos:{ src: '/img/omar-argentinos.jpg', layer: '(foto del dueño)', alt: 'Omar Peralta con Rafa Echenique, Nelson Ledesma y Fabián Gómez en una cancha' },
+  daly:      { src: '/img/omar-daly.jpg', layer: '(foto del dueño)', alt: 'Omar Peralta y John Daly en el putting green' },
+  celli:     { src: '/img/omar-celli.jpg', layer: '(foto del dueño)', alt: 'Omar Peralta, con la libreta de yardas, junto a Filippo Celli en el tee' },
+  trevino:   { src: '/img/omar-trevino.jpg', layer: '(foto del dueño)', alt: 'Omar Peralta y Lee Trevino en un torneo' },
+  mickelson: { src: '/img/omar-mickelson.jpg', layer: '(foto del dueño)', alt: 'Omar Peralta y Phil Mickelson en un green de práctica' },
+  laguna:    { src: '/img/figma/laguna.jpg', layer: '603688_10152426…_n', alt: 'Felipe Aguilar y Omar Peralta con el trofeo en Singapur' },
+  bmw:       { src: '/img/figma/omar-bmw.jpg', layer: 'IMG_4717', alt: 'Fabrizio Zanotti y Omar Peralta en Wentworth' },
+  olympics:  { src: '/img/figma/olympics.jpg', layer: '1587134220471 1', alt: 'Tee de salida con los aros olímpicos' },
 };
 
 const PLAYERS = [
@@ -52,7 +52,7 @@ const PLAYERS = [
 
 // Tour logos for the "+20 años" stat, in white circles (same badges as the Omar section on the home page).
 // A w × h box fits a circle of diameter d when w² + h² ≤ d²; aspect = the trimmed logo's width / height.
-const TOURS = [['img/logos/pga-tour.svg', 'PGA Tour', 0.78], ['img/logos/dp-world-tour.png', 'DP World Tour', 1]];
+const TOURS = [['/img/logos/pga-tour.svg', 'PGA Tour', 0.78], ['/img/logos/dp-world-tour.png', 'DP World Tour', 1]];
 function fitInCircle(aspect) {
   const h = 100 / Math.hypot(1, aspect);
   return { width: `${(h * aspect * 0.94).toFixed(1)}%`, height: 'auto' };
@@ -169,7 +169,7 @@ export default function OmarBio() {
       <header className="ob-bar">
         <a className="ob-back" {...linkTo('home')}>
           <span aria-hidden="true">←</span>
-          <img src="img/logo.jpg" alt="" width="34" height="34" />
+          <img src="/img/logo.jpg" alt="" width="34" height="34" />
           <span className="ob-back-txt">Volver al range</span>
         </a>
         <a className="btn academia ob-bar-cta" {...linkTo('academia')}>Academia →</a>
@@ -184,7 +184,7 @@ export default function OmarBio() {
               <RunningHead n={1} />
               <div className="ob-mast ob-fx">
                 <h1 className="ob-h1">Omar Peralta</h1>
-                <img className="ob-pga" src="img/figma/pga.png" alt="Profesionales de Golf de Argentina (PGA)" width="120" height="120" />
+                <img className="ob-pga" src="/img/figma/pga.png" alt="Profesionales de Golf de Argentina (PGA)" width="120" height="120" />
               </div>
               <div className="ob-dek ob-fx" style={{ '--d': '.1s' }}>
                 <p className="ob-dek-title">PGA Argentina</p>
