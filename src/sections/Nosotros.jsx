@@ -33,7 +33,7 @@ export default function Nosotros() {
         </header>
         <div className="about">
         <div className="founders">
-            {VARIANT === 'logo' && <img className="nos-mark" src="/img/logo-mark.png" alt="" aria-hidden="true" />}
+            {VARIANT === 'logo' && <img className="nos-mark" src="/img/logo-mark.png" alt="" aria-hidden="true" loading="lazy" />}
             <article className="founder" data-reveal><span className="mono" aria-hidden="true">R</span><div><h3 className="heading-3">Ing. Rosario Mensi</h3><p className="caption">Visión tecnológica · Servicio, automatizaciones y eficiencia</p></div></article>
             <article className="founder" data-reveal><span className="mono" aria-hidden="true">O</span><div><h3 className="heading-3">Omar Peralta</h3><p className="caption">Profesional de golf PGA · Coach Assistant y Caddie</p></div></article>
             <div className="since" data-reveal><b>Dic 2024</b><span className="label">EST. Los Acantilados</span></div>

@@ -95,6 +95,10 @@
   <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <meta name="theme-color" content="#102c1a">
+  <!-- Prerendered pages (scripts/prerender.js) carry their HTML for search engines; with JavaScript on, it stays
+       hidden until the app has rendered on top, so visitors never see it before the animations are set up. -->
+  <script>document.documentElement.classList.add('js')</script>
+  <style>.js #root[data-prerendered] { visibility: hidden; }</style>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bakbak+One&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">

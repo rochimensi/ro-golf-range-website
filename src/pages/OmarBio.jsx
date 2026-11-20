@@ -17,18 +17,18 @@ import './omarbio.css';
   A missing file shows a striped placeholder that names it.
 */
 const PH = {
-  young:     { src: '/img/omar-joven.jpg', layer: '(foto restaurada)', alt: 'Omar Peralta de joven, terminando un swing' },
-  academiaHoy: { src: '/img/academia-hoy.jpg', layer: '(foto del dueño)', alt: 'Edificio de la Academia Omar Peralta con el logo de R&O Golf Range' },
-  tour:      { src: '/img/figma/omar-tour.jpg', layer: 'IMG_7569', alt: 'Omar Peralta y Fabrizio Zanotti de espaldas, mirando el skyline de Madrid desde el campo' },
+  young:     { src: '/img/omar-joven.webp', layer: '(foto restaurada)', alt: 'Omar Peralta de joven, terminando un swing' },
+  academiaHoy: { src: '/img/academia-hoy.webp', layer: '(foto del dueño)', alt: 'Edificio de la Academia Omar Peralta con el logo de R&O Golf Range' },
+  tour:      { src: '/img/figma/omar-tour.webp', layer: 'IMG_7569', alt: 'Omar Peralta y Fabrizio Zanotti de espaldas, mirando el skyline de Madrid desde el campo' },
   muthaiga:  { src: '/img/omar-muthaiga.jpg', layer: '(foto del dueño)', alt: 'Omar Peralta en el putting green del Muthaiga Golf Club, Nairobi' },
   masters:   { src: '/img/masters.jpg', layer: '(foto del dueño)', alt: 'Omar Peralta con gorras de The Masters 2022 en Augusta National' },
   straka:    { src: '/img/omar-straka.jpg', layer: '(foto del dueño)', alt: 'Omar Peralta y Sepp Straka junto al trofeo' },
   argentinos:{ src: '/img/omar-argentinos.jpg', layer: '(foto del dueño)', alt: 'Omar Peralta con Rafa Echenique, Nelson Ledesma y Fabián Gómez en una cancha' },
-  daly:      { src: '/img/omar-daly.jpg', layer: '(foto del dueño)', alt: 'Omar Peralta y John Daly en el putting green' },
+  daly:      { src: '/img/omar-daly.webp', layer: '(foto del dueño)', alt: 'Omar Peralta y John Daly en el putting green' },
   celli:     { src: '/img/omar-celli.jpg', layer: '(foto del dueño)', alt: 'Omar Peralta, con la libreta de yardas, junto a Filippo Celli en el tee' },
   trevino:   { src: '/img/omar-trevino.jpg', layer: '(foto del dueño)', alt: 'Omar Peralta y Lee Trevino en un torneo' },
   mickelson: { src: '/img/omar-mickelson.jpg', layer: '(foto del dueño)', alt: 'Omar Peralta y Phil Mickelson en un green de práctica' },
-  laguna:    { src: '/img/figma/laguna.jpg', layer: '603688_10152426…_n', alt: 'Felipe Aguilar y Omar Peralta con el trofeo en Singapur' },
+  laguna:    { src: '/img/figma/laguna.webp', layer: '603688_10152426…_n', alt: 'Felipe Aguilar y Omar Peralta con el trofeo en Singapur' },
   bmw:       { src: '/img/figma/omar-bmw.jpg', layer: 'IMG_4717', alt: 'Fabrizio Zanotti y Omar Peralta en Wentworth' },
   olympics:  { src: '/img/figma/olympics.jpg', layer: '1587134220471 1', alt: 'Tee de salida con los aros olímpicos' },
 };

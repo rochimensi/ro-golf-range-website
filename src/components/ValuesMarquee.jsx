@@ -109,7 +109,8 @@ export default function ValuesMarquee({ values }) {
         ))}
       </ul>
       {/* rendered on <body>, so the section's colors and any transformed ancestor can't affect them */}
-      {createPortal(<div className="vm-cursor" ref={cursor} aria-hidden="true">Ver</div>, document.body)}
+      {/* no document at build time (prerender): the cursor only exists in the browser */}
+      {typeof document !== 'undefined' && createPortal(<div className="vm-cursor" ref={cursor} aria-hidden="true">Ver</div>, document.body)}
       {open && createPortal(<ValueCard values={values} open={open} onClose={() => setOpen(null)} returnFocus={root} />, document.body)}
     </div>
   );

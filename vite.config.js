@@ -22,7 +22,7 @@ const PAGES = {
 function pageEntries() {
   return {
     name: 'page-entries',
-    apply: 'build',
+    apply: (config) => !config.build?.ssr,   // client build only, not the prerender (SSR) build
     closeBundle() {
       const dist = resolve(__dirname, 'dist');
       const html = readFileSync(resolve(dist, 'index.html'), 'utf8');

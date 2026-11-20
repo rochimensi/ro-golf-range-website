@@ -22,7 +22,7 @@ const WA_LINK = `${WHATSAPP}?text=${encodeURIComponent('Hola! Quiero conversar c
 */
 const MEDIA = {
   hero:    { type: 'video', src: '/video/academia-hero.mp4', poster: '/video/academia-hero.jpg', label: 'Video principal · vertical 4:5' },
-  cta:     { type: 'image', src: '/img/academia-hoy.jpg', alt: 'Edificio de la Academia Omar Peralta en R&O Golf Range', label: 'Academia · foto 4:5' },
+  cta:     { type: 'image', src: '/img/academia-hoy.webp', alt: 'Edificio de la Academia Omar Peralta en R&O Golf Range', label: 'Academia · foto 4:5' },
 };
 
 const CHAPTERS = [
@@ -272,7 +272,10 @@ export default function Academia() {
           <div className="ac-wrap ac-hero-grid">
             <div className="ac-hero-copy">
               <p className="label ac-kicker">R&amp;O Golf Range · Mar del Plata</p>
-              <h1 className="ac-hero-title" aria-label="Academia Omar Peralta">
+              <h1 className="ac-hero-title">
+                {/* the letters below are split for the animation (aria-hidden); this is the heading's real text,
+                    for screen readers and search engines */}
+                <span className="sr-only">Academia de Golf Omar Peralta</span>
                 <span className="ac-line"><Chars text="Academia" /></span>
                 <span className="ac-line gold-text"><Chars text="Omar Peralta" /></span>
               </h1>

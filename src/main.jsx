@@ -1,5 +1,6 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
+import { flushSync } from 'react-dom';
 import App from './App.jsx';
 import { LEGACY_HASHES } from './route.js';
 import './styles.css';
@@ -10,4 +11,9 @@ import './styles.css';
 if (location.hash) history.replaceState(null, '', (LEGACY_HASHES[location.hash] || location.pathname) + location.search);
 window.scrollTo(0, 0);
 
-createRoot(document.getElementById('root')).render(<App />);
+// Built pages arrive with prerendered HTML in #root (hidden by a style in index.html): render the app over it
+// synchronously, so its layout effects (GSAP initial states) are in place before the root is shown.
+const container = document.getElementById('root');
+const root = createRoot(container);
+flushSync(() => root.render(<App />));
+container.removeAttribute('data-prerendered');
