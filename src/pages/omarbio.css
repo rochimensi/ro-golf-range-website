@@ -234,11 +234,11 @@
   .ob-pq-photo { margin-top:0; display:flex; flex-direction:column; }
   .ob-pq-photo .ob-photo-frame { flex:1; min-height:0; }
 
-  /* 4 · junto a los grandes (1400) */
-  .ob-p4 { width:3170px; }
-  .ob-p4-grid { display:grid; grid-template-columns:440px 1fr 560px 430px 344px; gap:46px; height:740px; }
+  /* 4 · junto a los grandes: text, table, then the four photos on one line */
+  .ob-p4 { width:3480px; }
+  .ob-p4-grid { display:grid; grid-template-columns:440px minmax(720px, 1fr) 380px 500px 380px 320px; gap:40px; height:740px; }
   .ob-p4-side { display:flex; flex-direction:column; }
-  .ob-p4-photo { flex:1; min-height:0; margin:22px 0 0; display:flex; flex-direction:column; }
+  .ob-p4-photo { min-height:0; margin:0; height:740px; display:flex; flex-direction:column; }
   .ob-p4-photo .ob-photo-frame { flex:1; min-height:0; aspect-ratio:auto; }
   .ob-p4-straka { display:flex; flex-direction:column; height:740px; margin-top:0; }
   /* group photo: natural shape, bottom-aligned so its caption lines up with the tall photos' captions */

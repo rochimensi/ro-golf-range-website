@@ -250,10 +250,10 @@ export default function OmarBio() {
                 <div className="ob-split-text">
                   <Section num="II" title="El camino" />
                   <p className="ob-body ob-fx ob-p3-text" style={{ '--d': '.15s' }}>
-                    <span className="ob-drop">H</span>a recorrido todo el mundo enriqueciendo su camino de carrera en cada destino y cancha de Golf conocida. Asia, Europa, África y América comprenden todos los países visitados.
+                    <span className="ob-drop">H</span>a recorrido todo el mundo enriqueciendo su camino de carrera en cada destino y cancha de Golf conocida. Asia, Oceanía, Europa, África y América comprenden todos los países visitados.
                   </p>
                   <ul className="ob-continents" aria-hidden="true">
-                    {['Asia', 'Europa', 'África', 'América'].map((c, i) => (
+                    {['Asia', 'Oceanía', 'Europa', 'África', 'América'].map((c, i) => (
                       <li key={c} className="ob-fx" style={{ '--d': `${0.25 + i * 0.1}s` }}>{c}</li>
                     ))}
                   </ul>
@@ -271,9 +271,8 @@ export default function OmarBio() {
                 <div className="ob-p4-side">
                   <Section num="III" title="Junto a los grandes" />
                   <p className="ob-body ob-fx" style={{ '--d': '.15s' }}>
-                    Omar ha podido trabajar y ser parte de la carrera profesional de grandes jugadores.
+                    Omar ha podido trabajar, compartir rondas de golf y ser parte de la carrera profesional de grandes jugadores. Lo que hace única su historia es que jugó con prácticamente todas las generaciones de golfistas argentinos: los pioneros como <b>Roberto De Vicenzo</b>, <b>Fidel de Luca</b> y <b>Florentino Molina</b>; la camada de <b>Vicente Fernández</b>, <b>los hermanos Carbonetti</b>, <b>Eduardo Romero</b> y <b>Adán Sowa</b>. Pocos tuvieron el privilegio de compartir cancha con todos ellos.
                   </p>
-                  <Photo p={PH.mickelson} className="ob-p4-photo" caption="Omar Peralta y Phil Mickelson." />
                 </div>
                 <div className="ob-p4-table ob-fx" style={{ '--d': '.2s' }}>
                   <table className="ob-table">
@@ -286,6 +285,7 @@ export default function OmarBio() {
                   </table>
                   <p className="ob-note">…entre otros.</p>
                 </div>
+                <Photo p={PH.mickelson} className="ob-p4-photo" caption="Omar Peralta y Phil Mickelson." />
                 <Photo p={PH.argentinos} className="ob-p4-group" caption="Omar Peralta con Rafa Echenique, Nelson Ledesma y Fabián Gómez." />
                 <Photo p={PH.straka} className="ob-p4-straka" caption="Omar Peralta y Sepp Straka." />
                 <Photo p={PH.daly} className="ob-p4-straka ob-p4-daly" caption="Omar Peralta y John Daly en el putting green." />
